@@ -93,9 +93,11 @@ export default function Index() {
 
   return (
     <div className="layout">
-      <header className="header">
-        <div className="system-label">
-          <span className="mono text-[#888888]">system // virahacks.com</span>
+        <Hero />
+
+        <header className="header" id="system-dashboard">
+          <div className="system-label">
+            <span className="mono text-[#888888]">system // virahacks.com</span>
           <span className="mono" style={{ color: 'var(--text-primary)' }}>network v1.0.3</span>
           <div className="system-metrics">
             <span>total_nodes: <span className="metric-val">{NETWORK_NODES.length}</span></span>
@@ -134,6 +136,65 @@ export default function Index() {
           status: <span style={{color: 'var(--accent)'}}>operational</span>
         </div>
       </footer>
+    </div>
+  );
+}
+
+function Hero() {
+  const scrollDown = () => {
+    document.getElementById('system-dashboard')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  return (
+    <div className="hero-section">
+      <div className="hero-bg">
+        <div className="hero-radar"></div>
+      </div>
+      
+      <div className="hero-content">
+        <div className="hero-status mono"><span className="dot active"></span> UPLINK ESTABLISHED</div>
+        <h1 className="hero-title">VIRA<br/>HACKS</h1>
+        <p className="hero-sub">
+          The infrastructure layer for high school healthcare innovation. <br />
+          We deploy localized hackathons to solve clinical challenges.
+        </p>
+        <button className="hero-btn" onClick={scrollDown}>
+          Initiate System Access <span className="mono" style={{opacity: 0.5}}>[↵]</span>
+        </button>
+      </div>
+
+      <div className="hero-visual">
+        <svg viewBox="0 0 500 500" className="hero-network-svg">
+          <defs>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+          {/* Target/Radar Rings */}
+          <circle cx="250" cy="250" r="240" fill="none" stroke="var(--border)" strokeWidth="1" strokeDasharray="4 8" />
+          <circle cx="250" cy="250" r="160" fill="none" stroke="var(--border)" strokeWidth="1" />
+          <circle cx="250" cy="250" r="80" fill="none" stroke="var(--accent)" strokeWidth="1" strokeDasharray="15 10" className="spin-slow" />
+          <circle cx="250" cy="250" r="10" fill="var(--accent-deploying)" className="pulse-svg" />
+
+          {/* Core EKG Waveform */}
+          <path 
+            d="M 0 250 L 150 250 L 180 160 L 220 380 L 270 120 L 320 250 L 500 250"
+            fill="none" stroke="var(--accent)" strokeWidth="4" filter="url(#glow)"
+            className="ekg-hero-line"
+          />
+
+          {/* Node intersections on EKG */}
+          <circle cx="150" cy="250" r="5" fill="var(--bg-color)" stroke="var(--text-primary)" strokeWidth="2" className="node-pop" style={{animationDelay: '0.45s'}} />
+          <circle cx="180" cy="160" r="5" fill="var(--bg-color)" stroke="var(--text-primary)" strokeWidth="2" className="node-pop" style={{animationDelay: '0.55s'}} />
+          <circle cx="220" cy="380" r="5" fill="var(--bg-color)" stroke="var(--text-primary)" strokeWidth="2" className="node-pop" style={{animationDelay: '0.65s'}} />
+          <circle cx="270" cy="120" r="5" fill="var(--bg-color)" stroke="var(--text-primary)" strokeWidth="2" className="node-pop" style={{animationDelay: '0.80s'}} />
+          <circle cx="320" cy="250" r="5" fill="var(--bg-color)" stroke="var(--text-primary)" strokeWidth="2" className="node-pop" style={{animationDelay: '0.90s'}} />
+        </svg>
+      </div>
     </div>
   );
 }

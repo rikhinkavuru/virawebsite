@@ -137,6 +137,158 @@ body {
   font-family: 'JetBrains Mono', monospace;
 }
 
+/* Hero Section */
+.hero-section {
+  position: relative;
+  min-height: calc(100vh - 8rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4rem;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+
+@media (max-width: 1024px) {
+  .hero-section {
+    flex-direction: column;
+    justify-content: center;
+    gap: 4rem;
+  }
+}
+
+.hero-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: 
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.3;
+  z-index: -1;
+  mask-image: radial-gradient(circle at right center, white, transparent 70%);
+  -webkit-mask-image: radial-gradient(circle at right center, white, transparent 70%);
+}
+
+.hero-radar {
+  position: absolute;
+  top: -50%; left: -50%; right: -50%; bottom: -50%;
+  background: conic-gradient(from 0deg, transparent 70%, rgba(74, 117, 107, 0.15) 100%);
+  animation: radar-spin 8s linear infinite;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+@keyframes radar-spin { 100% { transform: rotate(360deg); } }
+
+.hero-content {
+  flex: 1;
+  z-index: 10;
+}
+
+.hero-status {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.hero-title {
+  font-size: clamp(4rem, 8vw, 8rem);
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  margin: 0;
+  line-height: 0.9;
+  position: relative;
+  color: var(--text-primary);
+}
+
+.hero-title::after {
+  content: "VIRA\AHACKS";
+  white-space: pre;
+  position: absolute;
+  top: 4px; left: 4px;
+  color: var(--accent);
+  opacity: 0.2;
+  z-index: -1;
+}
+
+.hero-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin-top: 2rem;
+  line-height: 1.5;
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+}
+
+.hero-btn {
+  margin-top: 3rem;
+  background: var(--text-primary);
+  color: var(--bg-color);
+  border: none;
+  padding: 1.25rem 2.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.2s ease;
+}
+
+.hero-btn:hover { background: var(--text-secondary); }
+
+.hero-visual {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.hero-network-svg {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+}
+
+.spin-slow {
+  transform-origin: 250px 250px;
+  animation: spin-slow 20s linear infinite;
+}
+
+@keyframes spin-slow { 100% { transform: rotate(360deg); } }
+
+.ekg-hero-line {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: ekg-draw-hero 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes ekg-draw-hero {
+  0% { stroke-dashoffset: 1000; }
+  50%, 100% { stroke-dashoffset: 0; }
+}
+
+.node-pop {
+  opacity: 0;
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: node-pop 6s infinite;
+}
+
+@keyframes node-pop {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  5% { opacity: 1; transform: scale(1.5); }
+  10%, 45% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0; }
+}
+
 /* Network Tab */
 .network-container {
   display: grid;
