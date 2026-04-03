@@ -159,7 +159,7 @@ function Hero() {
             </p>
           </div>
           <button className="hero-btn" onClick={scrollDown}>
-            Initiate System Access <span className="mono" style={{ opacity: 0.5 }}>[↵]</span>
+            Get Started <span className="mono" style={{ opacity: 0.5 }}>[↵]</span>
           </button>
         </div>
 

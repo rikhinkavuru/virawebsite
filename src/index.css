@@ -406,6 +406,16 @@ body {
   max-width: 520px;
 }
 
+@media (max-width: 600px) {
+  .hero-visual {
+    display: none;
+  }
+  
+  .hero-section {
+    padding: 6rem 1.25rem 4rem; /* Adjusted for smaller hero content */
+  }
+}
+
 @media (max-width: 1024px) {
   .hero-visual {
     width: 100%;
@@ -489,17 +499,16 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 4rem 0;
+  padding: 4rem 0; /* Reduced from 8rem to bring content higher up */
   border-bottom: 1px solid var(--border);
   scroll-margin-top: 125px;
 }
 
 @media (max-width: 768px) {
   .content-section {
-    padding: 3rem 0;
+    padding: 2.5rem 0;
     min-height: auto;
-    scroll-margin-top: 100px;
+    scroll-margin-top: 80px; /* Reduced for mobile as metrics bar is static */
   }
 }
 
