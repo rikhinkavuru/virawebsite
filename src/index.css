@@ -32,11 +32,12 @@ body {
 }
 
 .layout {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   padding: 0 3rem 2rem 3rem;
   max-width: 1400px;
-  margin: 100px auto 0 auto; /* Ensure space for fixed header */
+  margin: 0 auto;
 }
 
 @media (max-width: 768px) {
@@ -47,20 +48,17 @@ body {
 
 /* Header */
 .header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 3rem;
+  padding: 1rem 0;
   border-bottom: 1px solid var(--border);
-  background-color: var(--bg-color);
+  position: sticky;
+  top: 0;
+  background-color: rgba(247, 247, 247, 0.8);
   backdrop-filter: blur(8px);
-  z-index: 1000;
-  max-width: 1400px;
-  margin: 0 auto;
+  z-index: 100;
+  margin-bottom: 0.5rem;
 }
 
 @media (max-width: 768px) {
@@ -149,11 +147,11 @@ body {
 /* Hero Section */
 .hero-section {
   position: relative;
-  min-height: 85vh;
+  min-height: calc(100vh - 8rem);
   display: flex;
-  align-items: flex-start;
-  padding-top: 5rem;
+  align-items: center;
   justify-content: space-between;
+  margin-bottom: 4rem;
   border-bottom: 1px solid var(--border);
   overflow: hidden;
 }
@@ -220,7 +218,8 @@ body {
 
 .hero-title.glitch::before,
 .hero-title.glitch::after {
-  content: attr(data-text);
+  content: "VIRA\AHACKS";
+  white-space: pre;
   position: absolute;
   top: 0;
   left: 0;
@@ -228,7 +227,6 @@ body {
   height: 100%;
   background: var(--bg-color);
   opacity: 0;
-  white-space: pre;
 }
 
 .hero-title.glitch:hover::before,
@@ -237,19 +235,18 @@ body {
 }
 
 .hero-title.glitch::before {
-  left: 3px;
-  text-shadow: -3px 0 #cc00ff;
+  left: 2px;
+  text-shadow: -2px 0 #ff00c1;
   clip: rect(44px, 450px, 56px, 0);
   animation: glitch-anim 5s infinite linear alternate-reverse;
   animation-delay: 1s;
 }
 
 .hero-title.glitch::after {
-  left: -3px;
-  text-shadow: -3px 0 #00ffff, 3px 3px #cc00ff;
+  left: -2px;
+  text-shadow: -2px 0 #00fff9, 2px 2px #ff00c1;
   animation: glitch-anim2 1s infinite linear alternate-reverse;
   animation-delay: 1s;
-  background: transparent;
 }
 
 /* Intermittent glitch by having long periods of no change */
@@ -770,7 +767,7 @@ select.form-input {
   left: 0;
   width: 24px;
   height: 24px;
-  border: 2px solid #7851A9; /* Royal Purple */
+  border: 2px solid var(--text-primary);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
@@ -784,7 +781,7 @@ select.form-input {
   content: '';
   width: 4px;
   height: 4px;
-  background: #7851A9;
+  background: var(--accent);
   border-radius: 50%;
 }
 
@@ -793,7 +790,7 @@ select.form-input {
   position: absolute;
   width: 130%;
   height: 1px;
-  background: rgba(120, 81, 169, 0.2);
+  background: rgba(0,0,0,0.1);
   transform: rotate(45deg);
 }
 
@@ -806,11 +803,8 @@ a, button {
 }
 
 section {
-  min-height: 100vh;
-  padding-top: 5rem;
+  padding-top: 4rem;
   margin-bottom: 2rem;
-  display: flex;
-  flex-direction: column;
 }
 
 /* Animations */

@@ -104,7 +104,8 @@ export default function Index() {
   };
 
   return (
-    <>
+    <div className="layout">
+      <CursorTrail />
       <header className="header" id="system-dashboard">
         <div className="system-label">
           <span className="mono text-[#888888]">system // virahacks.com</span>
@@ -128,39 +129,36 @@ export default function Index() {
         </nav>
       </header>
 
-      <div className="layout">
-        <Hero />
+      <Hero />
 
-        <main className="main">
-          <section id="network">
-            <NetworkTab />
-          </section>
-          <section id="deployments">
-            <DeploymentsTab />
-          </section>
-          <section id="nodes">
-            <NodesTab />
-          </section>
-          <section id="logs">
-            <LogsTab logs={logs} />
-          </section>
-          <section id="access">
-            <AccessTab />
-          </section>
-        </main>
+      <main className="main">
+        <section id="network">
+          <NetworkTab />
+        </section>
+        <section id="deployments">
+          <DeploymentsTab />
+        </section>
+        <section id="nodes">
+          <NodesTab />
+        </section>
+        <section id="logs">
+          <LogsTab logs={logs} />
+        </section>
+        <section id="access">
+          <AccessTab />
+        </section>
+      </main>
 
-        <footer className="footer">
-          <div>founder_id: rikhin kavuru</div>
-          <div className="text-center">
-            <a href="mailto:rikhinkavuru@gmail.com">req_contact: rikhinkavuru@gmail.com</a>
-          </div>
-          <div className="text-right">
-            status: <span style={{color: 'var(--accent)'}}>operational</span>
-          </div>
-        </footer>
-        <CursorTrail />
-      </div>
-    </>
+      <footer className="footer">
+        <div>founder_id: rikhin kavuru</div>
+        <div className="text-center">
+          <a href="mailto:rikhinkavuru@gmail.com">req_contact: rikhinkavuru@gmail.com</a>
+        </div>
+        <div className="text-right">
+          status: <span style={{color: 'var(--accent)'}}>operational</span>
+        </div>
+      </footer>
+    </div>
   );
 }
 
@@ -177,7 +175,7 @@ function Hero() {
       
       <div className="hero-content">
         <div className="hero-status mono"><span className="dot active"></span> UPLINK ESTABLISHED</div>
-        <h1 className="hero-title glitch" data-text={"VIRA\nHACKS"}>VIRA<br/>HACKS</h1>
+        <h1 className="hero-title glitch">VIRA<br/>HACKS</h1>
         <p className="hero-sub">
           The infrastructure layer for high school healthcare innovation. <br />
           We deploy localized hackathons to solve clinical challenges.
