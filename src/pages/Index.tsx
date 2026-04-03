@@ -1,16 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
 import geoUrl from '../us-states.json';
 
 // --- DATA ---
 const NETWORK_NODES = [
-  // Active Chapters
   { id: 'hhs', name: 'Homestead High School', loc: 'Fort Wayne, IN', status: 'active', coordinates: [-85.25, 41.05] },
   { id: 'phs', name: 'Plainfield High School', loc: 'Plainfield, IN', status: 'active', coordinates: [-86.38, 39.70] },
   { id: 'chs', name: 'Columbus High School', loc: 'Columbus, IN', status: 'active', coordinates: [-85.92, 39.22] },
   { id: 'lhs', name: 'Lowell High School', loc: 'Lowell, IN', status: 'active', coordinates: [-87.42, 41.29] },
   { id: 'lex', name: 'Lexington High School', loc: 'Lexington, MA', status: 'active', coordinates: [-71.22, 42.44] },
-  // Pending Chapters
   { id: 'rhs', name: 'Rouse High School', loc: 'Leander, TX', status: 'pending', coordinates: [-97.85, 30.56] },
   { id: 'ohs', name: 'Oakton High School', loc: 'Vienna, VA', status: 'pending', coordinates: [-77.29, 38.88] },
   { id: 'whs', name: 'Weddington High School', loc: 'Matthews, NC', status: 'pending', coordinates: [-80.68, 35.02] },
@@ -43,111 +41,87 @@ const NODE_OPERATORS = [
   { name: 'zara', school: 'brownsburg high school', role: 'chapter president (pending)', uptime: 'pending init', status: 'pending' },
 ];
 
-const INITIAL_LOGS = [
-  "[03.31.26 23:45] core systems online — initializing handshake",
-  "[04.01.26 00:01] daily sync complete — 6 functional nodes",
-  "[04.01.26 08:30] checking db cluster /health — status: OK",
-  "[04.01.26 09:14] deployment initialized — purdue fort wayne",
-  "[04.01.26 11:02] 312 participants onboarded — hackpurdue",
-  "[04.01.26 12:44] bandwidth allocation adjusted for michigan region",
-  "[04.01.26 14:10] scheduled backup completed successfully",
-  "[04.01.26 16:30] connection established to secure relay",
-  "[04.01.26 18:47] 87 projects submitted — awaiting validation",
-  "[04.01.26 19:03] judging protocol complete — top 5 flagged",
-];
-
-// Stylized ASCII/Grid map of the US to serve as the background for the Nodes map
-const US_GRID_MAP = [
-  "        ........                            ",
-  "      .............   ...                   ",
-  "    .......................                 ",
-  "  ..........................                ",
-  "  ...........................               ",
-  " ...........................                ",
-  " ..........................                 ",
-  "  ........................                  ",
-  "   .......................                  ",
-  "    ...................                     ",
-  "      ..............                        ",
-  "         .........                          ",
-  ];
-
 // --- COMPONENTS ---
 
 export default function Index() {
-  const [logs, setLogs] = useState(INITIAL_LOGS);
-
-  // Simulated live log append
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const timeStr = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute:'2-digit', second:'2-digit' });
-      const newLog = `[04.01.26 ${timeStr}] pinging inactive nodes — awaiting response...`;
-      setLogs(prev => [...prev, newLog]);
-    }, 8000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const scrollToSection = (id: string) => {
+  const scrollToSection = useCallback((id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      const offset = 120; // account for fixed header and spacing
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  };
+  }, []);
 
   return (
-    <div className="layout">
-      <CursorTrail />
-      <header className="header" id="system-dashboard">
-        <div className="system-label">
-          <span className="mono text-[#888888]">system // virahacks.com</span>
-          <span className="mono" style={{ color: 'var(--text-primary)' }}>network v1.0.3</span>
-          <div className="system-metrics">
+    <>
+      {/* Fixed header — completely outside the page flow */}
+      {/* Fixed header — completely outside the page flow */}
+      <header className="header">
+        <div className="header-inner">
+          <div className="logo">
+            <svg width="140" height="40" viewBox="0 0 140 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="vira-logo-svg">
+              <defs>
+                <pattern id="hatch" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)">
+                  <line x1="0" y1="0" x2="0" y2="4" stroke="#7c3aed" strokeWidth="1" />
+                </pattern>
+                <clipPath id="overlap">
+                  <circle cx="16" cy="20" r="12" />
+                </clipPath>
+              </defs>
+              {/* Left Circle */}
+              <circle cx="16" cy="20" r="12" stroke="#7c3aed" strokeWidth="1.5" />
+              {/* Right Circle */}
+              <circle cx="28" cy="20" r="12" stroke="#7c3aed" strokeWidth="1.5" />
+              {/* Hatch Overlap */}
+              <circle cx="28" cy="20" r="12" fill="url(#hatch)" clipPath="url(#overlap)" />
+              {/* Text */}
+              <text x="50" y="27" fill="black" style={{ font: 'bold 22px Inter, sans-serif', letterSpacing: '-0.02em' }}>vira</text>
+            </svg>
+          </div>
+
+          <nav className="nav">
+            {['network', 'deployments', 'people', 'access'].map(tab => (
+              <button key={tab} onClick={() => scrollToSection(tab)}>
+                [{tab}]
+              </button>
+            ))}
+          </nav>
+        </div>
+      </header>
+
+      {/* Metrics Bar — below header */}
+      <div className="metrics-bar">
+        <div className="metrics-inner">
+          <div className="system-label-new">
+            <span className="mono">system // virahacks.com</span>
+            <span className="mono" style={{ color: 'var(--text-primary)' }}>network v1.0.3</span>
+          </div>
+          <div className="system-metrics-new">
             <span>total_nodes: <span className="metric-val">{NETWORK_NODES.length}</span></span>
             <span>deployments: <span className="metric-val">{DEPLOYMENTS.length}</span></span>
             <span>processed_users: <span className="metric-val flicker-data">326</span></span>
           </div>
         </div>
-        
-        <nav className="nav">
-          {['network', 'deployments', 'nodes', 'logs', 'access'].map(tab => (
-            <button
-              key={tab}
-              onClick={() => scrollToSection(tab)}
-            >
-              [{tab}]
-            </button>
-          ))}
-        </nav>
-      </header>
+      </div>
 
-      <Hero />
+      {/* Page content — pushed down to clear the fixed header and metrics bar */}
+      <div className="page-wrapper">
+        <Hero />
 
-      <main className="main">
-        <section id="network">
-          <NetworkTab />
-        </section>
-        <section id="deployments">
-          <DeploymentsTab />
-        </section>
-        <section id="nodes">
-          <NodesTab />
-        </section>
-        <section id="logs">
-          <LogsTab logs={logs} />
-        </section>
-        <section id="access">
-          <AccessTab />
-        </section>
-      </main>
+        <main className="main-content">
+          <section id="network" className="content-section">
+            <NetworkTab />
+          </section>
+          <section id="deployments" className="content-section">
+            <DeploymentsTab />
+          </section>
+          <section id="people" className="content-section">
+            <PeopleTab />
+          </section>
+          <section id="access" className="content-section">
+            <AccessTab />
+          </section>
+        </main>
+      </div>
 
       <footer className="footer">
         <div>founder_id: rikhin kavuru</div>
@@ -155,16 +129,17 @@ export default function Index() {
           <a href="mailto:rikhinkavuru@gmail.com">req_contact: rikhinkavuru@gmail.com</a>
         </div>
         <div className="text-right">
-          status: <span style={{color: 'var(--accent)'}}>operational</span>
+          status: <span style={{ color: 'var(--accent)' }}>operational</span>
         </div>
       </footer>
-    </div>
+    </>
   );
 }
 
+// --- HERO ---
 function Hero() {
   const scrollDown = () => {
-    document.getElementById('system-dashboard')?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('network')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
@@ -172,26 +147,31 @@ function Hero() {
       <div className="hero-bg">
         <div className="hero-radar"></div>
       </div>
-      
-      <div className="hero-content">
-        <div className="hero-status mono"><span className="dot active"></span> UPLINK ESTABLISHED</div>
-        <h1 className="hero-title glitch">VIRA<br/>HACKS</h1>
-        <p className="hero-sub">
-          The infrastructure layer for high school healthcare innovation. <br />
-          We deploy localized hackathons to solve clinical challenges.
-        </p>
-        <button className="hero-btn" onClick={scrollDown}>
-          Initiate System Access <span className="mono" style={{opacity: 0.5}}>[↵]</span>
-        </button>
-      </div>
 
-      <div className="hero-visual">
-        <DemoSnippet />
+      <div className="hero-inner">
+        <div className="hero-content">
+          <div className="hero-status mono"><span className="dot active" style={{ marginRight: 8 }}></span> UPLINK ESTABLISHED</div>
+          <div className="hero-main-group">
+            <h1 className="hero-title glitch">VIRA<br />HACKS</h1>
+            <p className="hero-sub">
+              The infrastructure layer for high school healthcare innovation. <br />
+              We deploy localized hackathons to solve clinical challenges.
+            </p>
+          </div>
+          <button className="hero-btn" onClick={scrollDown}>
+            Initiate System Access <span className="mono" style={{ opacity: 0.5 }}>[↵]</span>
+          </button>
+        </div>
+
+        <div className="hero-visual">
+          <DemoSnippet />
+        </div>
       </div>
     </div>
   );
 }
 
+// --- DEMO CODE SNIPPET ---
 function DemoSnippet() {
   return (
     <div className="demo-container">
@@ -199,75 +179,44 @@ function DemoSnippet() {
         <div className="demo-dot red"></div>
         <div className="demo-dot yellow"></div>
         <div className="demo-dot green"></div>
-        <span style={{color: '#999', fontSize: '0.7rem', marginLeft: 'auto', fontFamily: 'monospace'}}>node_auth.sys</span>
+        <span style={{ color: '#999', fontSize: '0.7rem', marginLeft: 'auto', fontFamily: 'monospace' }}>terminal@vira:~</span>
       </div>
       <div className="demo-content">
         <div><span className="code-keyword">protocol</span> <span className="code-const">ViraHandshake</span> {'{'}</div>
-        <div style={{paddingLeft: '1rem'}}><span className="code-const">status</span>: <span className="code-str">"authenticating"</span>;</div>
-        <div style={{paddingLeft: '1rem'}}><span className="code-const">layers</span>: [<span className="code-str">"RSA"</span>, <span className="code-str">"P2P"</span>];</div>
+        <div style={{ paddingLeft: '1rem' }}><span className="code-const">status</span>: <span className="code-str">"authenticating"</span>;</div>
+        <div style={{ paddingLeft: '1rem' }}><span className="code-const">layers</span>: [<span className="code-str">"RSA"</span>, <span className="code-str">"P2P"</span>];</div>
         <div>{'}'}</div>
         <br />
         <div><span className="code-keyword">async function</span> <span className="code-func">deployNode</span>(loc: <span className="code-keyword">string</span>) {'{'}</div>
-        <div style={{paddingLeft: '1rem'}}><span className="code-keyword">const</span> auth = <span className="code-keyword">await</span> vira.<span className="code-func">secureHandshake</span>();</div>
-        <div style={{paddingLeft: '1rem'}}><span className="code-keyword">if</span> (auth.valid) {'{'}</div>
-        <div style={{paddingLeft: '2rem'}}><span className="code-comment">// Establish uplink to local clinic</span></div>
-        <div style={{paddingLeft: '2rem'}}><span className="code-keyword">return</span> <span className="code-keyword">await</span> vira.<span className="code-func">initiate</span>({'{'} loc {'}'});</div>
-        <div style={{paddingLeft: '1rem'}}>{'}'}</div>
+        <div style={{ paddingLeft: '1rem' }}><span className="code-keyword">const</span> auth = <span className="code-keyword">await</span> vira.<span className="code-func">secureHandshake</span>();</div>
+        <div style={{ paddingLeft: '1rem' }}><span className="code-keyword">if</span> (auth.valid) {'{'}</div>
+        <div style={{ paddingLeft: '2rem' }}><span className="code-comment">// Establish uplink to local clinic infrastructure</span></div>
+        <div style={{ paddingLeft: '2rem' }}><span className="code-keyword">const</span> node = <span className="code-keyword">await</span> vira.<span className="code-func">initiate</span>({'{'}
+          location: loc,
+          timestamp: <span className="code-const">Date</span>.<span className="code-func">now</span>(),
+          priority: <span className="code-str">'HIGH'</span>
+        {'}'});</div>
+        <br />
+        <div style={{ paddingLeft: '2rem' }}><span className="code-keyword">if</span> (node.active) {'{'}</div>
+        <div style={{ paddingLeft: '3rem' }}><span className="code-keyword">const</span> sync = <span className="code-keyword">await</span> node.<span className="code-func">syncState</span>();</div>
+        <div style={{ paddingLeft: '3rem' }}><span className="code-keyword">return</span> sync.payload;</div>
+        <div style={{ paddingLeft: '2rem' }}>{'}'}</div>
+        <div style={{ paddingLeft: '1rem' }}>{'}'}</div>
+        <div style={{ paddingLeft: '1rem' }}><span className="code-keyword">throw new</span> <span className="code-const">Error</span>(<span className="code-str">"Deployment rejected: invalid handshake"</span>);</div>
         <div>{'}'}</div>
         <br />
-        <div className="code-comment" style={{opacity: 0.6}}>// Log: UPLINK_SUCCESS [node_id: 882]</div>
-        <div className="code-comment" style={{opacity: 0.6}}>// Status: Synchronizing network state...</div>
+        <div className="code-comment" style={{ opacity: 0.6 }}>// NETWORK LOG: Uplink established with ID #882</div>
+        <div className="code-comment" style={{ opacity: 0.6 }}>// STATUS: Synchronizing network state...</div>
+        <div className="code-comment" style={{ opacity: 0.6 }}>// LATENCY: 14ms [region: us-east-1]</div>
+        <div className="code-comment" style={{ opacity: 0.6 }}>// SECURITY: RSA-4096 / AES-256 active</div>
       </div>
     </div>
   );
 }
 
-function CursorTrail() {
-  const [dots, setDots] = useState<{x: number, y: number}[]>(Array(12).fill({x: 0, y: 0}));
-  const [head, setHead] = useState({x: 0, y: 0});
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setHead({x: e.clientX, y: e.clientY});
-      setDots(prev => {
-        const newDots = [...prev];
-        newDots.unshift({x: e.clientX, y: e.clientY});
-        newDots.pop();
-        return newDots;
-      });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
 
-  return (
-    <>
-      <div 
-        className="cursor-head"
-        style={{
-          left: head.x - 12,
-          top: head.y - 12,
-        }}
-      />
-      {dots.map((dot, i) => (
-        <div
-          key={i}
-          className="cursor-trail"
-          style={{
-            left: dot.x - 4,
-            top: dot.y - 4,
-            opacity: (dots.length - i) / dots.length,
-            transform: `scale(${(dots.length - i) / dots.length})`,
-            transition: 'transform 0.15s ease-out, opacity 0.15s ease-out',
-            zIndex: 9998 - i,
-            pointerEvents: 'none'
-          }}
-        />
-      ))}
-    </>
-  );
-}
-
+// --- NETWORK TAB ---
 function NetworkTab() {
   return (
     <div>
@@ -287,7 +236,7 @@ function NetworkTab() {
             </div>
           ))}
         </div>
-        
+
         <div className="map-container" style={{ background: 'transparent', border: '1px solid var(--border)' }}>
           <ComposableMap projection="geoAlbersUsa" projectionConfig={{ scale: 1000 }} style={{ width: "100%", height: "100%" }}>
             <Geographies geography={geoUrl}>
@@ -310,21 +259,19 @@ function NetworkTab() {
             </Geographies>
             {NETWORK_NODES.map(node => (
               <Marker key={node.id} coordinates={node.coordinates as [number, number]}>
-                {/* Node pulsing circle */}
-                <circle 
-                  r={6} 
-                  fill={node.status === 'active' ? 'var(--accent)' : node.status === 'deploying' ? 'var(--accent-deploying)' : 'var(--accent-pending)'}
+                <circle
+                  r={6}
+                  fill={node.status === 'active' ? 'var(--accent)' : 'var(--accent-pending)'}
                   opacity={0.8}
                 />
                 <circle
                   r={12}
                   fill="none"
-                  stroke={node.status === 'active' ? 'var(--accent)' : node.status === 'deploying' ? 'var(--accent-deploying)' : 'var(--accent-pending)'}
+                  stroke={node.status === 'active' ? 'var(--accent)' : 'var(--accent-pending)'}
                   strokeWidth={1}
                   opacity={0.3}
                   className="pulse-svg"
                 />
-                {/* Minimal label tag for node */}
                 <g className="map-node-svg-label-group">
                   <rect x={10} y={-14} width={30} height={14} fill="var(--bg-color)" stroke="var(--border)" strokeWidth={1} />
                   <text
@@ -345,6 +292,7 @@ function NetworkTab() {
   );
 }
 
+// --- DEPLOYMENTS TAB ---
 function DeploymentsTab() {
   return (
     <div>
@@ -366,7 +314,7 @@ function DeploymentsTab() {
                 <td>{d.event}</td>
                 <td className="mono">{d.school}</td>
                 <td className="mono">{d.date}</td>
-                <td className="hide-mobile mono" style={{ fontSize: '0.75rem' }}>
+                <td className="hide-mobile mono" style={{ fontSize: '0.72rem' }}>
                   {d.part} attendees
                 </td>
                 <td className={`deploy-status ${d.status === 'chapter active' ? 'completed' : 'scheduled'}`}>[{d.status}]</td>
@@ -379,10 +327,11 @@ function DeploymentsTab() {
   );
 }
 
-function NodesTab() {
+// --- PEOPLE TAB ---
+function PeopleTab() {
   return (
     <div>
-      <h2 className="section-title">03 // active personnel</h2>
+      <h2 className="section-title">03 // people</h2>
       <div className="nodes-grid">
         {NODE_OPERATORS.map((op, i) => (
           <div key={i} className={`node-card ${op.status}`}>
@@ -399,41 +348,11 @@ function NodesTab() {
   );
 }
 
-function LogsTab({ logs }: { logs: string[] }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.scrollTop = containerRef.current.scrollHeight;
-    }
-  }, [logs]);
-
-  return (
-    <div>
-      <h2 className="section-title">04 // system logs</h2>
-      <div className="logs-container" ref={containerRef}>
-        {logs.map((log, i) => {
-          const isHighlight = log.includes('error') || log.includes('failed');
-          const isAccent = log.includes('complete') || log.includes('online');
-          const isAlert = log.includes('flagged') || log.includes('awaiting');
-          return (
-            <div key={i} className={`log-entry ${isHighlight ? 'log-highlight' : ''} ${isAccent ? 'log-accent' : ''} ${isAlert ? 'log-alert' : ''}`}>
-              <span style={{opacity: 0.8}}>{log}</span>
-            </div>
-          );
-        })}
-        <div className="log-entry">
-          <span className="log-time">[sys_idle]</span> awaiting further instructions <span className="cursor"></span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
+// --- ACCESS TAB ---
 function AccessTab() {
   return (
     <div>
-      <h2 className="section-title">05 // request authorization</h2>
+      <h2 className="section-title">04 // request authorization</h2>
       <div className="access-container">
         <div className="access-header">
           initialize connection
