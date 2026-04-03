@@ -51,14 +51,18 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 0;
+  padding: 1.5rem 0;
   border-bottom: 1px solid var(--border);
-  position: sticky;
+  position: fixed;
   top: 0;
-  background-color: rgba(247, 247, 247, 0.8);
-  backdrop-filter: blur(8px);
-  z-index: 100;
-  margin-bottom: 0.5rem;
+  left: 0;
+  right: 0;
+  background-color: rgba(247, 247, 247, 0.9);
+  backdrop-filter: blur(12px);
+  z-index: 1000;
+  padding: 1rem 3rem;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 @media (max-width: 768px) {
@@ -147,11 +151,12 @@ body {
 /* Hero Section */
 .hero-section {
   position: relative;
-  min-height: calc(100vh - 8rem);
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 4rem;
+  margin-top: -2rem;
+  padding-top: 4rem;
   border-bottom: 1px solid var(--border);
   overflow: hidden;
 }
@@ -803,8 +808,13 @@ a, button {
 }
 
 section {
-  padding-top: 4rem;
-  margin-bottom: 2rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 6rem;
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--border);
 }
 
 /* Animations */
