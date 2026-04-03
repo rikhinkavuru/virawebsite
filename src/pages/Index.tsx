@@ -70,34 +70,44 @@ const US_GRID_MAP = [
   "    ...................                     ",
   "      ..............                        ",
   "         .........                          ",
-  "                      .                     "
-];
+  ];
 
 // --- COMPONENTS ---
 
 export default function Index() {
-  const [activeTab, setActiveTab] = useState('network');
   const [logs, setLogs] = useState(INITIAL_LOGS);
 
   // Simulated live log append
   useEffect(() => {
-    if (activeTab === 'logs') {
-      const timer = setInterval(() => {
-        const timeStr = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute:'2-digit', second:'2-digit' });
-        const newLog = `[04.01.26 ${timeStr}] pinging inactive nodes — awaiting response...`;
-        setLogs(prev => [...prev, newLog]);
-      }, 8000);
-      return () => clearInterval(timer);
+    const timer = setInterval(() => {
+      const timeStr = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute:'2-digit', second:'2-digit' });
+      const newLog = `[04.01.26 ${timeStr}] pinging inactive nodes — awaiting response...`;
+      setLogs(prev => [...prev, newLog]);
+    }, 8000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 80; // account for sticky header
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
     }
-  }, [activeTab]);
+  };
 
   return (
-    <div className="layout">
-        <Hero />
-
-        <header className="header" id="system-dashboard">
-          <div className="system-label">
-            <span className="mono text-[#888888]">system // virahacks.com</span>
+    <>
+      <header className="header" id="system-dashboard">
+        <div className="system-label">
+          <span className="mono text-[#888888]">system // virahacks.com</span>
           <span className="mono" style={{ color: 'var(--text-primary)' }}>network v1.0.3</span>
           <div className="system-metrics">
             <span>total_nodes: <span className="metric-val">{NETWORK_NODES.length}</span></span>
@@ -110,8 +120,7 @@ export default function Index() {
           {['network', 'deployments', 'nodes', 'logs', 'access'].map(tab => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={activeTab === tab ? 'active' : ''}
+              onClick={() => scrollToSection(tab)}
             >
               [{tab}]
             </button>
@@ -119,24 +128,39 @@ export default function Index() {
         </nav>
       </header>
 
-      <main className="main">
-        {activeTab === 'network' && <NetworkTab />}
-        {activeTab === 'deployments' && <DeploymentsTab />}
-        {activeTab === 'nodes' && <NodesTab />}
-        {activeTab === 'logs' && <LogsTab logs={logs} />}
-        {activeTab === 'access' && <AccessTab />}
-      </main>
+      <div className="layout">
+        <Hero />
 
-      <footer className="footer">
-        <div>founder_id: rikhin kavuru</div>
-        <div className="text-center">
-          <a href="mailto:rikhinkavuru@gmail.com">req_contact: rikhinkavuru@gmail.com</a>
-        </div>
-        <div className="text-right">
-          status: <span style={{color: 'var(--accent)'}}>operational</span>
-        </div>
-      </footer>
-    </div>
+        <main className="main">
+          <section id="network">
+            <NetworkTab />
+          </section>
+          <section id="deployments">
+            <DeploymentsTab />
+          </section>
+          <section id="nodes">
+            <NodesTab />
+          </section>
+          <section id="logs">
+            <LogsTab logs={logs} />
+          </section>
+          <section id="access">
+            <AccessTab />
+          </section>
+        </main>
+
+        <footer className="footer">
+          <div>founder_id: rikhin kavuru</div>
+          <div className="text-center">
+            <a href="mailto:rikhinkavuru@gmail.com">req_contact: rikhinkavuru@gmail.com</a>
+          </div>
+          <div className="text-right">
+            status: <span style={{color: 'var(--accent)'}}>operational</span>
+          </div>
+        </footer>
+        <CursorTrail />
+      </div>
+    </>
   );
 }
 
@@ -153,7 +177,7 @@ function Hero() {
       
       <div className="hero-content">
         <div className="hero-status mono"><span className="dot active"></span> UPLINK ESTABLISHED</div>
-        <h1 className="hero-title">VIRA<br/>HACKS</h1>
+        <h1 className="hero-title glitch" data-text={"VIRA\nHACKS"}>VIRA<br/>HACKS</h1>
         <p className="hero-sub">
           The infrastructure layer for high school healthcare innovation. <br />
           We deploy localized hackathons to solve clinical challenges.
@@ -164,38 +188,85 @@ function Hero() {
       </div>
 
       <div className="hero-visual">
-        <svg viewBox="0 0 500 500" className="hero-network-svg">
-          <defs>
-            <filter id="glow">
-              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-              <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
-          {/* Target/Radar Rings */}
-          <circle cx="250" cy="250" r="240" fill="none" stroke="var(--border)" strokeWidth="1" strokeDasharray="4 8" />
-          <circle cx="250" cy="250" r="160" fill="none" stroke="var(--border)" strokeWidth="1" />
-          <circle cx="250" cy="250" r="80" fill="none" stroke="var(--accent)" strokeWidth="1" strokeDasharray="15 10" className="spin-slow" />
-          <circle cx="250" cy="250" r="10" fill="var(--accent-deploying)" className="pulse-svg" />
-
-          {/* Core EKG Waveform */}
-          <path 
-            d="M 0 250 L 150 250 L 180 160 L 220 380 L 270 120 L 320 250 L 500 250"
-            fill="none" stroke="var(--accent)" strokeWidth="4" filter="url(#glow)"
-            className="ekg-hero-line"
-          />
-
-          {/* Node intersections on EKG */}
-          <circle cx="150" cy="250" r="5" fill="var(--bg-color)" stroke="var(--text-primary)" strokeWidth="2" className="node-pop" style={{animationDelay: '0.45s'}} />
-          <circle cx="180" cy="160" r="5" fill="var(--bg-color)" stroke="var(--text-primary)" strokeWidth="2" className="node-pop" style={{animationDelay: '0.55s'}} />
-          <circle cx="220" cy="380" r="5" fill="var(--bg-color)" stroke="var(--text-primary)" strokeWidth="2" className="node-pop" style={{animationDelay: '0.65s'}} />
-          <circle cx="270" cy="120" r="5" fill="var(--bg-color)" stroke="var(--text-primary)" strokeWidth="2" className="node-pop" style={{animationDelay: '0.80s'}} />
-          <circle cx="320" cy="250" r="5" fill="var(--bg-color)" stroke="var(--text-primary)" strokeWidth="2" className="node-pop" style={{animationDelay: '0.90s'}} />
-        </svg>
+        <DemoSnippet />
       </div>
     </div>
+  );
+}
+
+function DemoSnippet() {
+  return (
+    <div className="demo-container">
+      <div className="demo-header">
+        <div className="demo-dot red"></div>
+        <div className="demo-dot yellow"></div>
+        <div className="demo-dot green"></div>
+        <span style={{color: '#999', fontSize: '0.7rem', marginLeft: 'auto', fontFamily: 'monospace'}}>node_auth.sys</span>
+      </div>
+      <div className="demo-content">
+        <div><span className="code-keyword">protocol</span> <span className="code-const">ViraHandshake</span> {'{'}</div>
+        <div style={{paddingLeft: '1rem'}}><span className="code-const">status</span>: <span className="code-str">"authenticating"</span>;</div>
+        <div style={{paddingLeft: '1rem'}}><span className="code-const">layers</span>: [<span className="code-str">"RSA"</span>, <span className="code-str">"P2P"</span>];</div>
+        <div>{'}'}</div>
+        <br />
+        <div><span className="code-keyword">async function</span> <span className="code-func">deployNode</span>(loc: <span className="code-keyword">string</span>) {'{'}</div>
+        <div style={{paddingLeft: '1rem'}}><span className="code-keyword">const</span> auth = <span className="code-keyword">await</span> vira.<span className="code-func">secureHandshake</span>();</div>
+        <div style={{paddingLeft: '1rem'}}><span className="code-keyword">if</span> (auth.valid) {'{'}</div>
+        <div style={{paddingLeft: '2rem'}}><span className="code-comment">// Establish uplink to local clinic</span></div>
+        <div style={{paddingLeft: '2rem'}}><span className="code-keyword">return</span> <span className="code-keyword">await</span> vira.<span className="code-func">initiate</span>({'{'} loc {'}'});</div>
+        <div style={{paddingLeft: '1rem'}}>{'}'}</div>
+        <div>{'}'}</div>
+        <br />
+        <div className="code-comment" style={{opacity: 0.6}}>// Log: UPLINK_SUCCESS [node_id: 882]</div>
+        <div className="code-comment" style={{opacity: 0.6}}>// Status: Synchronizing network state...</div>
+      </div>
+    </div>
+  );
+}
+
+function CursorTrail() {
+  const [dots, setDots] = useState<{x: number, y: number}[]>(Array(12).fill({x: 0, y: 0}));
+  const [head, setHead] = useState({x: 0, y: 0});
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setHead({x: e.clientX, y: e.clientY});
+      setDots(prev => {
+        const newDots = [...prev];
+        newDots.unshift({x: e.clientX, y: e.clientY});
+        newDots.pop();
+        return newDots;
+      });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  return (
+    <>
+      <div 
+        className="cursor-head"
+        style={{
+          left: head.x - 12,
+          top: head.y - 12,
+        }}
+      />
+      {dots.map((dot, i) => (
+        <div
+          key={i}
+          className="cursor-trail"
+          style={{
+            left: dot.x - 4,
+            top: dot.y - 4,
+            opacity: (dots.length - i) / dots.length,
+            transform: `scale(${(dots.length - i) / dots.length})`,
+            transition: 'transform 0.15s ease-out, opacity 0.15s ease-out',
+            zIndex: 9998 - i,
+            pointerEvents: 'none'
+          }}
+        />
+      ))}
+    </>
   );
 }
 
