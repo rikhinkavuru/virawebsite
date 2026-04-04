@@ -52,7 +52,11 @@ export default function Index() {
 
   return (
     <>
-      {/* Fixed header — completely outside the page flow */}
+      {/* Skip to main content for screen readers */}
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
+      
       {/* Fixed header — completely outside the page flow */}
       <header className="header">
         <div className="header-inner">
@@ -103,7 +107,7 @@ export default function Index() {
       </div>
 
       {/* Page content — pushed down to clear the fixed header and metrics bar */}
-      <div className="page-wrapper">
+      <div id="main-content" className="page-wrapper">
         <Hero />
 
         <main className="main-content">
@@ -151,7 +155,11 @@ function Hero() {
               We deploy localized hackathons to solve clinical challenges.
             </p>
           </div>
-          <button className="hero-btn" onClick={scrollDown}>
+          <button 
+            className="hero-btn" 
+            onClick={scrollDown}
+            aria-label="Get Started - Scroll to network section"
+          >
             Get Started <span className="mono" style={{ opacity: 0.5 }}>[↵]</span>
           </button>
         </div>
