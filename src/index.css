@@ -420,6 +420,13 @@ body {
   .hero-section {
     padding: 3rem 1.5rem;
   }
+  
+  .hero-inner {
+    flex-direction: column;
+    gap: 2rem;
+    padding: 0 2rem;
+    text-align: center;
+  }
 }
 
 @media (max-width: 480px) {
