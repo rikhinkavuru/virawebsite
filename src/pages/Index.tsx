@@ -78,7 +78,7 @@ export default function Index() {
           </div>
 
           <nav className="nav">
-            {['network', 'people', 'contact'].map(tab => (
+            {['network', 'people'].map(tab => (
               <button key={tab} onClick={() => scrollToSection(tab)}>
                 [{tab}]
               </button>
@@ -112,9 +112,6 @@ export default function Index() {
           </section>
           <section id="people" className="content-section">
             <PeopleTab />
-          </section>
-          <section id="contact" className="content-section">
-            <ContactTab />
           </section>
         </main>
       </div>
@@ -167,7 +164,7 @@ function Hero() {
   );
 }
 
-// --- DEMO CODE SNIPPET ---
+// --- ABOUT SNIPPET ---
 function DemoSnippet() {
   return (
     <div className="demo-container">
@@ -175,36 +172,60 @@ function DemoSnippet() {
         <div className="demo-dot red"></div>
         <div className="demo-dot yellow"></div>
         <div className="demo-dot green"></div>
-        <span style={{ color: '#999', fontSize: '0.7rem', marginLeft: 'auto', fontFamily: 'monospace' }}>terminal@vira:~</span>
+        <span style={{ color: '#999', fontSize: '0.7rem', marginLeft: 'auto', fontFamily: 'monospace' }}>about@vira:~</span>
       </div>
       <div className="demo-content">
-        <div><span className="code-keyword">protocol</span> <span className="code-const">ViraHandshake</span> {'{'}</div>
-        <div style={{ paddingLeft: '1rem' }}><span className="code-const">status</span>: <span className="code-str">"authenticating"</span>;</div>
-        <div style={{ paddingLeft: '1rem' }}><span className="code-const">layers</span>: [<span className="code-str">"RSA"</span>, <span className="code-str">"P2P"</span>];</div>
-        <div>{'}'}</div>
-        <br />
-        <div><span className="code-keyword">async function</span> <span className="code-func">deployNode</span>(loc: <span className="code-keyword">string</span>) {'{'}</div>
-        <div style={{ paddingLeft: '1rem' }}><span className="code-keyword">const</span> auth = <span className="code-keyword">await</span> vira.<span className="code-func">secureHandshake</span>();</div>
-        <div style={{ paddingLeft: '1rem' }}><span className="code-keyword">if</span> (auth.valid) {'{'}</div>
-        <div style={{ paddingLeft: '2rem' }}><span className="code-comment">// Establish uplink to local clinic infrastructure</span></div>
-        <div style={{ paddingLeft: '2rem' }}><span className="code-keyword">const</span> node = <span className="code-keyword">await</span> vira.<span className="code-func">initiate</span>({'{'}
-          location: loc,
-          timestamp: <span className="code-const">Date</span>.<span className="code-func">now</span>(),
-          priority: <span className="code-str">'HIGH'</span>
-          {'}'});</div>
-        <br />
-        <div style={{ paddingLeft: '2rem' }}><span className="code-keyword">if</span> (node.active) {'{'}</div>
-        <div style={{ paddingLeft: '3rem' }}><span className="code-keyword">const</span> sync = <span className="code-keyword">await</span> node.<span className="code-func">syncState</span>();</div>
-        <div style={{ paddingLeft: '3rem' }}><span className="code-keyword">return</span> sync.payload;</div>
-        <div style={{ paddingLeft: '2rem' }}>{'}'}</div>
-        <div style={{ paddingLeft: '1rem' }}>{'}'}</div>
-        <div style={{ paddingLeft: '1rem' }}><span className="code-keyword">throw new</span> <span className="code-const">Error</span>(<span className="code-str">"Deployment rejected: invalid handshake"</span>);</div>
-        <div>{'}'}</div>
-        <br />
-        <div className="code-comment" style={{ opacity: 0.6 }}>// NETWORK LOG: Uplink established with ID #882</div>
-        <div className="code-comment" style={{ opacity: 0.6 }}>// STATUS: Synchronizing network state...</div>
-        <div className="code-comment" style={{ opacity: 0.6 }}>// LATENCY: 14ms [region: us-east-1]</div>
-        <div className="code-comment" style={{ opacity: 0.6 }}>// SECURITY: RSA-4096 / AES-256 active</div>
+        <div style={{ display: 'flex' }}>
+          <div style={{ color: '#999', paddingRight: '1rem', fontSize: '0.8rem', textAlign: 'right', minWidth: '2rem' }}>
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+            <div>7</div>
+            <div>8</div>
+            <div>9</div>
+            <div>10</div>
+            <div>11</div>
+            <div>12</div>
+            <div>13</div>
+            <div>14</div>
+            <div>15</div>
+            <div>16</div>
+            <div>17</div>
+            <div>18</div>
+            <div>19</div>
+            <div>20</div>
+          </div>
+          <div>
+            <div><span className="code-comment">/**</span></div>
+            <div><span className="code-comment"> * Vira Hacks - Student-Run Hackathon Network</span></div>
+            <div><span className="code-comment"> * Built by students, for students</span></div>
+            <div><span className="code-comment"> */</span></div>
+            <br />
+            <div><span className="code-keyword">class</span> <span className="code-const">ViraNetwork</span> {'{'}</div>
+            <div style={{ paddingLeft: '1rem' }}><span className="code-comment">// A student-run network of hackathons across the United States</span></div>
+            <div style={{ paddingLeft: '1rem' }}><span className="code-comment">// Founded by a high school student at Homestead High School</span></div>
+            <div style={{ paddingLeft: '1rem' }}><span className="code-keyword">constructor</span>() {'{'}</div>
+            <div style={{ paddingLeft: '2rem' }}><span className="code-keyword">this</span>.<span className="code-const">mission</span> = <span className="code-str">"Make hackathons accessible to every student in America"</span>;</div>
+            <div style={{ paddingLeft: '2rem' }}><span className="code-keyword">this</span>.<span className="code-const">philosophy</span> = <span className="code-str">"Students living the experience inspire best"</span>;</div>
+            <div style={{ paddingLeft: '2rem' }}><span className="code-keyword">this</span>.<span className="code-const">model</span> = <span className="code-str">"Empower students to run their own events under Vira name"</span>;</div>
+            <div style={{ paddingLeft: '2rem' }}><span className="code-keyword">this</span>.<span className="code-const">activeChapters</span> = <span className="code-number">{DEPLOYMENT_STATS.total_deployments}</span>;</div>
+            <div style={{ paddingLeft: '2rem' }}><span className="code-keyword">this</span>.<span className="code-const">hackathonParticipants</span> = <span className="code-number">{DEPLOYMENT_STATS.total_users}</span>;</div>
+            <div style={{ paddingLeft: '1rem' }}>{'}'}</div>
+            <br />
+            <div style={{ paddingLeft: '1rem' }}><span className="code-keyword">expandChapter</span>(school: <span className="code-keyword">string</span>) {'{'}</div>
+            <div style={{ paddingLeft: '2rem' }}><span className="code-comment">// Instead of one big centralized program...</span></div>
+            <div style={{ paddingLeft: '2rem' }}><span className="code-keyword">const</span> chapter = <span className="code-keyword">new</span> <span className="code-const">StudentChapter</span>(school);</div>
+            <div style={{ paddingLeft: '2rem' }}><span className="code-keyword">return</span> chapter.<span className="code-func">buildCommunity</span>();</div>
+            <div style={{ paddingLeft: '1rem' }}>{'}'}</div>
+            <br />
+            <div style={{ paddingLeft: '1rem' }}><span className="code-comment">// The best people to inspire the next generation</span></div>
+            <div style={{ paddingLeft: '1rem' }}><span className="code-comment">// are the students living that experience right now.</span></div>
+            <div>{'}'}</div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -216,9 +237,9 @@ import { useState } from 'react';
 
 // --- NETWORK TAB ---
 function NetworkTab() {
-  const [selectedNode, setSelectedNode] = useState<any>(null);
+  const [selectedNode, setSelectedNode] = useState<typeof NETWORK_NODES[0] | null>(null);
 
-  const handleNodeClick = (node: any) => {
+  const handleNodeClick = (node: typeof NETWORK_NODES[0]) => {
     setSelectedNode(node === selectedNode ? null : node);
   };
 
@@ -338,99 +359,4 @@ function PeopleTab() {
   );
 }
 
-// --- CONTACT TAB ---
-function ContactTab() {
-  const [formData, setFormData] = useState({ name: '', school: '', request: '' });
-  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('sending');
-
-    try {
-      const apiUrl = import.meta.env.VITE_API_URL || '';
-      const response = await fetch(`${apiUrl}/api/contact`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        setStatus('sent');
-        setFormData({ name: '', school: '', request: '' });
-      } else {
-        setStatus('error');
-      }
-    } catch (err) {
-      console.error('Contact Form Error:', err);
-      setStatus('error');
-    }
-  };
-
-  return (
-    <div>
-      <h2 className="section-title">03 // contact</h2>
-      <div className="access-container">
-        <div className="access-header">
-          {status === 'sent' ? 'message_transmitted' : 'initialize portal handshake'}
-        </div>
-        
-        {status === 'sent' ? (
-          <div className="contact-success mono">
-            <span style={{ color: 'var(--accent)' }}>SUCCESS:</span> Uplink established. Your request has been queued for routing to admin.rikhinkavuru.
-            <br /><br />
-            <button className="btn-submit" onClick={() => setStatus('idle')}>new_transmission</button>
-          </div>
-        ) : (
-          <form className="access-form" onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label>full.name</label>
-              <input 
-                className="form-input" 
-                type="text" 
-                placeholder="e.g. j. doe" 
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                required 
-                disabled={status === 'sending'}
-              />
-            </div>
-            <div className="form-group">
-              <label>target.school</label>
-              <input 
-                className="form-input" 
-                type="text" 
-                placeholder="e.g. homestead high school" 
-                value={formData.school}
-                onChange={(e) => setFormData({ ...formData, school: e.target.value })}
-                required 
-                disabled={status === 'sending'}
-              />
-            </div>
-            <div className="form-group">
-              <label>transmission.payload</label>
-              <textarea 
-                className="form-input" 
-                rows={4}
-                placeholder="Describe your request or node allocation inquiry..."
-                value={formData.request}
-                onChange={(e) => setFormData({ ...formData, request: e.target.value })}
-                required 
-                disabled={status === 'sending'}
-              />
-            </div>
-            {status === 'error' && (
-              <div className="transmission-error-box">
-                CRITICAL ERROR: Packet delivery failed. Internal system timeout.
-              </div>
-            )}
-            <button className="btn-submit" type="submit" disabled={status === 'sending'}>
-              {status === 'sending' ? 'transmitting...' : 'transmit request'}
-            </button>
-          </form>
-        )}
-      </div>
-    </div>
-  );
-}
 
