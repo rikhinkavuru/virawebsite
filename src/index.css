@@ -98,6 +98,19 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .header-inner {
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-inner {
+    gap: 0.5rem;
+  }
 }
 
 .logo {
@@ -141,33 +154,52 @@ body {
   .metrics-bar {
     position: static;
     height: auto;
-    padding: 0.75rem 1.25rem;
+    padding: 1rem 1.25rem;
   }
   
   .metrics-inner {
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     gap: 0.5rem;
-    align-items: flex-start;
+    flex-wrap: wrap;
   }
   
   .system-label-new {
     flex-direction: column;
     gap: 0.25rem;
+    font-size: 0.55rem;
+    flex: 1;
   }
   
   .system-metrics-new {
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    flex: 2;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    font-size: 0.45rem;
+  flex-wrap: wrap;
   }
 }
 
 @media (max-width: 480px) {
   .metrics-bar {
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1rem;
   }
   
-  .system-metrics-new span {
-    font-size: 0.75rem;
+  .metrics-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .system-label-new {
+    font-size: 0.5rem;
+  }
+  
+  .system-metrics-new {
+    gap: 0.5rem;
+    font-size: 0.4rem;
+    justify-content: flex-start;
   }
 }
 
@@ -186,6 +218,27 @@ body {
   font-size: 0.65rem;
   color: var(--text-tertiary);
   text-transform: uppercase;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 1024px) {
+  .system-label-new {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .system-label-new {
+    gap: 0.75rem;
+    font-size: 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .system-label-new {
+    gap: 0.5rem;
+    font-size: 0.55rem;
+  }
 }
 
 .system-metrics-new {
@@ -195,6 +248,30 @@ body {
   color: var(--text-tertiary);
   text-transform: uppercase;
   font-family: 'JetBrains Mono', monospace;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 1024px) {
+  .system-metrics-new {
+    gap: 1.5rem;
+    font-size: 0.55rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .system-metrics-new {
+    gap: 1rem;
+    font-size: 0.5rem;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .system-metrics-new {
+    gap: 0.75rem;
+    font-size: 0.45rem;
+    line-height: 1.4;
+  }
 }
 
 @media (max-width: 768px) {
@@ -236,6 +313,7 @@ body {
   flex-wrap: wrap;
   gap: 2.25rem;
   align-items: center;
+  justify-content: flex-end;
 }
 
 @media (max-width: 1024px) {
@@ -247,6 +325,8 @@ body {
 @media (max-width: 768px) {
   .nav {
     gap: 1rem;
+    flex: 1;
+    justify-content: center;
   }
 }
 
@@ -857,6 +937,21 @@ body {
 .map-marker {
   cursor: pointer;
   transition: all 0.3s ease;
+  stroke: white;
+  stroke-width: 2px;
+  pointer-events: auto;
+}
+
+@media (max-width: 768px) {
+  .map-marker {
+    stroke-width: 3px;
+  }
+}
+
+@media (max-width: 480px) {
+  .map-marker {
+    stroke-width: 4px;
+  }
 }
 
 .map-marker.active {

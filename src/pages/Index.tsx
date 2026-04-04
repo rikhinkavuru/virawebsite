@@ -251,6 +251,15 @@ function NetworkTab() {
     setSelectedNode(node === selectedNode ? null : node);
   };
 
+  const handleNodeInteraction = (node: typeof NETWORK_NODES[0], e?: React.TouchEvent | React.MouseEvent) => {
+    // Prevent event propagation and ensure selection works on mobile
+    e?.preventDefault();
+    e?.stopPropagation();
+    setTimeout(() => {
+      setSelectedNode(node === selectedNode ? null : node);
+    }, 50);
+  };
+
   return (
     <div style={{ position: 'relative' }}>
       <h2 className="section-title">01 // network architecture</h2>
@@ -282,15 +291,18 @@ function NetworkTab() {
                 coordinates={node.coordinates as [number, number]}
                 onMouseEnter={() => setSelectedNode(node)}
                 onMouseLeave={() => setSelectedNode(null)}
-                onClick={() => setSelectedNode(node)}
+                onTouchStart={(e) => handleNodeInteraction(node, e)}
+                onClick={(e) => handleNodeInteraction(node, e)}
               >
                 <circle
-                  r={8}
+                  r={12}
                   className={`map-marker ${node.status === 'active' ? 'active' : 'pending'}`}
+                  style={{ cursor: 'pointer', pointerEvents: 'auto' }}
                 />
                 <circle
-                  r={15}
+                  r={20}
                   className={`map-marker-pulse ${node.status === 'active' ? 'active' : 'pending'}`}
+                  style={{ pointerEvents: 'none' }}
                 />
               </Marker>
             ))}
