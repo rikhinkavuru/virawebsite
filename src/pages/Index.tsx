@@ -4,27 +4,26 @@ import geoUrl from '../us-states.json';
 
 // --- DATA ---
 const NETWORK_NODES = [
-  { id: 'hhs', name: 'Homestead High School', loc: 'Fort Wayne, IN', status: 'active', coordinates: [-85.25, 41.05] },
-  { id: 'phs', name: 'Plainfield High School', loc: 'Plainfield, IN', status: 'active', coordinates: [-86.38, 39.70] },
-  { id: 'chs', name: 'Columbus High School', loc: 'Columbus, IN', status: 'active', coordinates: [-85.92, 39.22] },
-  { id: 'lhs', name: 'Lowell High School', loc: 'Lowell, IN', status: 'active', coordinates: [-87.42, 41.29] },
-  { id: 'lex', name: 'Lexington High School', loc: 'Lexington, MA', status: 'active', coordinates: [-71.22, 42.44] },
-  { id: 'rhs', name: 'Rouse High School', loc: 'Leander, TX', status: 'pending', coordinates: [-97.85, 30.56] },
-  { id: 'ohs', name: 'Oakton High School', loc: 'Vienna, VA', status: 'pending', coordinates: [-77.29, 38.88] },
-  { id: 'whs', name: 'Weddington High School', loc: 'Matthews, NC', status: 'pending', coordinates: [-80.68, 35.02] },
-  { id: 'fhs', name: 'Franklin High School', loc: 'Franklin, TN', status: 'pending', coordinates: [-86.86, 35.92] },
-  { id: 'aai', name: 'Alliance Academy for Innovation', loc: 'Cumming, GA', status: 'pending', coordinates: [-84.15, 34.19] },
-  { id: 'hse', name: 'Hamilton Southeastern High School', loc: 'Fishers, IN', status: 'pending', coordinates: [-85.96, 39.96] },
-  { id: 'bhs', name: 'Brownsburg High School', loc: 'Brownsburg, IN', status: 'pending', coordinates: [-86.39, 39.84] },
+  { id: 'hhs', name: 'Homestead High School', loc: 'Fort Wayne, IN', status: 'active', coordinates: [-85.25, 41.05], event: 'Homestead Hackathon', date: '09.14.25', attendees: 58, website: 'https://hhs.sacs.k12.in.us/', info: 'Vira foundation node. Focused on rural clinical access.' },
+  { id: 'phs', name: 'Plainfield High School', loc: 'Plainfield, IN', status: 'active', coordinates: [-86.38, 39.70], event: 'Plainfield Hackathon', date: '10.05.25', attendees: 42, website: 'https://phs.plainfield.k12.in.us', info: 'Primary expansion hub for Indiana network.' },
+  { id: 'chs', name: 'Columbus High School', loc: 'Columbus, IN', status: 'active', coordinates: [-85.92, 39.22], event: 'Columbus Hackathon', date: '11.15.25', attendees: 73, website: 'https://east.bcscschools.org', info: 'Testing high-density participant load protocols.' },
+  { id: 'lhs', name: 'Lowell High School', loc: 'Lowell, IN', status: 'active', coordinates: [-87.42, 41.29], event: 'Lowell Hackathon', date: '01.17.26', attendees: 88, website: 'https://lhs.tricreek.k12.in.us', info: 'Record-setting attendance for Q1 deployments.' },
+  { id: 'lex', name: 'Lexington High School', loc: 'Lexington, MA', status: 'active', coordinates: [-71.22, 42.44], event: 'Lexington Hackathon', date: '02.08.26', attendees: 65, website: 'https://lhs.lexingtonma.org/', info: 'East Coast flagship node. Research-integrated events.' },
+  { id: 'rhs', name: 'Rouse High School', loc: 'Leander, TX', status: 'pending', coordinates: [-97.85, 30.56], website: 'https://rouse.leanderisd.org', info: 'Finalizing hardware logistics for Texas rollout.' },
+  { id: 'ohs', name: 'Oakton High School', loc: 'Vienna, VA', status: 'pending', coordinates: [-77.29, 38.88], website: 'https://oaktonhs.fcps.edu', info: 'Awaiting chapter president orientation.' },
+  { id: 'whs', name: 'Weddington High School', loc: 'Matthews, NC', status: 'pending', coordinates: [-80.68, 35.02], website: 'https://whs.ucpsnc.org', info: 'Uplink handshake pending local board approval.' },
+  { id: 'fhs', name: 'Franklin High School', loc: 'Franklin, TN', status: 'pending', coordinates: [-86.86, 35.92], website: 'https://wcs.edu/fhs', info: 'Scheduled for Q3 deployment window.' },
+  { id: 'aai', name: 'Alliance Academy for Innovation', loc: 'Cumming, GA', status: 'pending', coordinates: [-84.15, 34.19], website: 'https://www.forsyth.k12.ga.us/alliance', info: 'Infrastructure audit in progress.' },
+  { id: 'hse', name: 'Hamilton Southeastern High School', loc: 'Fishers, IN', status: 'pending', coordinates: [-85.96, 39.96], website: 'https://hseh.hseschools.org', info: 'Evaluating local facility bandwidth.' },
+  { id: 'bhs', name: 'Brownsburg High School', loc: 'Brownsburg, IN', status: 'pending', coordinates: [-86.39, 39.84], website: 'https://www.brownsburg.k12.in.us/bhs', info: 'Node allocation approved; awaiting site visit.' },
 ];
 
-const DEPLOYMENTS = [
-  { event: 'homestead hackathon', school: 'homestead high school', date: '09.14.25', part: 58, status: 'chapter active' },
-  { event: 'plainfield hackathon', school: 'plainfield high school', date: '10.05.25', part: 42, status: 'chapter active' },
-  { event: 'columbus hackathon', school: 'columbus high school', date: '11.15.25', part: 73, status: 'chapter active' },
-  { event: 'lowell hackathon', school: 'lowell high school', date: '01.17.26', part: 88, status: 'chapter active' },
-  { event: 'lexington hackathon', school: 'lexington high school', date: '02.08.26', part: 65, status: 'chapter active' },
-];
+// DEPLOYMENTS data moved into NETWORK_NODES for interactivity
+const DEPLOYMENT_STATS = {
+  total_nodes: NETWORK_NODES.length,
+  total_deployments: NETWORK_NODES.filter(n => n.status === 'active').length,
+  total_users: 326
+};
 
 const NODE_OPERATORS = [
   { name: 'rikhin', school: 'homestead high school', role: 'chapter president', uptime: '7 months active', status: 'active' },
@@ -57,7 +56,7 @@ export default function Index() {
       {/* Fixed header — completely outside the page flow */}
       <header className="header">
         <div className="header-inner">
-          <div className="logo">
+          <div className="logo" onClick={() => scrollToSection('hero')} style={{ cursor: 'pointer' }}>
             <svg width="140" height="40" viewBox="0 0 140 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="vira-logo-svg">
               <defs>
                 <pattern id="hatch" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)">
@@ -79,7 +78,7 @@ export default function Index() {
           </div>
 
           <nav className="nav">
-            {['network', 'deployments', 'people', 'access'].map(tab => (
+            {['network', 'people', 'contact'].map(tab => (
               <button key={tab} onClick={() => scrollToSection(tab)}>
                 [{tab}]
               </button>
@@ -96,9 +95,9 @@ export default function Index() {
             <span className="mono" style={{ color: 'var(--text-primary)' }}>network v1.0.3</span>
           </div>
           <div className="system-metrics-new">
-            <span>total_nodes: <span className="metric-val">{NETWORK_NODES.length}</span></span>
-            <span>deployments: <span className="metric-val">{DEPLOYMENTS.length}</span></span>
-            <span>processed_users: <span className="metric-val flicker-data">326</span></span>
+            <span>total_nodes: <span className="metric-val">{DEPLOYMENT_STATS.total_nodes}</span></span>
+            <span>deployments: <span className="metric-val">{DEPLOYMENT_STATS.total_deployments}</span></span>
+            <span>processed_users: <span className="metric-val flicker-data">{DEPLOYMENT_STATS.total_users}</span></span>
           </div>
         </div>
       </div>
@@ -111,14 +110,11 @@ export default function Index() {
           <section id="network" className="content-section">
             <NetworkTab />
           </section>
-          <section id="deployments" className="content-section">
-            <DeploymentsTab />
-          </section>
           <section id="people" className="content-section">
             <PeopleTab />
           </section>
-          <section id="access" className="content-section">
-            <AccessTab />
+          <section id="contact" className="content-section">
+            <ContactTab />
           </section>
         </main>
       </div>
@@ -143,7 +139,7 @@ function Hero() {
   };
 
   return (
-    <div className="hero-section">
+    <div id="hero" className="hero-section">
       <div className="hero-bg">
         <div className="hero-radar"></div>
       </div>
@@ -195,7 +191,7 @@ function DemoSnippet() {
           location: loc,
           timestamp: <span className="code-const">Date</span>.<span className="code-func">now</span>(),
           priority: <span className="code-str">'HIGH'</span>
-        {'}'});</div>
+          {'}'});</div>
         <br />
         <div style={{ paddingLeft: '2rem' }}><span className="code-keyword">if</span> (node.active) {'{'}</div>
         <div style={{ paddingLeft: '3rem' }}><span className="code-keyword">const</span> sync = <span className="code-keyword">await</span> node.<span className="code-func">syncState</span>();</div>
@@ -216,122 +212,116 @@ function DemoSnippet() {
 
 
 
+import { useState } from 'react';
+
 // --- NETWORK TAB ---
 function NetworkTab() {
-  return (
-    <div>
-      <h2 className="section-title">01 // network architecture</h2>
-      <div className="network-container">
-        <div className="node-list">
-          {NETWORK_NODES.map(node => (
-            <div key={node.id} className="node-item">
-              <div>
-                <div className="node-name">{node.name.toLowerCase()}</div>
-                <div className="node-loc">{node.loc.toLowerCase()}</div>
-              </div>
-              <div className="status-indicator">
-                <div className={`dot ${node.status}`}></div>
-                {node.status}
-              </div>
-            </div>
-          ))}
-        </div>
+  const [selectedNode, setSelectedNode] = useState<any>(null);
 
-        <div className="map-container" style={{ background: 'transparent', border: '1px solid var(--border)' }}>
-          <ComposableMap projection="geoAlbersUsa" projectionConfig={{ scale: 1000 }} style={{ width: "100%", height: "100%" }}>
+  const handleNodeClick = (node: any) => {
+    setSelectedNode(node === selectedNode ? null : node);
+  };
+
+  return (
+    <div style={{ position: 'relative' }}>
+      <h2 className="section-title">01 // network architecture</h2>
+
+      <div className="map-wrapper-large">
+        <div className="map-container-enhanced">
+          <ComposableMap
+            projection="geoAlbersUsa"
+            projectionConfig={{ scale: 1300 }}
+            width={1200}
+            height={700}
+            style={{ width: "100%", height: "auto" }}
+            className="interactive-map"
+          >
             <Geographies geography={geoUrl}>
               {({ geographies }) =>
                 geographies.map(geo => (
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    fill="#EAEAEA"
-                    stroke="#D0D0D0"
-                    strokeWidth={0.5}
-                    style={{
-                      default: { outline: "none" },
-                      hover: { fill: "#E0E0E0", outline: "none" },
-                      pressed: { outline: "none" },
-                    }}
+                    className="map-geo"
                   />
                 ))
               }
             </Geographies>
             {NETWORK_NODES.map(node => (
-              <Marker key={node.id} coordinates={node.coordinates as [number, number]}>
+              <Marker
+                key={node.id}
+                coordinates={node.coordinates as [number, number]}
+                onMouseEnter={() => setSelectedNode(node)}
+                onMouseLeave={() => setSelectedNode(null)}
+                onClick={() => setSelectedNode(node)}
+              >
                 <circle
-                  r={6}
-                  fill={node.status === 'active' ? 'var(--accent)' : 'var(--accent-pending)'}
-                  opacity={0.8}
+                  r={8}
+                  className={`map-marker ${node.status === 'active' ? 'active' : 'pending'}`}
                 />
                 <circle
-                  r={12}
-                  fill="none"
-                  stroke={node.status === 'active' ? 'var(--accent)' : 'var(--accent-pending)'}
-                  strokeWidth={1}
-                  opacity={0.3}
-                  className="pulse-svg"
+                  r={15}
+                  className={`map-marker-pulse ${node.status === 'active' ? 'active' : 'pending'}`}
                 />
-                <g className="map-node-svg-label-group">
-                  <rect x={10} y={-14} width={30} height={14} fill="var(--bg-color)" stroke="var(--border)" strokeWidth={1} />
-                  <text
-                    textAnchor="start"
-                    x={14}
-                    y={-4}
-                    style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "8px", fill: "var(--text-primary)" }}
-                  >
-                    {node.id}
-                  </text>
-                </g>
               </Marker>
             ))}
           </ComposableMap>
+
+          {/* Dialog Box / Tooltip */}
+          {selectedNode && (
+            <div className="node-dialog">
+              <div className="dialog-header">
+                <span className="dialog-id">[{selectedNode.id}]</span>
+                <button className="dialog-close" onClick={() => setSelectedNode(null)}>×</button>
+              </div>
+              <div className="dialog-body">
+                <h3 className="dialog-title">{selectedNode.name}</h3>
+                <p className="dialog-loc mono">{selectedNode.loc}</p>
+
+                <div className="dialog-status-tag mono">
+                  STATUS: <span className={selectedNode.status}>{selectedNode.status.toUpperCase()}</span>
+                </div>
+
+                {selectedNode.status === 'active' && (
+                  <div className="dialog-metrics mono">
+                    <div className="metric-row">
+                      <span>EVENT:</span>
+                      <span className="val">{selectedNode.event}</span>
+                    </div>
+                    <div className="metric-row">
+                      <span>DATE:</span>
+                      <span className="val">{selectedNode.date}</span>
+                    </div>
+                    <div className="metric-row">
+                      <span>ATTENDEES:</span>
+                      <span className="val">{selectedNode.attendees}</span>
+                    </div>
+                  </div>
+                )}
+
+                <p className="dialog-info">{selectedNode.info}</p>
+
+                {selectedNode.website && (
+                  <a href={selectedNode.website} target="_blank" rel="noopener noreferrer" className="dialog-link">
+                    portal.school_site [↗]
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-// --- DEPLOYMENTS TAB ---
-function DeploymentsTab() {
-  return (
-    <div>
-      <h2 className="section-title">02 // execution history</h2>
-      <div style={{ overflowX: 'auto' }}>
-        <table className="deployments-table">
-          <thead>
-            <tr>
-              <th>operation</th>
-              <th>target</th>
-              <th>date</th>
-              <th className="hide-mobile">metrics</th>
-              <th>status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {DEPLOYMENTS.map((d, i) => (
-              <tr key={i}>
-                <td>{d.event}</td>
-                <td className="mono">{d.school}</td>
-                <td className="mono">{d.date}</td>
-                <td className="hide-mobile mono" style={{ fontSize: '0.72rem' }}>
-                  {d.part} attendees
-                </td>
-                <td className={`deploy-status ${d.status === 'chapter active' ? 'completed' : 'scheduled'}`}>[{d.status}]</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-}
+
 
 // --- PEOPLE TAB ---
 function PeopleTab() {
   return (
     <div>
-      <h2 className="section-title">03 // people</h2>
+      <h2 className="section-title">02 // people</h2>
       <div className="nodes-grid">
         {NODE_OPERATORS.map((op, i) => (
           <div key={i} className={`node-card ${op.status}`}>
@@ -348,35 +338,100 @@ function PeopleTab() {
   );
 }
 
-// --- ACCESS TAB ---
-function AccessTab() {
+// --- CONTACT TAB ---
+function ContactTab() {
+  const [formData, setFormData] = useState({ name: '', school: '', request: '' });
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('sending');
+
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const response = await fetch(`${apiUrl}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setStatus('sent');
+        setFormData({ name: '', school: '', request: '' });
+      } else {
+        setStatus('error');
+      }
+    } catch (err) {
+      console.error('Contact Form Error:', err);
+      setStatus('error');
+    }
+  };
+
   return (
     <div>
-      <h2 className="section-title">04 // request authorization</h2>
+      <h2 className="section-title">03 // contact</h2>
       <div className="access-container">
         <div className="access-header">
-          initialize connection
+          {status === 'sent' ? 'message_transmitted' : 'initialize portal handshake'}
         </div>
-        <form className="access-form" onSubmit={(e) => e.preventDefault()}>
-          <div className="form-group">
-            <label>full.name</label>
-            <input className="form-input" type="text" placeholder="e.g. j. doe" required />
+        
+        {status === 'sent' ? (
+          <div className="contact-success mono">
+            <span style={{ color: 'var(--accent)' }}>SUCCESS:</span> Uplink established. Your request has been queued for routing to admin.rikhinkavuru.
+            <br /><br />
+            <button className="btn-submit" onClick={() => setStatus('idle')}>new_transmission</button>
           </div>
-          <div className="form-group">
-            <label>institution.id</label>
-            <input className="form-input" type="text" placeholder="e.g. university of ... " required />
-          </div>
-          <div className="form-group">
-            <label>requested.role</label>
-            <select className="form-input" required>
-              <option value="student">node.student</option>
-              <option value="organizer">node.organizer</option>
-              <option value="sponsor">system.sponsor</option>
-            </select>
-          </div>
-          <button className="btn-submit" type="submit">transmit request</button>
-        </form>
+        ) : (
+          <form className="access-form" onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>full.name</label>
+              <input 
+                className="form-input" 
+                type="text" 
+                placeholder="e.g. j. doe" 
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                required 
+                disabled={status === 'sending'}
+              />
+            </div>
+            <div className="form-group">
+              <label>target.school</label>
+              <input 
+                className="form-input" 
+                type="text" 
+                placeholder="e.g. homestead high school" 
+                value={formData.school}
+                onChange={(e) => setFormData({ ...formData, school: e.target.value })}
+                required 
+                disabled={status === 'sending'}
+              />
+            </div>
+            <div className="form-group">
+              <label>transmission.payload</label>
+              <textarea 
+                className="form-input" 
+                rows={4}
+                placeholder="Describe your request or node allocation inquiry..."
+                value={formData.request}
+                onChange={(e) => setFormData({ ...formData, request: e.target.value })}
+                required 
+                disabled={status === 'sending'}
+                style={{ resize: 'none', background: 'transparent', width: '100%' }}
+              />
+            </div>
+            {status === 'error' && (
+              <div style={{ color: '#ef4444', fontSize: '0.75rem', marginBottom: '1rem' }} className="mono">
+                CRITICAL ERROR: Packet delivery failed. Internal system timeout.
+              </div>
+            )}
+            <button className="btn-submit" type="submit" disabled={status === 'sending'}>
+              {status === 'sending' ? 'transmitting...' : 'transmit request'}
+            </button>
+          </form>
+        )}
       </div>
     </div>
   );
 }
+

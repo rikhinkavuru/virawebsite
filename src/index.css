@@ -522,16 +522,191 @@ body {
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* ===== NETWORK TAB ===== */
-.network-container {
-  display: grid;
-  grid-template-columns: minmax(280px, 1fr) 1.5fr;
-  gap: 3rem;
+/* ===== NETWORK & MAP ENHANCEMENTS ===== */
+.map-wrapper-large {
+  width: 100%;
+  margin: 3rem 0;
+  display: flex;
+  justify-content: center;
 }
 
-@media (max-width: 1024px) {
-  .network-container {
-    grid-template-columns: 1fr;
+.map-container-enhanced {
+  width: 100%;
+  max-width: 1400px;
+  height: 770px;
+  position: relative;
+  background: var(--bg-color);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.interactive-map {
+  width: 100%;
+  height: auto;
+}
+
+.map-geo {
+  fill: #f2f2f2;
+  stroke: #888888;
+  stroke-width: 1px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.map-geo:hover {
+  fill: #f0f0f0;
+}
+
+.map-marker {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.map-marker.active {
+  fill: var(--accent);
+}
+
+.map-marker.pending {
+  fill: var(--accent-pending);
+}
+
+.map-marker:hover {
+  r: 10;
+  opacity: 1;
+}
+
+.map-marker-pulse {
+  pointer-events: none;
+  fill: none;
+  stroke-width: 1.5;
+  animation: mapPulse 2s infinite;
+}
+
+.map-marker-pulse.active { stroke: var(--accent); }
+.map-marker-pulse.pending { stroke: var(--accent-pending); }
+
+@keyframes mapPulse {
+  0% { r: 8; opacity: 0.8; }
+  100% { r: 24; opacity: 0; }
+}
+
+/* Node Dialog Box */
+.node-dialog {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  width: 340px;
+  background: white;
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  z-index: 100;
+  animation: dialogFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes dialogFadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dialog-header {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fafafa;
+}
+
+.dialog-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+}
+
+.dialog-close {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: var(--text-tertiary);
+  line-height: 1;
+}
+
+.dialog-body {
+  padding: 1.25rem;
+}
+
+.dialog-title {
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+}
+
+.dialog-loc {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1rem;
+}
+
+.dialog-status-tag {
+  font-size: 0.7rem;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+.dialog-status-tag span.active { color: var(--accent); }
+.dialog-status-tag span.pending { color: var(--accent-pending); }
+
+.dialog-metrics {
+  background: #f8f8f8;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border-left: 2px solid var(--accent);
+}
+
+.metric-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  margin-bottom: 0.25rem;
+}
+
+.metric-row .val {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.dialog-info {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  margin-bottom: 1.25rem;
+  color: var(--text-secondary);
+}
+
+.dialog-link {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid var(--accent);
+  padding: 0.5rem;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.dialog-link:hover {
+  background: var(--accent);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .node-dialog {
+    width: calc(100% - 2.5rem);
+    bottom: 1.25rem;
+    top: auto;
+    left: 1.25rem;
+    transform: none;
   }
 }
 
@@ -733,16 +908,17 @@ g:hover .map-node-svg-label-group {
 
 /* ===== ACCESS FORM ===== */
 .access-container {
-  max-width: 480px;
+  max-width: 600px;
+  background: white;
   border: 1px solid var(--border);
-  padding: 2rem;
-  background: #fdfdfd;
+  border-radius: 4px;
 }
 
-@media (max-width: 480px) {
-  .access-container {
-    padding: 1.25rem;
-  }
+.contact-success {
+  padding: 2rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
 }
 
 .access-header {
