@@ -279,6 +279,7 @@ body {
     position: static;
     height: auto;
     padding: 1rem 1.25rem;
+    display: block; /* Ensure visibility on mobile */
   }
   .metrics-inner {
     flex-direction: column;
@@ -402,6 +403,7 @@ body {
   overflow: hidden;
   display: flex;
   align-items: center;
+  margin-bottom: 4rem;
 }
 
 .hero-inner {
@@ -465,6 +467,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 3.5rem;
+  align-items: flex-start;
 }
 
 @media (max-width: 768px) {
@@ -489,8 +492,7 @@ body {
   font-size: 0.72rem;
   text-transform: uppercase;
   color: var(--text-tertiary);
-  display: flex;
-  align-items: center;
+  display: none; /* Hide on mobile */
   font-family: 'JetBrains Mono', monospace;
 }
 
