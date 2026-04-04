@@ -408,23 +408,33 @@ body {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
   align-items: center;
-  justify-content: space-between;
-  gap: 6rem;
-  position: relative;
-  z-index: 1;
+  padding: 0 4rem;
 }
 
 @media (max-width: 1024px) {
   .hero-inner {
-    flex-direction: column;
-    justify-content: center;
+    grid-template-columns: 1fr 1fr;
     gap: 3rem;
+    padding: 0 2rem;
   }
-  
-  .hero-section {
-    padding: 3rem 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 0 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-inner {
+    gap: 1.5rem;
+    padding: 0 1rem;
   }
 }
 
@@ -460,11 +470,10 @@ body {
 @keyframes radar-spin { 100% { transform: rotate(360deg); } }
 
 .hero-content {
-  flex: 1;
-  max-width: 600px;
   display: flex;
   flex-direction: column;
-  gap: 3.5rem;
+  gap: 2rem;
+  justify-content: center;
 }
 
 @media (max-width: 768px) {
@@ -473,15 +482,27 @@ body {
   }
 }
 
+@media (max-width: 480px) {
+  .hero-content {
+    gap: 1rem;
+  }
+}
+
 .hero-main-group {
   display: flex;
   flex-direction: column;
-  gap: 3.5rem;
+  gap: 2rem;
 }
 
 @media (max-width: 768px) {
   .hero-main-group {
-    gap: 1.25rem;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-main-group {
+    gap: 1rem;
   }
 }
 
@@ -812,6 +833,13 @@ body {
   padding: 2rem 0;
 }
 
+@media (max-width: 1024px) {
+  .hero-section {
+    min-height: calc(100vh - 180px);
+    padding: 1.5rem 0;
+  }
+}
+
 @media (max-width: 768px) {
   .hero-section {
     min-height: calc(100vh - 200px);
@@ -831,17 +859,18 @@ body {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 4rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4rem;
   align-items: center;
+  padding: 0 4rem;
 }
 
 @media (max-width: 1024px) {
   .hero-inner {
-    padding: 0 2rem;
+    grid-template-columns: 1fr 1fr;
     gap: 3rem;
+    padding: 0 2rem;
   }
 }
 
@@ -853,11 +882,11 @@ body {
   }
 }
 
-@media (max-width: 480px) {
-  .hero-inner {
-    gap: 1.5rem;
-    padding: 0 1rem;
-  }
+.hero-visual {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  max-width: 520px;
 }
 
 /* ===== NETWORK & MAP ENHANCEMENTS ===== */
