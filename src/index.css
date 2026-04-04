@@ -915,20 +915,22 @@ g:hover .map-node-svg-label-group {
 }
 
 .contact-success {
-  padding: 2rem;
+  padding: 3rem;
+  text-align: center;
   font-size: 0.85rem;
-  line-height: 1.6;
+  line-height: 1.8;
   color: var(--text-secondary);
 }
 
 .access-header {
-  margin-bottom: 2rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.78rem;
+  padding: 1rem 1.5rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
   text-transform: uppercase;
-  color: var(--text-primary);
-  border-bottom: 1px dotted var(--border);
-  padding-bottom: 1rem;
+  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-color);
 }
 
 .access-form {

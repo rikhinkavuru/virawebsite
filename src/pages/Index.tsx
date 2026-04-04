@@ -348,7 +348,7 @@ function ContactTab() {
     setStatus('sending');
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const apiUrl = import.meta.env.VITE_API_URL || '';
       const response = await fetch(`${apiUrl}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -417,11 +417,10 @@ function ContactTab() {
                 onChange={(e) => setFormData({ ...formData, request: e.target.value })}
                 required 
                 disabled={status === 'sending'}
-                style={{ resize: 'none', background: 'transparent', width: '100%' }}
               />
             </div>
             {status === 'error' && (
-              <div style={{ color: '#ef4444', fontSize: '0.75rem', marginBottom: '1rem' }} className="mono">
+              <div className="transmission-error-box">
                 CRITICAL ERROR: Packet delivery failed. Internal system timeout.
               </div>
             )}
