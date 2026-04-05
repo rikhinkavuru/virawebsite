@@ -1180,10 +1180,15 @@ h6 { font-size: clamp(0.875rem, 1.5vw, 1.125rem); }
   stroke: #888888;
   stroke-width: 1px;
   transition: all 0.2s ease;
+  outline: none; /* Remove blue outline */
 }
 
 .map-geo:hover {
   fill: #f0f0f0;
+}
+
+.map-geo:focus {
+  outline: none; /* Remove blue outline on focus */
 }
 
 [data-theme="dark"] .map-geo {
@@ -1193,6 +1198,10 @@ h6 { font-size: clamp(0.875rem, 1.5vw, 1.125rem); }
 
 [data-theme="dark"] .map-geo:hover {
   fill: #333333;
+}
+
+[data-theme="dark"] .map-geo:focus {
+  outline: none; /* Remove blue outline on focus in dark mode */
 }
 
 .map-marker {

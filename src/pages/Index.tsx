@@ -264,27 +264,43 @@ function DemoSnippet() {
 // --- NETWORK TAB ---
 function NetworkTab() {
   const [selectedNode, setSelectedNode] = useState<typeof NETWORK_NODES[0] | null>(null);
-  const [clickedNode, setClickedNode] = useState<typeof NETWORK_NODES[0] | null>(null);
+  const [isPersistent, setIsPersistent] = useState(false);
 
-  const handleNodeClick = (node: typeof NETWORK_NODES[0]) => {
-    setSelectedNode(node === selectedNode ? null : node);
-  };
-
-  const handleNodeInteraction = (node: typeof NETWORK_NODES[0], e?: React.TouchEvent | React.MouseEvent) => {
-    // Prevent event propagation and ensure selection works on mobile
+  const handleNodeClick = (node: typeof NETWORK_NODES[0], e?: React.TouchEvent | React.MouseEvent) => {
     e?.preventDefault();
     e?.stopPropagation();
-    setTimeout(() => {
-      if (clickedNode === node) {
-        // If clicking the same node, clear both states
-        setSelectedNode(null);
-        setClickedNode(null);
-      } else {
-        // Clicking a different node or first click
-        setSelectedNode(node);
-        setClickedNode(node);
-      }
-    }, 50);
+    
+    if (selectedNode === node && isPersistent) {
+      // Clicking same node that was already clicked - close it
+      setSelectedNode(null);
+      setIsPersistent(false);
+    } else {
+      // Clicking a node - make it persistent
+      setSelectedNode(node);
+      setIsPersistent(true);
+    }
+  };
+
+  const handleMapClick = (e: React.MouseEvent) => {
+    // Only close if clicking the map background, not on markers
+    if (e.target === e.currentTarget || (e.target as Element).classList.contains('map-geo')) {
+      setSelectedNode(null);
+      setIsPersistent(false);
+    }
+  };
+
+  const handleNodeHover = (node: typeof NETWORK_NODES[0]) => {
+    // Only show dialog on hover if no node is currently persistent
+    if (!isPersistent) {
+      setSelectedNode(node);
+    }
+  };
+
+  const handleNodeLeave = () => {
+    // Only hide dialog on leave if no node is persistent
+    if (!isPersistent) {
+      setSelectedNode(null);
+    }
   };
 
   return (
@@ -292,7 +308,7 @@ function NetworkTab() {
       <h2 className="section-title">01 // network architecture</h2>
 
       <div className="map-wrapper-large">
-        <div className="map-container-enhanced" onClick={() => setClickedNode(null)}>
+        <div className="map-container-enhanced">
           <ComposableMap
             projection="geoAlbersUsa"
             projectionConfig={{ scale: 1300 }}
@@ -300,6 +316,7 @@ function NetworkTab() {
             height={700}
             style={{ width: "100%", height: "auto" }}
             className="interactive-map"
+            onClick={handleMapClick}
           >
             <Geographies geography={geoUrl}>
               {({ geographies }) =>
@@ -316,10 +333,10 @@ function NetworkTab() {
               <Marker
                 key={node.id}
                 coordinates={node.coordinates as [number, number]}
-                onMouseEnter={() => !clickedNode && setSelectedNode(node)} // Only show on hover if not clicked
-                onMouseLeave={() => !clickedNode && setSelectedNode(null)} // Only hide on leave if not clicked
-                onTouchStart={(e) => handleNodeInteraction(node, e)}
-                onClick={(e) => handleNodeInteraction(node, e)}
+                onMouseEnter={() => handleNodeHover(node)}
+                onMouseLeave={handleNodeLeave}
+                onTouchStart={(e) => handleNodeClick(node, e)}
+                onClick={(e) => handleNodeClick(node, e)}
               >
                 <circle
                   r={12}
