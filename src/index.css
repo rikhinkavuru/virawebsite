@@ -16,6 +16,19 @@
   --small-mobile: 480px;
 }
 
+/* Dark Mode Variables */
+[data-theme="dark"] {
+  --bg-color: #1a1a1a;
+  --text-primary: #f5f5f5;
+  --text-secondary: #a0a0a0;
+  --text-tertiary: #666666;
+  --accent: #5a8b7f;
+  --accent-deploying: #6c89a6;
+  --accent-pending: #d8bc60;
+  --border: #333333;
+  --hover-bg: #2a2a2a;
+}
+
 /* ===== RESET & BASE ===== */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -59,6 +72,10 @@ body {
   z-index: 1000;
   padding: 0 4rem;
   transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .header {
+  background-color: rgba(26, 26, 26, 0.92);
 }
 
 @media (max-width: 1024px) {
@@ -337,6 +354,31 @@ body {
   }
 }
 
+.theme-toggle {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  font-family: 'Inter', sans-serif;
+}
+
+.theme-toggle:hover {
+  color: var(--text-primary);
+  border-color: var(--text-primary);
+  background: var(--hover-bg);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .nav button {
   background: none;
   border: none;
@@ -604,7 +646,7 @@ body {
 }
 
 .hero-btn:hover {
-  background: #333;
+  background: var(--text-secondary);
   transform: translateY(-1px);
 }
 
@@ -652,6 +694,11 @@ body {
   transition: all 0.3s ease;
 }
 
+[data-theme="dark"] .demo-container {
+  background: #2d2d2d;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
 @media (max-width: 1024px) {
   .demo-container {
     max-width: 500px;
@@ -686,6 +733,11 @@ body {
   border-bottom: 1px solid #444;
 }
 
+[data-theme="dark"] .demo-header {
+  background: #1a1a1a;
+  border-bottom: 1px solid #333;
+}
+
 @media (max-width: 480px) {
   .demo-header {
     padding: 6px 12px;
@@ -704,6 +756,10 @@ body {
   color: #d4d4d4;
   line-height: 1.6;
   overflow-x: auto;
+}
+
+[data-theme="dark"] .demo-content {
+  color: #b0b0b0;
 }
 
 @media (max-width: 1024px) {
@@ -894,12 +950,20 @@ body {
   fill: #f2f2f2;
   stroke: #888888;
   stroke-width: 1px;
-  outline: none;
   transition: all 0.2s ease;
 }
 
 .map-geo:hover {
   fill: #f0f0f0;
+}
+
+[data-theme="dark"] .map-geo {
+  fill: #2a2a2a;
+  stroke: #555555;
+}
+
+[data-theme="dark"] .map-geo:hover {
+  fill: #333333;
 }
 
 .map-marker {
@@ -908,6 +972,10 @@ body {
   stroke: white;
   stroke-width: 2px;
   pointer-events: auto;
+}
+
+[data-theme="dark"] .map-marker {
+  stroke: #f0f0f0;
 }
 
 @media (max-width: 768px) {
@@ -964,6 +1032,11 @@ body {
   overflow: hidden;
 }
 
+[data-theme="dark"] .node-dialog {
+  background: #2a2a2a;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
 @media (max-width: 1024px) {
   .node-dialog {
     width: 280px;
@@ -1002,7 +1075,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #fafafa;
+  background: var(--bg-color);
 }
 
 .dialog-id {
@@ -1046,7 +1119,7 @@ body {
 .dialog-status-tag span.pending { color: var(--accent-pending); }
 
 .dialog-metrics {
-  background: #f8f8f8;
+  background: var(--bg-color);
   padding: 0.75rem;
   margin-bottom: 1rem;
   border-left: 2px solid var(--accent);

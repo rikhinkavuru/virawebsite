@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback, useState } from 'react';
 import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
 import geoUrl from '../us-states.json';
 
@@ -43,12 +43,30 @@ const NODE_OPERATORS = [
 // --- COMPONENTS ---
 
 export default function Index() {
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    // Check localStorage for saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    return savedTheme === 'dark';
+  });
+
   const scrollToSection = useCallback((id: string) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }, []);
+
+  const toggleTheme = useCallback(() => {
+    const newTheme = !isDarkMode;
+    setIsDarkMode(newTheme);
+    localStorage.setItem('theme', newTheme ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', newTheme ? 'dark' : 'light');
+  }, [isDarkMode]);
+
+  // Apply theme on mount
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+  }, [isDarkMode]);
 
   return (
     <>
@@ -77,7 +95,7 @@ export default function Index() {
               {/* Hatch Overlap */}
               <circle cx="28" cy="20" r="12" fill="url(#hatch)" clipPath="url(#overlap)" />
               {/* Text */}
-              <text x="50" y="27" fill="black" style={{ font: 'bold 22px Inter, sans-serif', letterSpacing: '-0.02em' }}>vira</text>
+              <text x="50" y="27" fill="var(--text-primary)" style={{ font: 'bold 22px Inter, sans-serif', letterSpacing: '-0.02em' }}>vira</text>
             </svg>
           </div>
 
@@ -87,6 +105,13 @@ export default function Index() {
                 [{tab}]
               </button>
             ))}
+            <button 
+              className="theme-toggle" 
+              onClick={toggleTheme}
+              aria-label="Toggle dark mode"
+            >
+              {isDarkMode ? 'Light' : 'Dark'}
+            </button>
           </nav>
         </div>
       </header>
@@ -240,8 +265,6 @@ function DemoSnippet() {
 }
 
 
-
-import { useState } from 'react';
 
 // --- NETWORK TAB ---
 function NetworkTab() {
