@@ -70,11 +70,6 @@ export default function Index() {
 
   return (
     <>
-      {/* Skip to main content for screen readers */}
-      <a href="#main-content" className="skip-link">
-        Skip to main content
-      </a>
-      
       {/* Fixed header — completely outside the page flow */}
       <header className="header">
         <div className="header-inner">
@@ -269,6 +264,7 @@ function DemoSnippet() {
 // --- NETWORK TAB ---
 function NetworkTab() {
   const [selectedNode, setSelectedNode] = useState<typeof NETWORK_NODES[0] | null>(null);
+  const [clickedNode, setClickedNode] = useState<typeof NETWORK_NODES[0] | null>(null);
 
   const handleNodeClick = (node: typeof NETWORK_NODES[0]) => {
     setSelectedNode(node === selectedNode ? null : node);
@@ -279,7 +275,15 @@ function NetworkTab() {
     e?.preventDefault();
     e?.stopPropagation();
     setTimeout(() => {
-      setSelectedNode(node === selectedNode ? null : node);
+      if (clickedNode === node) {
+        // If clicking the same node, clear both states
+        setSelectedNode(null);
+        setClickedNode(null);
+      } else {
+        // Clicking a different node or first click
+        setSelectedNode(node);
+        setClickedNode(node);
+      }
     }, 50);
   };
 
@@ -288,7 +292,7 @@ function NetworkTab() {
       <h2 className="section-title">01 // network architecture</h2>
 
       <div className="map-wrapper-large">
-        <div className="map-container-enhanced">
+        <div className="map-container-enhanced" onClick={() => setClickedNode(null)}>
           <ComposableMap
             projection="geoAlbersUsa"
             projectionConfig={{ scale: 1300 }}
@@ -312,8 +316,8 @@ function NetworkTab() {
               <Marker
                 key={node.id}
                 coordinates={node.coordinates as [number, number]}
-                onMouseEnter={() => setSelectedNode(node)}
-                onMouseLeave={() => setSelectedNode(null)}
+                onMouseEnter={() => !clickedNode && setSelectedNode(node)} // Only show on hover if not clicked
+                onMouseLeave={() => !clickedNode && setSelectedNode(null)} // Only hide on leave if not clicked
                 onTouchStart={(e) => handleNodeInteraction(node, e)}
                 onClick={(e) => handleNodeInteraction(node, e)}
               >
