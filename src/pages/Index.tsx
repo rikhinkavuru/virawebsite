@@ -16,6 +16,15 @@ const NETWORK_NODES = [
   { id: 'aai', name: 'Alliance Academy for Innovation', loc: 'Cumming, GA', status: 'pending', coordinates: [-84.15, 34.19], website: 'https://www.forsyth.k12.ga.us/alliance', info: 'Infrastructure audit in progress.' },
   { id: 'hse', name: 'Hamilton Southeastern High School', loc: 'Fishers, IN', status: 'pending', coordinates: [-85.96, 39.96], website: 'https://hseh.hseschools.org', info: 'Evaluating local facility bandwidth.' },
   { id: 'bhs', name: 'Brownsburg High School', loc: 'Brownsburg, IN', status: 'pending', coordinates: [-86.39, 39.84], website: 'https://www.brownsburg.k12.in.us/bhs', info: 'Node allocation approved; awaiting site visit.' },
+  { id: 'chr', name: 'Cherokee High School', loc: 'Canton, GA', status: 'pending', coordinates: [-84.49, 34.24], website: 'https://cherokee.ccsdrift.org', info: 'North Georgia expansion node.' },
+  { id: 'mun', name: 'Munster High School', loc: 'Munster, IN', status: 'pending', coordinates: [-87.50, 41.56], website: 'https://munsterhs.munster.us', info: 'Northwest Indiana chapter initialization.' },
+  { id: 'lam', name: 'Lambert High School', loc: 'Suwanee, GA', status: 'pending', coordinates: [-84.07, 34.05], website: 'https://lambert.forsyth.k12.ga.us', info: 'Metro Atlanta node pending activation.' },
+  { id: 'cmh', name: 'Cox Mill High School', loc: 'Concord, NC', status: 'pending', coordinates: [-80.58, 35.41], website: 'https://coxmill.cabarrus.k12.nc.us', info: 'Carolinas network expansion pending.' },
+  { id: 'map', name: 'Maple High School', loc: 'Dallas, TX', status: 'pending', coordinates: [-96.79, 32.78], website: 'https://maple.dallasisd.org', info: 'Texas metro node scheduled for activation.' },
+  { id: 'ach', name: 'Atlantic Coast High School', loc: 'Jacksonville, FL', status: 'pending', coordinates: [-81.53, 30.28], website: 'https://atlanticcoast.duval.k12.fl.us', info: 'Florida coast deployment pending infrastructure.' },
+  { id: 'ahs', name: 'American High School', loc: 'Fremont, CA', status: 'pending', coordinates: [-121.99, 37.55], website: 'https://ahs.fremont.k12.ca.us', info: 'West Coast node pending integration.' },
+  { id: 'wak', name: 'Wakeland High School', loc: 'Frisco, TX', status: 'pending', coordinates: [-96.82, 33.15], website: 'https://wakeland.friscoisd.org', info: 'North Texas expansion awaiting final approval.' },
+  { id: 'zch', name: 'Zionsville Community High School', loc: 'Zionsville, IN', status: 'pending', coordinates: [-86.28, 39.95], website: 'https://zcs.k12.in.us/zchs', info: 'Indianapolis metro node evaluation ongoing.' },
 ];
 
 // DEPLOYMENTS data moved into NETWORK_NODES for interactivity
@@ -38,6 +47,16 @@ const NODE_OPERATORS = [
   { name: 'aiden', school: 'lexington high school', role: 'chapter president', uptime: '2 months active', status: 'active' },
   { name: 'cameron', school: 'hamilton southeastern', role: 'chapter president (pending)', uptime: 'pending init', status: 'pending' },
   { name: 'zara', school: 'brownsburg high school', role: 'chapter president (pending)', uptime: 'pending init', status: 'pending' },
+  { name: 'darsh', school: 'cherokee high school', role: 'chapter president (pending)', uptime: 'pending init', status: 'pending' },
+  { name: 'raanya', school: 'munster high school', role: 'chapter president (pending)', uptime: 'pending init', status: 'pending' },
+  { name: 'amrutha', school: 'lambert high school', role: 'chapter president (pending)', uptime: 'pending init', status: 'pending' },
+  { name: 'brijesh', school: 'cox mill high school', role: 'chapter president (pending)', uptime: 'pending init', status: 'pending' },
+  { name: 'maneesh', school: 'maple high school', role: 'chapter president (pending)', uptime: 'pending init', status: 'pending' },
+  { name: 'arnav', school: 'alliance academy', role: 'chapter president (pending)', uptime: 'pending init', status: 'pending' },
+  { name: 'harsha', school: 'atlantic coast high school', role: 'chapter president (pending)', uptime: 'pending init', status: 'pending' },
+  { name: 'arjyoman', school: 'american high school', role: 'chapter president (pending)', uptime: 'pending init', status: 'pending' },
+  { name: 'kalvik', school: 'wakeland high school', role: 'chapter president (pending)', uptime: 'pending init', status: 'pending' },
+  { name: 'pradyumn', school: 'zionsville community high school', role: 'chapter president (pending)', uptime: 'pending init', status: 'pending' },
 ];
 
 // --- COMPONENTS ---
