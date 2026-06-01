@@ -5,6 +5,9 @@ import { useStats } from "@/hooks/useStats";
 import { FLAGS } from "@/lib/flags";
 import { NetworkField } from "@/components/network/NetworkField";
 import { SectionHeader } from "@/components/SectionHeader";
+import { StatsBand } from "@/components/landing/StatsBand";
+import { FeatureBento } from "@/components/landing/FeatureBento";
+import { FinaleSlab } from "@/components/landing/FinaleSlab";
 
 // Code-split the heavy/below-the-fold pieces out of the initial bundle.
 const NetworkSection = lazy(() => import("@/components/network/NetworkSection"));
@@ -105,7 +108,12 @@ export default function Index() {
       <div id="main-content" className="page-wrapper">
         <Hero />
 
+        <StatsBand />
+
         <main className="main-content">
+          <section id="about" className="content-section">
+            <FeatureBento />
+          </section>
           <section id="network" className="content-section">
             <Suspense fallback={<SectionFallback label="// loading network architecture" />}>
               <NetworkSection />
@@ -129,6 +137,8 @@ export default function Index() {
             </section>
           )}
         </main>
+
+        <FinaleSlab />
       </div>
 
       <footer className="footer">
