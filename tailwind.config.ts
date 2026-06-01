@@ -2,7 +2,7 @@ import type { Config } from "tailwindcss";
 import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
-  darkMode: ["class"],
+  darkMode: ["selector", '[data-theme="dark"]'],
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
@@ -48,6 +48,17 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        vira: {
+          bg: "var(--bg-color)",
+          fg: "var(--text-primary)",
+          muted: "var(--text-secondary)",
+          subtle: "var(--text-tertiary)",
+          accent: "var(--accent)",
+          "accent-deploying": "var(--accent-deploying)",
+          "accent-pending": "var(--accent-pending)",
+          border: "var(--border)",
+          hover: "var(--hover-bg)",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -85,6 +96,10 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      fontFamily: {
+        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: ["'JetBrains Mono'", "ui-monospace", "monospace"],
       },
     },
   },
