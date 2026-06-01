@@ -1899,12 +1899,15 @@ textarea:focus-visible {
   font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.02em;
   text-transform: lowercase; transition: color .15s ease, border-color .15s ease;
 }
-.nav button.theme-toggle:hover,
-.nav button.theme-toggle:focus,
-.nav button.theme-toggle:active {
+.nav button.theme-toggle:hover {
   color: var(--accent); border-color: var(--accent) !important; background: transparent !important;
 }
-.nav button.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* No focus ring/outline on the toggle — it returns to its quiet state after click. */
+.nav button.theme-toggle:focus,
+.nav button.theme-toggle:focus-visible,
+.nav button.theme-toggle:active {
+  outline: none; background: transparent !important;
+}
 
 /* Node dialog + code panel: refined surfaces */
 .node-dialog { border-radius: 12px; background: var(--surface); border-color: var(--border-strong); box-shadow: 0 10px 30px -20px rgba(0,0,0,.45); }
@@ -1926,13 +1929,35 @@ textarea:focus-visible {
   border-bottom: 1px solid var(--border);
 }
 .search-icon { color: var(--text-tertiary); flex: 0 0 auto; }
-.search-input {
-  flex: 1 1 auto; min-width: 0;
-  background: transparent; border: none; outline: none; padding: 0;
+/* Auto-growing field: the input sizes to its value (via the mirror ::after) so
+   the blinking caret can sit flush against the end of the typed text. Clicking
+   anywhere in the bar focuses the input (the empty area is a click target). */
+.search-field { display: inline-flex; align-items: center; flex: 1 1 auto; min-width: 0; cursor: text; }
+.search-typer {
+  display: inline-grid; flex: 0 1 auto; min-width: 0;
   font-family: 'JetBrains Mono', monospace; font-size: 0.92rem;
+}
+.search-typer::after,
+.search-typer > .search-input { grid-area: 1 / 1; font: inherit; }
+.search-typer::after {
+  content: attr(data-value);
+  visibility: hidden; white-space: pre; overflow: hidden;
+}
+.search-input {
+  width: 100%; min-width: 2ch;
+  background: transparent; border: none; outline: none; padding: 0;
   color: var(--text-primary);
 }
 .search-input::placeholder { color: var(--text-tertiary); }
+.search-caret {
+  flex: 0 0 auto; width: 2px; height: 1.1em; margin-left: 3px;
+  background: var(--accent);
+  animation: caret-blink 1.1s steps(1) infinite;
+}
+/* When the real input is focused, hide the fake caret (native caret takes over). */
+.search-bar:focus-within .search-caret { opacity: 0; animation: none; }
+@keyframes caret-blink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .search-caret { animation: none; } }
 .search-kbd {
   flex: 0 0 auto;
   font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--text-tertiary);

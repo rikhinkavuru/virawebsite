@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 import { CHAPTERS, OPERATORS as NODE_OPERATORS } from "@/data/chapters";
 import { US_STATES } from "@/data/usGeo";
@@ -194,6 +194,8 @@ const STATE_NAME_BY_CODE: Record<string, string> = Object.fromEntries(
 
 function SearchDemo() {
   const [q, setQ] = useState("indiana");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const PLACEHOLDER = "search the network — a school or state";
   const jumpToMap = () =>
     document.getElementById("network")?.scrollIntoView({ behavior: "smooth", block: "start" });
 
@@ -213,20 +215,28 @@ function SearchDemo() {
 
   return (
     <div className="search-demo">
-      <div className="search-bar">
+      <div className="search-bar" onClick={() => inputRef.current?.focus()}>
         <svg className="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="11" cy="11" r="7" />
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
-        <input
-          className="search-input"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          placeholder="search the network — a school or state"
-          aria-label="Search chapter nodes"
-          spellCheck={false}
-          autoComplete="off"
-        />
+        <span className="search-field">
+          {/* Auto-grows to its value so the blinking caret sits right after the text. */}
+          <span className="search-typer" data-value={q.length ? q : PLACEHOLDER}>
+            <input
+              ref={inputRef}
+              className="search-input"
+              size={1}
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder={PLACEHOLDER}
+              aria-label="Search chapter nodes"
+              spellCheck={false}
+              autoComplete="off"
+            />
+          </span>
+          <span className="search-caret" aria-hidden="true" />
+        </span>
         <span className="search-kbd">⌘K</span>
       </div>
       <div className="search-results">

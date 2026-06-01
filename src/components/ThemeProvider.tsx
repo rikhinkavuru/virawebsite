@@ -6,8 +6,11 @@ import type { ReactNode } from "react";
  * 34KB hand-CSS already keys off of (`[data-theme="dark"]`). This replaces the
  * hand-rolled useState/localStorage toggle and fixes the latent bug where
  * tailwind.config's `darkMode: ["class"]` never matched `data-theme`, so Tailwind
- * `dark:` variants silently never fired. storageKey matches the prior key so a
- * returning visitor's saved preference carries over.
+ * `dark:` variants silently never fired.
+ *
+ * storageKey is intentionally bumped (was "theme") so any stale saved "light"
+ * preference from earlier builds is ignored and everyone lands on the dark
+ * default on load; the toggle still persists choices under the new key.
  */
 export function ThemeProvider({ children }: { children: ReactNode }) {
   return (
@@ -15,7 +18,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       attribute="data-theme"
       defaultTheme="dark"
       enableSystem={false}
-      storageKey="theme"
+      storageKey="vira-theme"
       disableTransitionOnChange
     >
       {children}
