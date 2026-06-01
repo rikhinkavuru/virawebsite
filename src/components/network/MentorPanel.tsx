@@ -4,6 +4,7 @@ import { Sparkles, Loader2, Copy, Check, AlertTriangle } from "lucide-react";
 import { useMentor } from "@/hooks/useMentor";
 import { useHeartbeat } from "@/hooks/useHeartbeat";
 import { ApiError } from "@/lib/apiClient";
+import { SectionHeader } from "@/components/SectionHeader";
 
 const SUGGESTIONS = [
   "remote patient monitoring",
@@ -48,7 +49,7 @@ export function MentorPanel() {
 
   return (
     <div>
-      <h2 className="section-title">03 // mentor uplink</h2>
+      <SectionHeader eyebrow="03 // mentor uplink" title="Generate a healthcare hackathon idea." />
       <p className="mb-2 max-w-2xl font-sans text-base leading-relaxed text-vira-fg">
         An AI hackathon-idea generator. Type a healthcare topic you care about and get back one
         concrete, buildable project idea — the problem it solves, what to build, and a stretch goal.

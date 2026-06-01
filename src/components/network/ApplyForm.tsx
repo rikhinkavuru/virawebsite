@@ -8,6 +8,7 @@ import { ApplicationSchema, type Application } from "@/lib/schema";
 import { US_STATES } from "@/data/usGeo";
 import { useApplyToChapter } from "@/hooks/useApplyToChapter";
 import { ApiError } from "@/lib/apiClient";
+import { SectionHeader } from "@/components/SectionHeader";
 
 const FIELD =
   "w-full rounded-md border border-solid border-vira-border bg-transparent px-3 py-2 font-mono text-sm text-vira-fg outline-none transition-colors focus:border-vira-accent";
@@ -44,7 +45,7 @@ export function ApplyForm() {
 
   return (
     <div>
-      <h2 className="section-title">04 // request node</h2>
+      <SectionHeader eyebrow="04 // request node" title="Bring a chapter to your school." />
       <p className="mb-6 max-w-2xl font-mono text-sm leading-relaxed text-vira-subtle">
         Apply to deploy a Vira chapter at your school. Submitting drops a pending node on the map
         instantly — it stays private and is emailed to the network operator for review.

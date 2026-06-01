@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500&display=swap');
 
 /* Tailwind utilities only — NO @tailwind base. The 34KB hand-CSS below provides
    the reset/typography; injecting Tailwind's preflight would reset the legacy
@@ -61,7 +61,7 @@ body {
 
 /* ===== VARIABLES ===== */
 :root {
-  --bg-color: #f4f6f6;
+  --bg-color: #f6f7f5;
   --surface: #ffffff;
   --surface-2: #fafbfb;
   --text-primary: #0e1417;
@@ -70,8 +70,8 @@ body {
   --accent: #17856a;
   --accent-soft: rgba(23, 133, 106, 0.10);
   --accent-deploying: #4b6f93;
-  --accent-pending: #b2862a;
-  --brand: #7c3aed;
+  --accent-pending: #8a949c;
+  --brand: #17856a;
   --border: #e3e7e8;
   --border-strong: #ccd3d4;
   --hover-bg: #ecefef;
@@ -84,7 +84,7 @@ body {
 
 /* Dark Mode Variables */
 [data-theme="dark"] {
-  --bg-color: #0a0e12;
+  --bg-color: #0b0f10;
   --surface: #111922;
   --surface-2: #0d141b;
   --text-primary: #e9eef3;
@@ -93,8 +93,8 @@ body {
   --accent: #2dd4a7;
   --accent-soft: rgba(45, 212, 167, 0.12);
   --accent-deploying: #6c89a6;
-  --accent-pending: #e0bf63;
-  --brand: #a78bfa;
+  --accent-pending: #6b7884;
+  --brand: #2dd4a7;
   --border: #1d2731;
   --border-strong: #2b3744;
   --hover-bg: #151d26;
@@ -1845,11 +1845,11 @@ textarea:focus-visible {
   mask-image: radial-gradient(120% 90% at 72% 45%, #000 10%, transparent 72%);
 }
 
-/* Status pill (re-enabled, refined) */
+/* Mono eyebrow (was a pill) — 24labs delimiter voice */
 .hero-status {
   display: inline-flex !important; align-items: center; gap: 0.55rem; width: fit-content;
-  padding: 0.38rem 0.8rem; border: 1px solid var(--border-strong); border-radius: 999px;
-  background: var(--accent-soft); color: var(--accent); font-size: 0.64rem; letter-spacing: 0.16em;
+  padding: 0; border: none; background: none;
+  color: var(--accent); font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase;
 }
 .hero-status .dot.active {
   width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
@@ -1881,7 +1881,7 @@ textarea:focus-visible {
   border-radius: 12px; background: var(--surface-2);
   transition: transform .28s cubic-bezier(.2,.7,.2,1), border-color .28s ease, box-shadow .28s ease, background .28s ease;
 }
-.node-card:hover { transform: translateY(-4px); border-color: var(--accent); background: var(--surface); box-shadow: 0 16px 34px -18px var(--glow); }
+.node-card:hover { transform: translateY(-2px); border-color: var(--accent); background: var(--surface); box-shadow: none; }
 .node-card.active { border-color: color-mix(in srgb, var(--accent) 55%, var(--border)); }
 
 /* Map: glowing active markers + network backbone arcs */
@@ -1900,8 +1900,8 @@ textarea:focus-visible {
 .theme-toggle:hover { color: var(--accent); border-color: var(--accent); background: transparent !important; }
 
 /* Node dialog + code panel: refined surfaces */
-.node-dialog { border-radius: 12px; background: var(--surface); border-color: var(--border-strong); box-shadow: 0 20px 50px -24px rgba(0,0,0,.5); }
-.demo-container { animation: none; border-radius: 12px; box-shadow: 0 28px 70px -28px rgba(0,0,0,.5); }
+.node-dialog { border-radius: 12px; background: var(--surface); border-color: var(--border-strong); box-shadow: 0 10px 30px -20px rgba(0,0,0,.45); }
+.demo-container { animation: none; border-radius: 12px; border: 1px solid var(--border-strong); box-shadow: none; }
 
 /* Selection + custom scrollbar */
 ::selection { background: var(--accent); color: var(--bg-color); }
@@ -1928,3 +1928,42 @@ html { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent;
   .content-section > div { animation: none !important; opacity: 1 !important; transform: none !important; }
   .map-arc, .hero-status .dot.active { animation: none; }
 }
+
+/* ============================================================
+   REFERENCE-GRADE DISCIPLINE PASS — one accent, monochrome code,
+   editorial mono-eyebrow + serif sub-head, hairlines over shadows.
+   ============================================================ */
+
+/* Monochrome code panel (was VSCode rainbow) + exactly one emerald accent */
+.code-comment { color: #6b7785; }
+.code-keyword { color: #aab4bf; }
+.code-func    { color: #aab4bf; }
+.code-str     { color: #c2cad2; }
+.code-const   { color: #e6ebf0; }
+.code-number  { color: #e6ebf0; }
+.code-accent  { color: var(--accent); }
+
+/* One accent: emerald logo glyph (retire purple) */
+.vira-logo-svg circle { stroke: var(--accent); }
+.vira-logo-svg line { stroke: var(--accent); }
+
+/* Kill the loud hover glitch (the references have nothing this noisy) */
+.hero-title.glitch::before, .hero-title.glitch::after { display: none; }
+
+/* Editorial section header: mono eyebrow + Fraunces serif sub-head */
+.section-header { margin-bottom: clamp(2rem, 4vw, 3rem); }
+.section-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+  text-transform: uppercase; letter-spacing: 0.16em; color: var(--text-tertiary);
+  margin-bottom: 0.85rem;
+}
+.section-eyebrow::before { content: ""; width: 18px; height: 1px; background: var(--accent); }
+.section-subhead {
+  font-family: 'Fraunces', Georgia, serif; font-weight: 400;
+  font-size: clamp(1.6rem, 3.4vw, 2.1rem); line-height: 1.12; letter-spacing: -0.01em;
+  color: var(--text-primary); max-width: 26ch; margin: 0;
+}
+
+/* Section rhythm: content-sized with generous padding (kills the forced-100vh voids) */
+.content-section { min-height: 0; padding-top: clamp(4.5rem, 9vw, 7rem); padding-bottom: clamp(4.5rem, 9vw, 7rem); }

@@ -4,6 +4,7 @@ import { DEPLOYMENT_STATS, OPERATORS as NODE_OPERATORS } from "@/data/chapters";
 import { useStats } from "@/hooks/useStats";
 import { FLAGS } from "@/lib/flags";
 import { NetworkField } from "@/components/network/NetworkField";
+import { SectionHeader } from "@/components/SectionHeader";
 
 // Code-split the heavy/below-the-fold pieces out of the initial bundle.
 const NetworkSection = lazy(() => import("@/components/network/NetworkSection"));
@@ -158,7 +159,7 @@ function Hero() {
 
       <div className="hero-inner">
         <div className="hero-content">
-          <div className="hero-status mono"><span className="dot active" style={{ marginRight: 8 }}></span> UPLINK ESTABLISHED</div>
+          <div className="hero-status mono"><span className="dot active"></span> /// UPLINK ESTABLISHED {">>>"}</div>
           <div className="hero-main-group">
             <h1 className="hero-title glitch">VIRA<br />HACKS</h1>
             <p className="hero-sub">
@@ -227,7 +228,7 @@ function DemoSnippet() {
             <div style={{ paddingLeft: "1rem" }}><span className="code-comment">// A student-run network of hackathons across the United States</span></div>
             <div style={{ paddingLeft: "1rem" }}><span className="code-comment">// Founded by a high school student at Homestead High School</span></div>
             <div style={{ paddingLeft: "1rem" }}><span className="code-keyword">constructor</span>() {"{"}</div>
-            <div style={{ paddingLeft: "2rem" }}><span className="code-keyword">this</span>.<span className="code-const">mission</span> = <span className="code-str">"Make hackathons accessible to every student in America"</span>;</div>
+            <div style={{ paddingLeft: "2rem" }}><span className="code-keyword">this</span>.<span className="code-const">mission</span> = <span className="code-accent">"Make hackathons accessible to every student in America"</span>;</div>
             <div style={{ paddingLeft: "2rem" }}><span className="code-keyword">this</span>.<span className="code-const">philosophy</span> = <span className="code-str">"Students living the experience inspire best"</span>;</div>
             <div style={{ paddingLeft: "2rem" }}><span className="code-keyword">this</span>.<span className="code-const">model</span> = <span className="code-str">"Empower students to run their own events under Vira name"</span>;</div>
             <div style={{ paddingLeft: "2rem" }}><span className="code-keyword">this</span>.<span className="code-const">activeChapters</span> = <span className="code-number">{DEPLOYMENT_STATS.total_deployments}</span>;</div>
@@ -254,7 +255,7 @@ function DemoSnippet() {
 function PeopleTab() {
   return (
     <div>
-      <h2 className="section-title">02 // people</h2>
+      <SectionHeader eyebrow="02 // people" title="The students running the network." />
       <div className="nodes-grid">
         {NODE_OPERATORS.map((op, i) => (
           <div key={i} className={`node-card ${op.status}`}>

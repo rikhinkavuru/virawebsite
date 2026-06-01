@@ -3,6 +3,7 @@ import { ComposableMap, Geographies, Geography, Marker, Line } from "react-simpl
 import geoUrl from "../../us-states.json";
 import type { Chapter } from "@/lib/schema";
 import { useChapters } from "@/hooks/useChapters";
+import { SectionHeader } from "@/components/SectionHeader";
 
 /**
  * The interactive US network map. Code-split (lazy-loaded) because
@@ -53,7 +54,7 @@ export default function NetworkSection() {
 
   return (
     <div style={{ position: "relative" }}>
-      <h2 className="section-title">01 // network architecture</h2>
+      <SectionHeader eyebrow="01 // network architecture" title="A live map of every chapter node." />
 
       <div className="map-wrapper-large">
         <div className="map-container-enhanced">

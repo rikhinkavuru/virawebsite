@@ -9,7 +9,7 @@
 
     <!-- Set theme before paint to avoid a flash of the wrong theme (FOUC). -->
     <script>
-      try { var t = localStorage.getItem('theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+      try { var t = localStorage.getItem('theme') || 'dark'; document.documentElement.setAttribute('data-theme', t); } catch (e) {}
     </script>
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
