@@ -50,21 +50,21 @@ export function MentorPanel() {
   return (
     <div>
       <SectionHeader eyebrow="03 // mentor uplink" title="Generate a healthcare hackathon idea." />
-      <p className="mb-2 max-w-2xl font-sans text-base leading-relaxed text-vira-fg">
+      <p className="mb-4 max-w-2xl font-sans text-base leading-loose text-vira-fg">
         An AI hackathon-idea generator. Type a healthcare topic you care about and get back one
         concrete, buildable project idea — the problem it solves, what to build, and a stretch goal.
       </p>
-      <p className="mb-6 max-w-2xl font-mono text-xs leading-relaxed text-vira-subtle">
+      <p className="mb-10 max-w-2xl font-mono text-xs leading-loose text-vira-subtle">
         powered by Claude · <NetworkHeartbeat />
       </p>
 
-      <div className="mx-auto max-w-2xl rounded-lg border border-solid border-vira-border p-5">
+      <div className="mx-auto max-w-2xl rounded-lg border border-solid border-vira-border p-7">
         <form
           onSubmit={(e) => {
             e.preventDefault();
             submit(topic);
           }}
-          className="flex flex-col gap-3 sm:flex-row"
+          className="flex flex-col gap-4 sm:flex-row"
         >
           <label htmlFor="mentor-topic" className="sr-only">
             Topic or interest
@@ -75,7 +75,7 @@ export function MentorPanel() {
             onChange={(e) => setTopic(e.target.value)}
             placeholder="a healthcare topic — e.g. ER wait times, medication adherence"
             maxLength={200}
-            className="w-full flex-1 rounded-md border border-solid border-vira-border bg-transparent px-3 py-2 font-mono text-sm text-vira-fg outline-none transition-colors focus:border-vira-accent"
+            className="w-full flex-1 rounded-md border border-solid border-vira-border bg-transparent px-3.5 py-2.5 font-mono text-sm text-vira-fg outline-none transition-colors focus:border-vira-accent"
           />
           <motion.button
             type="submit"
@@ -93,7 +93,7 @@ export function MentorPanel() {
         </form>
 
         {!mentor.data && !mentor.isPending && !mentor.isError && (
-          <div className="mt-3 flex flex-wrap gap-2">
+          <div className="mt-5 flex flex-wrap gap-2.5">
             {SUGGESTIONS.map((s) => (
               <button
                 key={s}
@@ -117,7 +117,7 @@ export function MentorPanel() {
               initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className="mt-4 flex items-start gap-2 rounded-md border border-solid border-vira-border bg-vira-hover p-3 font-mono text-xs text-vira-muted"
+              className="mt-5 flex items-start gap-2 rounded-md border border-solid border-vira-border bg-vira-hover p-5 font-mono text-xs leading-relaxed text-vira-muted"
               role="alert"
             >
               <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-vira-accent-pending" aria-hidden />
@@ -130,9 +130,9 @@ export function MentorPanel() {
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className="mt-4 rounded-md border border-solid border-vira-border bg-vira-hover p-4"
+              className="mt-5 rounded-md border border-solid border-vira-border bg-vira-hover p-6"
             >
-              <p className="whitespace-pre-line font-sans text-sm leading-relaxed text-vira-fg">
+              <p className="whitespace-pre-line font-sans text-sm leading-loose text-vira-fg">
                 {mentor.data.idea}
               </p>
               <div className="mt-3 flex items-center justify-between font-mono text-[0.65rem] uppercase tracking-wide text-vira-subtle">

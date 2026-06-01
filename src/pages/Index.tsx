@@ -1,12 +1,12 @@
-import { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useTheme } from "next-themes";
-import { DEPLOYMENT_STATS, OPERATORS as NODE_OPERATORS } from "@/data/chapters";
+import { CHAPTERS, OPERATORS as NODE_OPERATORS } from "@/data/chapters";
+import { US_STATES } from "@/data/usGeo";
 import { useStats } from "@/hooks/useStats";
 import { FLAGS } from "@/lib/flags";
 import { NetworkField } from "@/components/network/NetworkField";
 import { SectionHeader } from "@/components/SectionHeader";
 import { StatsBand } from "@/components/landing/StatsBand";
-import { FeatureBento } from "@/components/landing/FeatureBento";
 import { FinaleSlab } from "@/components/landing/FinaleSlab";
 
 // Code-split the heavy/below-the-fold pieces out of the initial bundle.
@@ -111,9 +111,6 @@ export default function Index() {
         <StatsBand />
 
         <main className="main-content">
-          <section id="about" className="content-section">
-            <FeatureBento />
-          </section>
           <section id="network" className="content-section">
             <Suspense fallback={<SectionFallback label="// loading network architecture" />}>
               <NetworkSection />
@@ -162,100 +159,103 @@ function Hero() {
 
   return (
     <div id="hero" className="hero-section">
-      <div className="hero-bg">
-        <div className="hero-radar"></div>
-      </div>
+      <div className="hero-bg"><div className="hero-radar"></div></div>
       <NetworkField />
 
-      <div className="hero-inner">
-        <div className="hero-content">
-          <div className="hero-status mono"><span className="dot active"></span> /// UPLINK ESTABLISHED {">>>"}</div>
-          <div className="hero-main-group">
-            <h1 className="hero-title glitch">VIRA<br />HACKS</h1>
-            <p className="hero-sub">
-              The infrastructure layer for high school healthcare innovation. <br />
-              We deploy localized hackathons to solve clinical challenges.
-            </p>
-          </div>
-          <button
-            className="hero-btn"
-            onClick={scrollDown}
-            aria-label="Get Started - Scroll to network section"
-          >
-            Get Started <span className="mono" style={{ opacity: 0.5 }}>[↵]</span>
-          </button>
-        </div>
+      <div className="hero-center">
+        <h1 className="hero-title"><span className="vira-glitch">VIRA</span><br />HACKS</h1>
+        <p className="hero-sub">
+          The infrastructure layer for high-school healthcare innovation — localized hackathons
+          that solve real clinical challenges.
+        </p>
+        <button
+          className="hero-btn"
+          onClick={scrollDown}
+          aria-label="Get Started - Scroll to network section"
+        >
+          Get Started <span className="mono" style={{ opacity: 0.5 }}>[↵]</span>
+        </button>
+      </div>
 
-        <div className="hero-visual">
-          <DemoSnippet />
-        </div>
+      <div className="hero-product">
+        <SearchDemo />
       </div>
     </div>
   );
 }
 
-// --- ABOUT SNIPPET ---
-function DemoSnippet() {
+// --- HERO SEARCH DEMO ---
+// A real, working search over the live chapter data: type a school or state and
+// the node list filters in place; clicking a result scrolls down to the map.
+// Map a state abbreviation -> full name so "indiana" matches a "…, IN" location.
+const STATE_NAME_BY_CODE: Record<string, string> = Object.fromEntries(
+  US_STATES.map((s) => [s.code.toLowerCase(), s.name.toLowerCase()]),
+);
+
+function SearchDemo() {
+  const [q, setQ] = useState("indiana");
+  const jumpToMap = () =>
+    document.getElementById("network")?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  const results = useMemo(() => {
+    const needle = q.trim().toLowerCase();
+    if (!needle) return CHAPTERS;
+    return CHAPTERS.filter((c) => {
+      const code = c.loc.split(",").pop()?.trim().toLowerCase() ?? "";
+      const stateName = STATE_NAME_BY_CODE[code] ?? "";
+      return (
+        c.name.toLowerCase().includes(needle) ||
+        c.loc.toLowerCase().includes(needle) ||
+        stateName.includes(needle)
+      );
+    });
+  }, [q]);
+
   return (
-    <div className="demo-container">
-      <div className="demo-header">
-        <div className="demo-dot red"></div>
-        <div className="demo-dot yellow"></div>
-        <div className="demo-dot green"></div>
-        <span style={{ color: "#999", fontSize: "0.7rem", marginLeft: "auto", fontFamily: "monospace" }}>about@vira:~</span>
+    <div className="search-demo">
+      <div className="search-bar">
+        <svg className="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="11" cy="11" r="7" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <input
+          className="search-input"
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          placeholder="search the network — a school or state"
+          aria-label="Search chapter nodes"
+          spellCheck={false}
+          autoComplete="off"
+        />
+        <span className="search-kbd">⌘K</span>
       </div>
-      <div className="demo-content">
-        <div style={{ display: "flex" }}>
-          <div style={{ color: "#999", paddingRight: "1rem", fontSize: "0.8rem", textAlign: "right", minWidth: "2rem" }}>
-            <div>1</div>
-            <div>2</div>
-            <div>3</div>
-            <div>4</div>
-            <div>5</div>
-            <div>6</div>
-            <div>7</div>
-            <div>8</div>
-            <div>9</div>
-            <div>10</div>
-            <div>11</div>
-            <div>12</div>
-            <div>13</div>
-            <div>14</div>
-            <div>15</div>
-            <div>16</div>
-            <div>17</div>
-            <div>18</div>
-            <div>19</div>
-            <div>20</div>
-          </div>
-          <div>
-            <div><span className="code-comment">/**</span></div>
-            <div><span className="code-comment"> * Vira Hacks - Student-Run Hackathon Network</span></div>
-            <div><span className="code-comment"> * Built by students, for students</span></div>
-            <div><span className="code-comment"> */</span></div>
-            <br />
-            <div><span className="code-keyword">class</span> <span className="code-const">ViraNetwork</span> {"{"}</div>
-            <div style={{ paddingLeft: "1rem" }}><span className="code-comment">// A student-run network of hackathons across the United States</span></div>
-            <div style={{ paddingLeft: "1rem" }}><span className="code-comment">// Founded by a high school student at Homestead High School</span></div>
-            <div style={{ paddingLeft: "1rem" }}><span className="code-keyword">constructor</span>() {"{"}</div>
-            <div style={{ paddingLeft: "2rem" }}><span className="code-keyword">this</span>.<span className="code-const">mission</span> = <span className="code-accent">"Make hackathons accessible to every student in America"</span>;</div>
-            <div style={{ paddingLeft: "2rem" }}><span className="code-keyword">this</span>.<span className="code-const">philosophy</span> = <span className="code-str">"Students living the experience inspire best"</span>;</div>
-            <div style={{ paddingLeft: "2rem" }}><span className="code-keyword">this</span>.<span className="code-const">model</span> = <span className="code-str">"Empower students to run their own events under Vira name"</span>;</div>
-            <div style={{ paddingLeft: "2rem" }}><span className="code-keyword">this</span>.<span className="code-const">activeChapters</span> = <span className="code-number">{DEPLOYMENT_STATS.total_deployments}</span>;</div>
-            <div style={{ paddingLeft: "2rem" }}><span className="code-keyword">this</span>.<span className="code-const">hackathonParticipants</span> = <span className="code-number">{DEPLOYMENT_STATS.total_users}</span>;</div>
-            <div style={{ paddingLeft: "1rem" }}>{"}"}</div>
-            <br />
-            <div style={{ paddingLeft: "1rem" }}><span className="code-keyword">expandChapter</span>(school: <span className="code-keyword">string</span>) {"{"}</div>
-            <div style={{ paddingLeft: "2rem" }}><span className="code-comment">// Instead of one big centralized program...</span></div>
-            <div style={{ paddingLeft: "2rem" }}><span className="code-keyword">const</span> chapter = <span className="code-keyword">new</span> <span className="code-const">StudentChapter</span>(school);</div>
-            <div style={{ paddingLeft: "2rem" }}><span className="code-keyword">return</span> chapter.<span className="code-func">buildCommunity</span>();</div>
-            <div style={{ paddingLeft: "1rem" }}>{"}"}</div>
-            <br />
-            <div style={{ paddingLeft: "1rem" }}><span className="code-comment">// The best people to inspire the next generation</span></div>
-            <div style={{ paddingLeft: "1rem" }}><span className="code-comment">// are the students living that experience right now.</span></div>
-            <div>{"}"}</div>
-          </div>
+      <div className="search-results">
+        <div className="search-label">
+          chapter nodes · {results.length} of {CHAPTERS.length} matched
         </div>
+        {results.length === 0 ? (
+          <div className="search-empty">
+            no nodes match “{q}” —{" "}
+            <button type="button" className="search-empty-cta" onClick={jumpToMap}>
+              see the full map
+            </button>
+          </div>
+        ) : (
+          results.slice(0, 6).map((hit) => (
+            <button type="button" className="search-row" key={hit.id} onClick={jumpToMap}>
+              <span className={`dot ${hit.status}`} />
+              <span className="sr-name">{hit.name}</span>
+              <span className="sr-loc">{hit.loc}</span>
+              <span className="sr-meta">
+                {hit.status === "active" ? `live · ${hit.attendees ?? 0}` : "queued"}
+              </span>
+            </button>
+          ))
+        )}
+      </div>
+      <div className="search-foot">
+        <span>{results.length} node{results.length === 1 ? "" : "s"}</span>
+        <span>↵ open on map</span>
       </div>
     </div>
   );
@@ -263,20 +263,37 @@ function DemoSnippet() {
 
 // --- PEOPLE TAB ---
 function PeopleTab() {
+  const active = NODE_OPERATORS.filter((o) => o.status === "active");
+  const pending = NODE_OPERATORS.filter((o) => o.status === "pending");
   return (
     <div>
       <SectionHeader eyebrow="02 // people" title="The students running the network." />
-      <div className="nodes-grid">
-        {NODE_OPERATORS.map((op, i) => (
-          <div key={i} className={`node-card ${op.status}`}>
-            <div className="card-name">{op.name.toLowerCase()}</div>
-            <div className="card-school">{op.school.toLowerCase()}</div>
-            <div className="card-meta">
-              <span>{op.role}</span>
-              <span className="flicker-data">{op.uptime}</span>
+      <div className="op-active-grid">
+        {active.map((op, i) => (
+          <article key={op.name} className={`op-card${i === 0 ? " op-founder" : ""}`}>
+            <span className="op-status">
+              <span className="dot active"></span> {i === 0 ? "founding node" : "live"}
+            </span>
+            <div>
+              <div className="op-name">{op.name.toLowerCase()}</div>
+              <div className="op-school">{op.school.toLowerCase()}</div>
+              <div className="op-uptime">{op.uptime}</div>
             </div>
-          </div>
+          </article>
         ))}
+      </div>
+      <div className="op-queue">
+        <div className="op-queue-head">
+          <span className="dot pending"></span> provisioning queue · {pending.length} nodes
+        </div>
+        <div className="op-queue-grid">
+          {pending.map((op) => (
+            <div key={op.name} className="op-chip">
+              <span className="c-name">{op.name.toLowerCase()}</span>
+              <span className="c-school">{op.school.toLowerCase()}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

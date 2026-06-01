@@ -54,7 +54,11 @@ export default function NetworkSection() {
 
   return (
     <div style={{ position: "relative" }}>
-      <SectionHeader eyebrow="01 // network architecture" title="A live map of every chapter node." />
+      <SectionHeader
+        eyebrow="01 // network architecture"
+        title="A live map of every chapter node."
+        note="Hover a node to see its event, attendance, and status — or click to open it."
+      />
 
       <div className="map-wrapper-large">
         <div className="map-container-enhanced">

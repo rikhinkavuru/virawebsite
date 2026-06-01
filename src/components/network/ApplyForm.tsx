@@ -11,7 +11,7 @@ import { ApiError } from "@/lib/apiClient";
 import { SectionHeader } from "@/components/SectionHeader";
 
 const FIELD =
-  "w-full rounded-md border border-solid border-vira-border bg-transparent px-3 py-2 font-mono text-sm text-vira-fg outline-none transition-colors focus:border-vira-accent";
+  "w-full rounded-md border border-solid border-vira-border bg-transparent px-3.5 py-2.5 font-mono text-sm text-vira-fg outline-none transition-colors focus:border-vira-accent";
 
 export function ApplyForm() {
   const apply = useApplyToChapter();
@@ -46,7 +46,7 @@ export function ApplyForm() {
   return (
     <div>
       <SectionHeader eyebrow="04 // request node" title="Bring a chapter to your school." />
-      <p className="mb-6 max-w-2xl font-mono text-sm leading-relaxed text-vira-subtle">
+      <p className="mb-10 max-w-2xl font-mono text-sm leading-loose text-vira-subtle">
         Apply to deploy a Vira chapter at your school. Submitting drops a pending node on the map
         instantly — it stays private and is emailed to the network operator for review.
       </p>
@@ -55,7 +55,7 @@ export function ApplyForm() {
         <motion.div
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mx-auto flex max-w-2xl items-start gap-3 rounded-lg border border-solid border-vira-accent bg-vira-hover p-5"
+          className="mx-auto flex max-w-2xl items-start gap-4 rounded-lg border border-solid border-vira-accent bg-vira-hover p-6"
         >
           <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-vira-accent" aria-hidden />
           <div className="font-mono text-sm text-vira-fg">
@@ -71,7 +71,7 @@ export function ApplyForm() {
       ) : (
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="mx-auto grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2"
+          className="mx-auto grid max-w-2xl grid-cols-1 gap-x-5 gap-y-7 sm:grid-cols-2"
           noValidate
         >
           {/* Honeypot: hidden from users, tempting to bots. Server rejects if filled. */}
@@ -116,7 +116,7 @@ export function ApplyForm() {
             />
           </Field>
 
-          <div className="sm:col-span-2">
+          <div className="mt-2 sm:col-span-2">
             <motion.button
               type="submit"
               whileTap={{ scale: 0.98 }}
@@ -150,7 +150,7 @@ function Field({
 }) {
   return (
     <div className={full ? "sm:col-span-2" : ""}>
-      <label className="mb-1 block font-mono text-[0.65rem] uppercase tracking-wide text-vira-subtle">
+      <label className="mb-2 block font-mono text-[0.65rem] uppercase tracking-wide text-vira-subtle">
         {label}
       </label>
       {children}

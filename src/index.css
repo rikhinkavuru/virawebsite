@@ -608,7 +608,6 @@ h6 { font-size: clamp(0.875rem, 1.5vw, 1.125rem); }
   position: relative;
   min-height: calc(100vh - 125px);
   padding: clamp(4rem, 8vw, 10rem) clamp(2rem, 4vw, 6rem);
-  border-bottom: 1px solid var(--border);
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -1833,11 +1832,11 @@ textarea:focus-visible {
    Vignette mask fades it out behind the headline/content and keeps it ambient
    in the gutters, so it never competes with the text or the code panel. */
 .net-field {
-  position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.6;
-  -webkit-mask-image: radial-gradient(120% 120% at 50% 46%, transparent 22%, #000 80%);
-  mask-image: radial-gradient(120% 120% at 50% 46%, transparent 22%, #000 80%);
+  position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.9;
+  -webkit-mask-image: radial-gradient(140% 135% at 50% 46%, transparent 6%, #000 68%);
+  mask-image: radial-gradient(140% 135% at 50% 46%, transparent 6%, #000 68%);
 }
-[data-theme="dark"] .net-field { opacity: 0.7; }
+[data-theme="dark"] .net-field { opacity: 1; }
 .hero-radar { display: none; }
 .hero-bg {
   opacity: 0.55;
@@ -1884,24 +1883,99 @@ textarea:focus-visible {
 .node-card:hover { transform: translateY(-2px); border-color: var(--accent); background: var(--surface); box-shadow: none; }
 .node-card.active { border-color: color-mix(in srgb, var(--accent) 55%, var(--border)); }
 
-/* Map: glowing active markers + network backbone arcs */
-.map-container-enhanced { border-radius: 14px; background: var(--surface-2); overflow: hidden; }
+/* Map: laid directly on the page background (no box) — glowing markers + arcs */
+.map-container-enhanced { border: none; background: transparent; border-radius: 0; overflow: visible; height: auto; }
 .map-marker.active { filter: drop-shadow(0 0 5px var(--glow)); }
 .map-arc { fill: none; stroke: var(--accent); stroke-width: 1.6; opacity: 0.7; stroke-linecap: round; stroke-dasharray: 3 8; animation: arc-flow 1.3s linear infinite; filter: drop-shadow(0 0 3px var(--glow)); }
 @keyframes arc-flow { to { stroke-dashoffset: -22; } }
 
-/* Theme toggle demoted to a quiet mono ghost (was stealing focus from the hero) */
-.theme-toggle {
+/* Theme toggle: a quiet, self-contained mono pill. Scoped with `.nav button`
+   specificity (and !important on the border) so the generic `.nav button`
+   underline rules can't bleed a stray, off-center bottom-border into it. */
+.nav button.theme-toggle {
   background: transparent !important; color: var(--text-tertiary);
-  border: 1px solid var(--border); border-radius: 7px;
+  border: 1px solid var(--border) !important; border-radius: var(--radius-sm);
+  padding: 0.42rem 0.75rem;
   font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.02em;
   text-transform: lowercase; transition: color .15s ease, border-color .15s ease;
 }
-.theme-toggle:hover { color: var(--accent); border-color: var(--accent); background: transparent !important; }
+.nav button.theme-toggle:hover,
+.nav button.theme-toggle:focus,
+.nav button.theme-toggle:active {
+  color: var(--accent); border-color: var(--accent) !important; background: transparent !important;
+}
+.nav button.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* Node dialog + code panel: refined surfaces */
 .node-dialog { border-radius: 12px; background: var(--surface); border-color: var(--border-strong); box-shadow: 0 10px 30px -20px rgba(0,0,0,.45); }
 .demo-container { animation: none; border-radius: 12px; border: 1px solid var(--border-strong); box-shadow: none; }
+
+/* ===== HERO SEARCH DEMO (replaces the code snippet) ===== */
+.search-demo {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px -34px rgba(0, 0, 0, 0.55);
+  text-align: left;
+}
+.search-bar {
+  display: flex; align-items: center; gap: 0.7rem;
+  padding: 0.95rem 1.1rem;
+  border-bottom: 1px solid var(--border);
+}
+.search-icon { color: var(--text-tertiary); flex: 0 0 auto; }
+.search-input {
+  flex: 1 1 auto; min-width: 0;
+  background: transparent; border: none; outline: none; padding: 0;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.92rem;
+  color: var(--text-primary);
+}
+.search-input::placeholder { color: var(--text-tertiary); }
+.search-kbd {
+  flex: 0 0 auto;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--text-tertiary);
+  border: 1px solid var(--border); border-radius: 5px; padding: 0.15rem 0.42rem;
+}
+.search-results { padding: 0.4rem 0; }
+.search-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.58rem;
+  text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-tertiary);
+  padding: 0.45rem 1.1rem 0.4rem;
+}
+.search-row {
+  display: flex; align-items: center; gap: 0.7rem; width: 100%;
+  padding: 0.6rem 1.1rem;
+  background: transparent; border: none; text-align: left;
+  font: inherit; cursor: pointer;
+  transition: background 0.12s ease;
+}
+.search-row:hover, .search-row:focus-visible { background: var(--surface-2); outline: none; }
+.search-empty {
+  padding: 0.9rem 1.1rem 1.1rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--text-secondary);
+}
+.search-empty-cta {
+  background: transparent; border: none; padding: 0; cursor: pointer;
+  font: inherit; color: var(--accent); text-decoration: underline; text-underline-offset: 2px;
+}
+.search-row .dot { width: 7px; height: 7px; border-radius: 50%; flex: 0 0 auto; }
+.search-row .dot.active { background: var(--accent); box-shadow: 0 0 0 3px var(--glow); }
+.search-row .dot.pending { background: var(--text-tertiary); }
+.sr-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 0.85rem; color: var(--text-primary); white-space: nowrap; }
+.sr-loc { font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sr-meta { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); flex: 0 0 auto; }
+.search-foot {
+  display: flex; gap: 1.25rem;
+  padding: 0.7rem 1.1rem;
+  border-top: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace; font-size: 0.56rem;
+  text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-tertiary);
+}
+@media (max-width: 480px) {
+  .sr-loc { display: none; }
+}
 
 /* Selection + custom scrollbar */
 ::selection { background: var(--accent); color: var(--bg-color); }
@@ -1910,23 +1984,72 @@ html { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent;
 ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 999px; border: 3px solid var(--bg-color); }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
 
-/* Retune the hover-glitch from generic neon to brand hues */
-.hero-title.glitch::before { text-shadow: -2px 0 var(--brand); }
-.hero-title.glitch::after { text-shadow: 2px 0 var(--accent); }
+/* Glitch on the "VIRA" line only — occasional flash (uses glitch-anim keyframes) */
+.vira-glitch { position: relative; display: inline-block; }
+.vira-glitch::before, .vira-glitch::after {
+  content: "VIRA"; position: absolute; top: 0; left: 0; width: 100%;
+  background: var(--bg-color); opacity: 0; pointer-events: none;
+}
+.vira-glitch::before { left: 3px; text-shadow: -2px 0 #ff2e88; animation: glitch-anim 5s infinite linear alternate-reverse; }
+.vira-glitch::after { left: -3px; text-shadow: 2px 0 var(--accent); animation: glitch-anim2 2.4s infinite linear alternate-reverse; }
 
 /* ---- Cinematic hero entrance (CSS only; no JS, no bundle cost) ---- */
 @keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
-.hero-status { animation: rise .8s cubic-bezier(.2,.7,.2,1) .06s backwards; }
-.hero-title.glitch { animation: rise .9s cubic-bezier(.2,.7,.2,1) .16s backwards; }
-.hero-sub { animation: rise .9s cubic-bezier(.2,.7,.2,1) .30s backwards; }
-.hero-content > .hero-btn { animation: rise .9s cubic-bezier(.2,.7,.2,1) .44s backwards; }
-.hero-visual { animation: rise 1s cubic-bezier(.2,.7,.2,1) .40s backwards; }
+.hero-title { animation: rise .9s cubic-bezier(.2,.7,.2,1) .12s backwards; }
+.hero-sub { animation: rise .9s cubic-bezier(.2,.7,.2,1) .26s backwards; }
+.hero-center .hero-btn { animation: rise .9s cubic-bezier(.2,.7,.2,1) .40s backwards; }
+.hero-product { animation: rise 1s cubic-bezier(.2,.7,.2,1) .52s backwards; }
 
 /* Respect reduced motion: render everything immediately */
 @media (prefers-reduced-motion: reduce) {
-  .hero-status, .hero-title.glitch, .hero-sub, .hero-content > .hero-btn, .hero-visual,
+  .hero-title, .hero-sub, .hero-center .hero-btn, .hero-product,
   .content-section > div { animation: none !important; opacity: 1 !important; transform: none !important; }
-  .map-arc, .hero-status .dot.active { animation: none; }
+  .map-arc, .hero-status .dot.active, .vira-glitch::before, .vira-glitch::after { animation: none; }
+  .vira-glitch::before, .vira-glitch::after { opacity: 0; }
+}
+
+/* ============================================================
+   HERO v2 — centered statement + floating gutter tiles + central panel
+   ============================================================ */
+.hero-section { flex-direction: column; gap: clamp(2.5rem, 5vw, 4rem); }
+.hero-center { position: relative; z-index: 2; width: 100%; max-width: 760px; margin: 0 auto; padding: 0 1.5rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: clamp(1.25rem, 2.6vw, 2rem); }
+.hero-center .hero-title { text-align: center; }
+.hero-center .hero-sub { border-left: none; padding-left: 0; text-align: center; max-width: 48ch; margin: 0; color: var(--text-secondary); }
+.hero-product { position: relative; z-index: 2; width: 100%; max-width: 880px; margin: 0 auto; padding: 0 1.5rem; }
+
+/* (hero gutter tiles removed — hero is now statement + central search demo) */
+
+/* ============================================================
+   PEOPLE — live operators (bento, founder inverted) + provisioning queue
+   ============================================================ */
+.op-active-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: minmax(118px, auto); gap: clamp(0.75rem, 1.4vw, 1rem); margin-bottom: clamp(1.5rem, 3vw, 2.25rem); }
+.op-card { border: 1px solid var(--border); border-radius: 14px; background: var(--surface-2); padding: clamp(1.1rem, 2.2vw, 1.5rem); display: flex; flex-direction: column; justify-content: space-between; gap: 1.25rem; transition: border-color .2s ease, transform .2s ease; }
+.op-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.op-founder { grid-column: span 2; grid-row: span 2; background: var(--accent); border-color: var(--accent); color: #ffffff; justify-content: flex-end; }
+[data-theme="dark"] .op-founder { color: #04130d; }
+.op-status { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-tertiary); display: inline-flex; align-items: center; gap: 0.4rem; }
+.op-founder .op-status { color: inherit; opacity: 0.8; }
+.op-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.05rem; color: var(--text-primary); }
+.op-founder .op-name { color: inherit; font-size: clamp(1.5rem, 3vw, 2rem); }
+.op-school { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--text-secondary); margin-top: 0.2rem; }
+.op-founder .op-school { color: inherit; opacity: 0.85; }
+.op-uptime { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-tertiary); margin-top: 0.65rem; }
+.op-founder .op-uptime { color: inherit; opacity: 0.78; }
+.op-queue { border: 1px solid var(--border); border-radius: 14px; background: var(--surface-2); padding: clamp(1.25rem, 2.4vw, 1.75rem); }
+.op-queue-head { font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-secondary); display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem; }
+.op-queue-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 clamp(1rem, 2vw, 2rem); }
+.op-chip { display: flex; flex-direction: column; padding: 0.65rem 0; border-top: 1px solid var(--border); }
+.op-chip .c-name { font-size: 0.85rem; color: var(--text-primary); }
+.op-chip .c-school { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--text-tertiary); margin-top: 0.12rem; }
+@media (max-width: 760px) {
+  .op-active-grid { grid-template-columns: 1fr 1fr; }
+  .op-founder { grid-column: span 2; grid-row: span 1; }
+  .op-queue-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .op-active-grid { grid-template-columns: 1fr; }
+  .op-founder { grid-column: span 1; }
+  .op-queue-grid { grid-template-columns: 1fr; }
 }
 
 /* ============================================================
@@ -1947,9 +2070,6 @@ html { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent;
 .vira-logo-svg circle { stroke: var(--accent); }
 .vira-logo-svg line { stroke: var(--accent); }
 
-/* Kill the loud hover glitch (the references have nothing this noisy) */
-.hero-title.glitch::before, .hero-title.glitch::after { display: none; }
-
 /* Editorial section header: mono eyebrow + Fraunces serif sub-head */
 .section-header { margin-bottom: clamp(2rem, 4vw, 3rem); }
 .section-eyebrow {
@@ -1960,27 +2080,47 @@ html { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent;
 }
 .section-eyebrow::before { content: ""; width: 18px; height: 1px; background: var(--accent); }
 .section-subhead {
-  font-family: 'Fraunces', Georgia, serif; font-weight: 400;
-  font-size: clamp(1.6rem, 3.4vw, 2.1rem); line-height: 1.12; letter-spacing: -0.01em;
-  color: var(--text-primary); max-width: 26ch; margin: 0;
+  /* Match the hero headline ("VIRA HACKS") exactly: same stack + tight tracking. */
+  font-family: 'Space Grotesk', 'Inter', sans-serif; font-weight: 600;
+  font-size: clamp(1.8rem, 3.8vw, 2.6rem); line-height: 1.0; letter-spacing: -0.05em;
+  color: var(--text-primary); max-width: 20ch; margin: 0;
+}
+.section-note {
+  margin-top: 0.7rem; max-width: 52ch;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; line-height: 1.5;
+  letter-spacing: 0.02em; color: var(--text-tertiary);
 }
 
 /* Section rhythm: content-sized with generous padding (kills the forced-100vh voids) */
 .content-section { min-height: 0; padding-top: clamp(4.5rem, 9vw, 7rem); padding-bottom: clamp(4.5rem, 9vw, 7rem); }
 
-/* ===== STATS / PROOF BAND (after hero) ===== */
-.stats-band { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--surface-2); }
-.stats-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); }
-.stat-cell { padding: clamp(2rem, 4vw, 3.25rem) clamp(1.5rem, 3vw, 2.5rem); border-left: 1px solid var(--border); }
-.stat-cell:first-child { border-left: none; }
-.stat-value { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(2.5rem, 5vw, 3.75rem); line-height: 1; letter-spacing: -0.04em; color: var(--text-primary); }
-.stat-label { display: block; margin-top: 0.8rem; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.16em; color: var(--text-secondary); }
-.stat-sub { display: block; margin-top: 0.3rem; font-family: 'JetBrains Mono', monospace; font-size: 0.64rem; letter-spacing: 0.06em; color: var(--text-secondary); }
-@media (max-width: 640px) {
-  .stats-inner { grid-template-columns: 1fr; }
-  .stat-cell { border-left: none; border-top: 1px solid var(--border); }
-  .stat-cell:first-child { border-top: none; }
+/* ===== STAT TICKER (calm, spacious, monochrome logo-wall style) ===== */
+.stat-ticker {
+  background: transparent;
+  border: none;
+  overflow: hidden;
+  padding: clamp(1.4rem, 2.6vw, 2.1rem) 0;
+  /* Wide fades on both edges — stats slide out of / into an "abyss" that blends
+     straight into the page background (no visible band, no separators). */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 30%, #000 70%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 30%, #000 70%, transparent 100%);
 }
+.ticker-viewport {
+  display: flex;
+  width: max-content;
+  animation: ticker-scroll 50s linear infinite;
+  will-change: transform;
+}
+.stat-ticker:hover .ticker-viewport { animation-play-state: paused; }
+.ticker-track { display: flex; flex: 0 0 auto; }
+.ticker-item {
+  display: inline-flex; align-items: baseline; gap: 0.55rem;
+  padding: 0 clamp(1.4rem, 2.8vw, 2.75rem);
+}
+.ticker-value { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(1.25rem, 2vw, 1.5rem); letter-spacing: -0.03em; color: var(--text-primary); }
+.ticker-label { font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.13em; color: var(--text-secondary); white-space: nowrap; }
+@keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .ticker-viewport { animation: none; } }
 
 /* ===== FEATURE BENTO ===== */
 .bento-grid { display: grid; grid-template-columns: repeat(6, 1fr); grid-auto-rows: minmax(148px, auto); gap: clamp(0.75rem, 1.4vw, 1rem); }
@@ -2024,3 +2164,40 @@ html { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent;
 
 /* ---- tighten the gap above the first section (stats band sits right above it) ---- */
 #about.content-section { padding-top: clamp(3rem, 5vw, 4.5rem); }
+
+/* ===================================================================
+   GLOBAL SHARP PASS
+   One source of truth for the "sharper" look: hairline 1px borders,
+   low-radius geometry, flat (shadow-light) boxes, and crisper display
+   type. Appended last so it overrides the scattered 14/12/9/8/7px radii
+   and heavier shadows above via last-wins cascade.
+   =================================================================== */
+:root, [data-theme="dark"] { --radius: 3px; --radius-sm: 2px; }
+
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+
+/* Boxes: one hairline border, tight corners, no diffuse drop shadow.
+   Borders carry the structure now, not shadows. */
+.op-card, .op-queue, .bento-tile, .node-card,
+.search-demo, .node-dialog, .demo-container {
+  border-radius: var(--radius);
+  border-width: 1px;
+  border-style: solid;
+}
+.search-demo, .node-dialog, .demo-container { border-color: var(--border); }
+.op-card, .op-queue, .bento-tile, .node-card, .demo-container { box-shadow: none; }
+.search-demo { box-shadow: 0 16px 40px -34px rgba(0, 0, 0, 0.45); }
+.node-dialog { box-shadow: 0 16px 40px -32px rgba(0, 0, 0, 0.5); }
+
+/* Small controls: 2px corners, hairline edges */
+button, input, textarea, select,
+.theme-toggle, .search-kbd, .dialog-link { border-radius: var(--radius-sm); }
+
+/* Thinner, crisper accents */
+.map-arc { stroke-width: 1.2; }
+.dialog-info { border-left-width: 1px; }
+
+/* Display type: tighten the set a hair for a sharper read */
+.hero-title { letter-spacing: -0.06em; }
+.bento-title, .op-name, .sr-name, .dialog-title,
+.finale-bignum, .ticker-value { letter-spacing: -0.04em; }

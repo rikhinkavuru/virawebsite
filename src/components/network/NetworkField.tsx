@@ -40,12 +40,12 @@ export function NetworkField() {
       canvas.style.width = `${w}px`;
       canvas.style.height = `${h}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const count = Math.min(46, Math.max(16, Math.floor((w * h) / 24000)));
+      const count = Math.min(68, Math.max(22, Math.floor((w * h) / 15000)));
       nodes = Array.from({ length: count }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.18,
-        vy: (Math.random() - 0.5) * 0.18,
+        vx: (Math.random() - 0.5) * 0.22,
+        vy: (Math.random() - 0.5) * 0.22,
       }));
     };
 
@@ -66,7 +66,7 @@ export function NetworkField() {
           const a = nodes[i], c = nodes[j];
           const d = Math.hypot(a.x - c.x, a.y - c.y);
           if (d < LINK) {
-            ctx.strokeStyle = `rgba(${r},${g},${b},${(1 - d / LINK) * 0.45})`;
+            ctx.strokeStyle = `rgba(${r},${g},${b},${(1 - d / LINK) * 0.55})`;
             ctx.lineWidth = 1;
             ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(c.x, c.y); ctx.stroke();
           }
