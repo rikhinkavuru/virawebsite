@@ -62,7 +62,7 @@ export function ApplyForm() {
             <p className="mt-1 text-vira-muted">
               Your node is pending review. Look at the map — your school is on the network.
             </p>
-            <button onClick={() => apply.reset()} className="mt-3 text-xs text-vira-accent hover:underline">
+            <button onClick={() => apply.reset()} className="mt-3 bg-transparent text-xs text-vira-accent hover:underline">
               submit another →
             </button>
           </div>

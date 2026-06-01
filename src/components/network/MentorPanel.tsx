@@ -101,7 +101,7 @@ export function MentorPanel() {
                   setTopic(s);
                   submit(s);
                 }}
-                className="rounded-full border border-solid border-vira-border px-3 py-1 font-mono text-xs text-vira-muted transition-colors hover:border-vira-accent hover:text-vira-accent"
+                className="rounded-full border border-solid border-vira-border bg-transparent px-3 py-1 font-mono text-xs text-vira-muted transition-colors hover:border-vira-accent hover:text-vira-accent"
               >
                 {s}
               </button>
@@ -143,7 +143,7 @@ export function MentorPanel() {
                 <button
                   type="button"
                   onClick={copy}
-                  className="inline-flex items-center gap-1 transition-colors hover:text-vira-accent"
+                  className="inline-flex items-center gap-1 bg-transparent transition-colors hover:text-vira-accent"
                 >
                   {copied ? <Check className="h-3 w-3" aria-hidden /> : <Copy className="h-3 w-3" aria-hidden />}
                   {copied ? "copied" : "copy"}
