@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
+import { ComposableMap, Geographies, Geography, Marker, Line } from "react-simple-maps";
 import geoUrl from "../../us-states.json";
 import type { Chapter } from "@/lib/schema";
 import { useChapters } from "@/hooks/useChapters";
@@ -73,6 +73,21 @@ export default function NetworkSection() {
                 ))
               }
             </Geographies>
+            {/* Network backbone: animated arcs from the founding node to each active chapter. */}
+            {(() => {
+              const active = chapters.filter((c) => c.status === "active");
+              const hub = active[0];
+              if (!hub) return null;
+              return active.slice(1).map((node) => (
+                <Line
+                  key={`arc-${node.id}`}
+                  from={hub.coordinates as [number, number]}
+                  to={node.coordinates as [number, number]}
+                  className="map-arc"
+                  strokeLinecap="round"
+                />
+              ));
+            })()}
             {chapters.map((node) => (
               <Marker
                 key={node.id}

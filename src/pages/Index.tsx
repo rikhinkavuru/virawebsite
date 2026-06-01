@@ -3,6 +3,7 @@ import { useTheme } from "next-themes";
 import { DEPLOYMENT_STATS, OPERATORS as NODE_OPERATORS } from "@/data/chapters";
 import { useStats } from "@/hooks/useStats";
 import { FLAGS } from "@/lib/flags";
+import { NetworkField } from "@/components/network/NetworkField";
 
 // Code-split the heavy/below-the-fold pieces out of the initial bundle.
 const NetworkSection = lazy(() => import("@/components/network/NetworkSection"));
@@ -153,6 +154,7 @@ function Hero() {
       <div className="hero-bg">
         <div className="hero-radar"></div>
       </div>
+      <NetworkField />
 
       <div className="hero-inner">
         <div className="hero-content">

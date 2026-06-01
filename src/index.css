@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 /* Tailwind utilities only — NO @tailwind base. The 34KB hand-CSS below provides
    the reset/typography; injecting Tailwind's preflight would reset the legacy
@@ -61,15 +61,21 @@ body {
 
 /* ===== VARIABLES ===== */
 :root {
-  --bg-color: #f7f7f7;
-  --text-primary: #111111;
-  --text-secondary: #555555;
-  --text-tertiary: #999999;
-  --accent: #4a756b;
-  --accent-deploying: #5c7996;
-  --accent-pending: #c8ac50;
-  --border: #dddddd;
-  --hover-bg: #eaeaea;
+  --bg-color: #f4f6f6;
+  --surface: #ffffff;
+  --surface-2: #fafbfb;
+  --text-primary: #0e1417;
+  --text-secondary: #4b5760;
+  --text-tertiary: #8b959c;
+  --accent: #17856a;
+  --accent-soft: rgba(23, 133, 106, 0.10);
+  --accent-deploying: #4b6f93;
+  --accent-pending: #b2862a;
+  --brand: #7c3aed;
+  --border: #e3e7e8;
+  --border-strong: #ccd3d4;
+  --hover-bg: #ecefef;
+  --glow: rgba(23, 133, 106, 0.20);
   --header-height: 80px;
   --mobile-breakpoint: 320px;
   --tablet-breakpoint: 768px;
@@ -78,15 +84,21 @@ body {
 
 /* Dark Mode Variables */
 [data-theme="dark"] {
-  --bg-color: #1a1a1a;
-  --text-primary: #f5f5f5;
-  --text-secondary: #a0a0a0;
-  --text-tertiary: #666666;
-  --accent: #5a8b7f;
+  --bg-color: #0a0e12;
+  --surface: #111922;
+  --surface-2: #0d141b;
+  --text-primary: #e9eef3;
+  --text-secondary: #9aa7b2;
+  --text-tertiary: #57646f;
+  --accent: #2dd4a7;
+  --accent-soft: rgba(45, 212, 167, 0.12);
   --accent-deploying: #6c89a6;
-  --accent-pending: #d8bc60;
-  --border: #333333;
-  --hover-bg: #2a2a2a;
+  --accent-pending: #e0bf63;
+  --brand: #a78bfa;
+  --border: #1d2731;
+  --border-strong: #2b3744;
+  --hover-bg: #151d26;
+  --glow: rgba(45, 212, 167, 0.24);
 }
 
 /* ===== RESET & BASE ===== */
@@ -141,16 +153,16 @@ h6 { font-size: clamp(0.875rem, 1.5vw, 1.125rem); }
   right: 0;
   height: 80px;
   border-bottom: 1px solid var(--border);
-  background-color: rgba(247, 247, 247, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background-color: color-mix(in srgb, var(--bg-color) 88%, transparent);
+  backdrop-filter: saturate(140%) blur(14px);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
   z-index: 1000;
   padding: 0 4rem;
   transition: all 0.3s ease;
 }
 
 [data-theme="dark"] .header {
-  background-color: rgba(26, 26, 26, 0.92);
+  background-color: color-mix(in srgb, var(--bg-color) 90%, transparent);
 }
 
 @media (max-width: 1024px) {
@@ -1800,4 +1812,110 @@ textarea:focus-visible {
   95% { opacity: 0.1; }
   97% { opacity: 0.7; }
   98% { opacity: 0.2; }
+}
+
+/* ============================================================
+   ELEVATION LAYER — premium motion + network aesthetic.
+   Appended last so it wins equal-specificity over the base.
+   ============================================================ */
+
+/* Display face for the wordmark + hero headline */
+.hero-title { font-family: 'Space Grotesk', 'Inter', sans-serif; letter-spacing: -0.055em; line-height: 0.95; }
+
+/* Glassy chrome */
+.metrics-bar {
+  background-color: color-mix(in srgb, var(--bg-color) 92%, transparent);
+  backdrop-filter: saturate(140%) blur(14px);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
+}
+
+/* Live network field behind the hero (replaces the spinning radar).
+   Vignette mask fades it out behind the headline/content and keeps it ambient
+   in the gutters, so it never competes with the text or the code panel. */
+.net-field {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.6;
+  -webkit-mask-image: radial-gradient(120% 120% at 50% 46%, transparent 22%, #000 80%);
+  mask-image: radial-gradient(120% 120% at 50% 46%, transparent 22%, #000 80%);
+}
+[data-theme="dark"] .net-field { opacity: 0.7; }
+.hero-radar { display: none; }
+.hero-bg {
+  opacity: 0.55;
+  -webkit-mask-image: radial-gradient(120% 90% at 72% 45%, #000 10%, transparent 72%);
+  mask-image: radial-gradient(120% 90% at 72% 45%, #000 10%, transparent 72%);
+}
+
+/* Status pill (re-enabled, refined) */
+.hero-status {
+  display: inline-flex !important; align-items: center; gap: 0.55rem; width: fit-content;
+  padding: 0.38rem 0.8rem; border: 1px solid var(--border-strong); border-radius: 999px;
+  background: var(--accent-soft); color: var(--accent); font-size: 0.64rem; letter-spacing: 0.16em;
+}
+.hero-status .dot.active {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+  animation: pulse-dot 2.4s ease-out infinite;
+}
+@keyframes pulse-dot {
+  0% { box-shadow: 0 0 0 0 var(--glow); }
+  70% { box-shadow: 0 0 0 7px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+@media (max-width: 1024px) { .hero-status { margin: 0 auto; } }
+
+/* Primary button: accent fill + glow */
+.hero-btn {
+  background: var(--accent); color: #ffffff; border-radius: 9px; font-weight: 600;
+  transition: transform .22s cubic-bezier(.2,.7,.2,1), box-shadow .22s ease;
+  box-shadow: 0 6px 20px -10px var(--glow);
+}
+.hero-btn:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 14px 34px -10px var(--glow); }
+.hero-btn:active { transform: translateY(0); }
+[data-theme="dark"] .hero-btn { color: #04130d; }
+
+/* Section label with an accent tick */
+.section-title { display: flex; align-items: center; gap: 0.65rem; color: var(--text-tertiary); }
+.section-title::before { content: ""; width: 20px; height: 1px; background: linear-gradient(90deg, var(--accent), transparent); }
+
+/* People cards: lift + accent ring */
+.node-card {
+  border-radius: 12px; background: var(--surface-2);
+  transition: transform .28s cubic-bezier(.2,.7,.2,1), border-color .28s ease, box-shadow .28s ease, background .28s ease;
+}
+.node-card:hover { transform: translateY(-4px); border-color: var(--accent); background: var(--surface); box-shadow: 0 16px 34px -18px var(--glow); }
+.node-card.active { border-color: color-mix(in srgb, var(--accent) 55%, var(--border)); }
+
+/* Map: glowing active markers + network backbone arcs */
+.map-container-enhanced { border-radius: 14px; background: var(--surface-2); overflow: hidden; }
+.map-marker.active { filter: drop-shadow(0 0 5px var(--glow)); }
+.map-arc { fill: none; stroke: var(--accent); stroke-width: 1.1; opacity: 0.4; stroke-linecap: round; stroke-dasharray: 4 7; animation: arc-flow 1.4s linear infinite; }
+@keyframes arc-flow { to { stroke-dashoffset: -22; } }
+
+/* Node dialog + code panel: refined surfaces */
+.node-dialog { border-radius: 12px; background: var(--surface); border-color: var(--border-strong); box-shadow: 0 20px 50px -24px rgba(0,0,0,.5); }
+.demo-container { animation: none; border-radius: 12px; box-shadow: 0 28px 70px -28px rgba(0,0,0,.5); }
+
+/* Selection + custom scrollbar */
+::selection { background: var(--accent); color: var(--bg-color); }
+html { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+::-webkit-scrollbar { width: 11px; height: 11px; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 999px; border: 3px solid var(--bg-color); }
+::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
+
+/* Retune the hover-glitch from generic neon to brand hues */
+.hero-title.glitch::before { text-shadow: -2px 0 var(--brand); }
+.hero-title.glitch::after { text-shadow: 2px 0 var(--accent); }
+
+/* ---- Cinematic hero entrance (CSS only; no JS, no bundle cost) ---- */
+@keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+.hero-status { animation: rise .8s cubic-bezier(.2,.7,.2,1) .06s backwards; }
+.hero-title.glitch { animation: rise .9s cubic-bezier(.2,.7,.2,1) .16s backwards; }
+.hero-sub { animation: rise .9s cubic-bezier(.2,.7,.2,1) .30s backwards; }
+.hero-content > .hero-btn { animation: rise .9s cubic-bezier(.2,.7,.2,1) .44s backwards; }
+.hero-visual { animation: rise 1s cubic-bezier(.2,.7,.2,1) .40s backwards; }
+
+/* Respect reduced motion: render everything immediately */
+@media (prefers-reduced-motion: reduce) {
+  .hero-status, .hero-title.glitch, .hero-sub, .hero-content > .hero-btn, .hero-visual,
+  .content-section > div { animation: none !important; opacity: 1 !important; transform: none !important; }
+  .map-arc, .hero-status .dot.active { animation: none; }
 }
