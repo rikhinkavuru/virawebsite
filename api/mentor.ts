@@ -28,7 +28,12 @@ function getClientIp(req: VercelRequest): string {
 
 function getDb(): Sql | null {
   const url = process.env.DATABASE_URL;
-  return url ? neon(url) : null;
+  if (!url) return null;
+  try {
+    return neon(url); // throws on a malformed connection string
+  } catch {
+    return null; // treat a bad DATABASE_URL as "not configured" rather than crashing
+  }
 }
 
 let ensured = false;
