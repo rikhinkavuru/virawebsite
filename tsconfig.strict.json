@@ -1,0 +1,13 @@
+{
+  "//": "Strict-TS island for NEW code only. CI runs `npm run typecheck:strict`. The loose legacy tsconfig (Index.tsx, shadcn ui/) is untouched, so this never triggers a big-bang migration.",
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "strict": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "types": ["node", "vitest/globals"]
+  },
+  "include": ["src/lib/**/*", "src/hooks/**/*", "src/data/**/*", "api/**/*", "src/vite-env.d.ts"]
+}

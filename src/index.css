@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
+/* Tailwind utilities only — NO @tailwind base. The 34KB hand-CSS below provides
+   the reset/typography; injecting Tailwind's preflight would reset the legacy
+   layout. Utilities are declared first so any name shared with hand-CSS (e.g.
+   .text-center) is won by the hand-CSS rule later in this file. */
+@tailwind utilities;
+
 /* ===== OVERFLOW PREVENTION ===== */
 * {
   box-sizing: border-box;
