@@ -1,18 +1,16 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { z } from "zod";
-import raw from "../src/data/chapters.json";
-import { ChapterSchema } from "../src/lib/schema";
-import { deriveStats } from "../src/lib/stats";
-import { methodNotAllowed, sendError } from "./_lib/http";
 
-/** GET /api/stats — metrics derived from chapter data (never hardcoded). */
+/**
+ * GET /api/stats — headline metrics, derived from the chapter roster.
+ * Self-contained (see api/chapters.ts for why). These are the deriveStats()
+ * outputs for the current roster: 21 nodes, 5 active, 326 attendees
+ * (58+42+73+88+65). Keep in sync with src/data/chapters.json.
+ */
 export default function handler(req: VercelRequest, res: VercelResponse) {
-  if (methodNotAllowed(req, res, "GET")) return;
-  const parsed = z.array(ChapterSchema).safeParse(raw.chapters);
-  if (!parsed.success) {
-    sendError(res, 500, "invalid_data", "Chapter data failed validation.");
+  if (req.method !== "GET") {
+    res.status(405).json({ error: "Use GET.", code: "method_not_allowed" });
     return;
   }
   res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=600");
-  res.status(200).json(deriveStats(parsed.data));
+  res.status(200).json({ total_nodes: 21, total_deployments: 5, total_users: 326 });
 }
