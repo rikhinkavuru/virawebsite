@@ -49,9 +49,12 @@ export function MentorPanel() {
   return (
     <div>
       <h2 className="section-title">03 // mentor uplink</h2>
-      <p className="mb-6 max-w-2xl font-mono text-sm leading-relaxed text-vira-subtle">
-        Query the network intelligence for a buildable healthcare-hackathon vector.{" "}
-        <NetworkHeartbeat />
+      <p className="mb-2 max-w-2xl font-sans text-base leading-relaxed text-vira-fg">
+        An AI hackathon-idea generator. Type a healthcare topic you care about and get back one
+        concrete, buildable project idea — the problem it solves, what to build, and a stretch goal.
+      </p>
+      <p className="mb-6 max-w-2xl font-mono text-xs leading-relaxed text-vira-subtle">
+        powered by Claude · <NetworkHeartbeat />
       </p>
 
       <div className="mx-auto max-w-2xl rounded-lg border border-solid border-vira-border p-5">
@@ -69,7 +72,7 @@ export function MentorPanel() {
             id="mentor-topic"
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
-            placeholder="e.g. remote patient monitoring"
+            placeholder="a healthcare topic — e.g. ER wait times, medication adherence"
             maxLength={200}
             className="w-full flex-1 rounded-md border border-solid border-vira-border bg-transparent px-3 py-2 font-mono text-sm text-vira-fg outline-none transition-colors focus:border-vira-accent"
           />
@@ -84,7 +87,7 @@ export function MentorPanel() {
             ) : (
               <Sparkles className="h-4 w-4" aria-hidden />
             )}
-            {mentor.isPending ? "generating" : "generate"}
+            {mentor.isPending ? "generating…" : "get idea"}
           </motion.button>
         </form>
 
