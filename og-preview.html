@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=DM+Mono:wght@500&display=swap" rel="stylesheet" />
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body {
+    width: 1200px; height: 630px; overflow: hidden; position: relative;
+    background: #f4f9f5; color: #0d1310;
+    font-family: 'DM Sans', sans-serif;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 0 90px;
+  }
+  .rail {
+    position: absolute; top: 36px; left: 90px; right: 90px;
+    display: flex; justify-content: space-between;
+    font-family: 'DM Mono', monospace; font-size: 15px; letter-spacing: 0.16em;
+    color: #55605a; text-transform: uppercase;
+  }
+  .rail .chev { color: #17843f; }
+  h1 {
+    font-family: 'Space Grotesk', sans-serif; font-weight: 500;
+    font-size: 88px; letter-spacing: -0.055em; line-height: 1.06;
+  }
+  h1 .g { color: #17843f; }
+  h1 .tile {
+    display: inline-flex; width: 74px; height: 74px; border-radius: 16px;
+    background: #17843f; vertical-align: -6px;
+    align-items: center; justify-content: center;
+  }
+  .sub { margin-top: 34px; font-size: 26px; color: #55605a; max-width: 44ch; line-height: 1.5; }
+  .cmd {
+    position: absolute; bottom: 52px; left: 90px;
+    font-family: 'DM Mono', monospace; font-size: 20px; color: #55605a;
+    border: 1px solid #e2e8e3; background: #fff; padding: 14px 22px;
+  }
+  .cmd .d { color: #17843f; }
+  .brand {
+    position: absolute; bottom: 52px; right: 90px;
+    display: flex; align-items: center; gap: 12px;
+    font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 28px;
+    letter-spacing: -0.03em;
+  }
+  .glitch { position: absolute; right: 0; top: 0; bottom: 0; width: 220px; opacity: 0.9; }
+</style>
+</head>
+<body>
+  <div class="rail">
+    <span><span class="chev">❯</span> VIRAHACKS.COM</span>
+    <span>[1/1]</span>
+  </div>
+  <h1>
+    The hackathon network for
+    <span class="tile"><svg width="46" height="46" viewBox="0 0 26 26"><path d="M6.5 8 L13 19 L19.5 8 H15.8 L13 13.4 L10.2 8 Z" fill="#fff"/></svg></span>
+    <span class="g">student builders.</span>
+  </h1>
+  <div class="sub">Real hackathons — venues, mentors, judges and healthcare problems worth solving — all run by students.</div>
+  <div class="cmd"><span class="d">$</span> apply.virahacks.com — 3 minutes, any school</div>
+  <div class="brand">
+    <svg width="40" height="40" viewBox="0 0 26 26"><rect width="26" height="26" rx="7" fill="#17843f"/><path d="M6.5 8 L13 19 L19.5 8 H15.8 L13 13.4 L10.2 8 Z" fill="#fff"/></svg>
+    virahacks
+  </div>
+  <canvas class="glitch" id="gl" width="220" height="630"></canvas>
+  <script>
+    const ctx = document.getElementById('gl').getContext('2d');
+    const noise = (x, y) => Math.abs(Math.sin(x * 12.9898 + y * 78.233) * 43758.5453 % 1);
+    for (let y = 0; y < 630; y += 4) {
+      const e = Math.exp(-Math.pow((y / 630 - 0.5) * 2.4, 2));
+      for (let x = 0; x < 220; x += 18) {
+        const g = noise(x, y);
+        if (g < 0.45) continue;
+        ctx.fillStyle = 'rgba(23, 132, 63, ' + (e * g * 0.55).toFixed(2) + ')';
+        ctx.fillRect(x, y, 18 * g, 2.4);
+      }
+    }
+  </script>
+</body>
+</html>
