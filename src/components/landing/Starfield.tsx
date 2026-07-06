@@ -50,52 +50,28 @@ export function Starfield({ density = 1 }: { density?: number }) {
         ctx.fill();
       }
       if (!reduce) {
-        if (sparks.length < 6 && Math.random() < 0.03) {
+        if (sparks.length < 3 && Math.random() < 0.012) {
           sparks.push({
             x: Math.random() * w,
-            y: Math.random() * h * 0.85,
-            vx: (Math.random() - 0.5) * 0.4,
-            vy: Math.random() * 0.25 + 0.05,
+            y: Math.random() * h * 0.8,
+            vx: (Math.random() - 0.5) * 0.5,
+            vy: Math.random() * 0.35 + 0.1,
             life: 0,
-            max: 200 + Math.random() * 220,
+            max: 240 + Math.random() * 200,
           });
         }
         sparks = sparks.filter((p) => p.life < p.max);
         for (const p of sparks) {
           p.life++; p.x += p.vx; p.y += p.vy;
-          const a = Math.sin((p.life / p.max) * Math.PI);
-          const s = 5 + a * 5; // flare arms grow with brightness
-
-          // luminous halo behind the flare
-          const halo = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, s * 2.6);
-          halo.addColorStop(0, `rgba(235, 242, 255, ${a * 0.55})`);
-          halo.addColorStop(0.35, `rgba(205, 222, 250, ${a * 0.18})`);
-          halo.addColorStop(1, "rgba(205, 222, 250, 0)");
-          ctx.fillStyle = halo;
+          const a = Math.sin((p.life / p.max) * Math.PI) * 0.9;
+          // four-point sparkle
+          ctx.strokeStyle = `rgba(240, 244, 252, ${a})`;
+          ctx.lineWidth = 1;
+          const s = 3.2;
           ctx.beginPath();
-          ctx.arc(p.x, p.y, s * 2.6, 0, Math.PI * 2);
-          ctx.fill();
-
-          // four-point flare with tapered arms (thicker core, thin tips)
-          ctx.save();
-          ctx.translate(p.x, p.y);
-          ctx.fillStyle = `rgba(248, 251, 255, ${Math.min(1, a * 1.2)})`;
-          for (let k = 0; k < 4; k++) {
-            ctx.rotate(Math.PI / 2);
-            ctx.beginPath();
-            ctx.moveTo(0, -1.1);
-            ctx.lineTo(s, 0);
-            ctx.lineTo(0, 1.1);
-            ctx.closePath();
-            ctx.fill();
-          }
-          ctx.restore();
-
-          // hot core
-          ctx.fillStyle = `rgba(255, 255, 255, ${a})`;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, 1.4 + a * 0.8, 0, Math.PI * 2);
-          ctx.fill();
+          ctx.moveTo(p.x - s, p.y); ctx.lineTo(p.x + s, p.y);
+          ctx.moveTo(p.x, p.y - s); ctx.lineTo(p.x, p.y + s);
+          ctx.stroke();
         }
       }
     };
