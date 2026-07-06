@@ -33,7 +33,8 @@ export function SplitCards({ onNavigate }: { onNavigate: (id: string) => void })
           </p>
           <div className="smstats four">
             <div>
-              <div className="v"><Ticker to={DEPLOYMENT_STATS.total_users} suffix="+" /></div>
+              {/* rounded down to the nearest ten — the "+" carries the rest */}
+              <div className="v"><Ticker to={Math.floor(DEPLOYMENT_STATS.total_users / 10) * 10} suffix="+" /></div>
               <div className="l">participants</div>
             </div>
             <div>

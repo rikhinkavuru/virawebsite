@@ -40,15 +40,30 @@ export function GlitchBand() {
       }
     };
 
+    // regions of the fresco that read as junk in scanlines (the big
+    // plaster crack above the gap, and the dark vignette over God's
+    // forearm at the top-right) — hard-zeroed, in normalized mask space
+    const KILL: Array<[number, number, number, number]> = [
+      [0.41, 0.0, 0.60, 0.34],  // central crack above the fingertip gap
+      [0.74, 0.0, 1.01, 0.24],  // shadow streak above the right forearm
+      [0.60, 0.0, 0.74, 0.16],  // crack fragments right of center
+      [0.28, 0.0, 0.41, 0.07],  // hairline specks along the top edge
+      [0.82, 0.74, 1.01, 1.01], // detached shadow blob under the right arm
+    ];
+
     const rawInk = (mx: number, my: number) => {
       if (!lum) return 0;
       const x = Math.max(0, Math.min(MW - 1, mx));
       const y = Math.max(0, Math.min(MH - 1, my));
+      const nx = x / MW, ny = y / MH;
+      for (const [x0, y0, x1, y1] of KILL) {
+        if (nx >= x0 && nx < x1 && ny >= y0 && ny < y1) return 0;
+      }
       const v = lum[y * MW + x];
-      // plaster ≈ 0.72–0.85, skin ≈ 0.25–0.6 → invert around 0.68 with a
-      // gentle gamma so interior shading (knuckles, tendons) survives
+      // plaster ≈ 0.72–0.85, skin ≈ 0.25–0.6 → invert around 0.68; the
+      // slightly stronger gamma lifts mid-tones so palms render solid
       const ink = Math.max(0, Math.min(1, (0.68 - v) * 2.2));
-      return Math.pow(ink, 0.8);
+      return Math.pow(ink, 0.72);
     };
 
     /** 0..1 "ink" with soft erosion: thin plaster cracks (a few px wide)
@@ -126,10 +141,10 @@ export function GlitchBand() {
         while (x <= w) {
           const nx = x / w;
           const ink = sample(nx, ny) * clearance(nx, ny, aspect);
-          if (ink > 0.06) {
+          if (ink > 0.085) {
             const a = Math.min(0.92, 0.10 + ink * 1.0) * flicker;
             ctx.fillStyle = `rgba(88, 214, 138, ${a})`;
-            const dash = step * (1.5 + ink * 2.5);
+            const dash = step * (1.1 + ink * 1.7);
             ctx.fillRect(x + tear, y, dash, 1.5);
             x += dash;
           } else {
