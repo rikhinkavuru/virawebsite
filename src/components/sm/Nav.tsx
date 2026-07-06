@@ -20,8 +20,8 @@ export function Nav({ onNavigate }: { onNavigate: (id: string) => void }) {
     <header className={`smnav ${scrolled ? "scrolled" : ""}`}>
       <div className="smnav-inner">
         <button className="smnav-logo" onClick={() => onNavigate("top")}>
-          <ViraMark size={30} tile />
-          virahacks<sup>™</sup>
+          <ViraMark size={26} />
+          vira
         </button>
         <nav className="smnav-links" aria-label="Primary">
           {LINKS.map((l) => (

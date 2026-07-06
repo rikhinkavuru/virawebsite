@@ -76,17 +76,16 @@ export default function Index() {
 
         <Faq />
 
-        <FinalCta onNavigate={scrollToSection} />
-
-        {FLAGS.apply && (
-          <Section label="Apply" index={8} id="apply">
-            <div style={{ padding: "clamp(26px, 3.6vw, 50px)" }}>
+        <Section label="Join" index={8} id="apply">
+          <FinalCta onNavigate={scrollToSection} />
+          {FLAGS.apply && (
+            <div style={{ padding: "0 clamp(26px, 3.6vw, 50px) clamp(26px, 3.6vw, 50px)", borderTop: "1px solid var(--border)" }}>
               <Suspense fallback={<SectionFallback label="// loading application" />}>
                 <ApplyForm />
               </Suspense>
             </div>
-          </Section>
-        )}
+          )}
+        </Section>
       </div>
 
       <Footer onNavigate={scrollToSection} />

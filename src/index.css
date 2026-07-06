@@ -2267,23 +2267,28 @@ body { font-family: var(--font-sans); background: var(--bg-color); }
 
 /* --- Fixed white nav --- */
 .smnav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border);
+  position: fixed; top: 12px; left: 0; right: 0; z-index: 100;
+  padding: 0 clamp(12px, 2vw, 24px);
+  background: none; border: none;
 }
 .smnav-inner {
-  max-width: 1280px; margin: 0 auto;
+  max-width: 1160px; margin: 0 auto;
   display: flex; align-items: center; gap: 28px;
-  padding: 14px clamp(16px, 3vw, 28px);
+  padding: 10px clamp(14px, 2.4vw, 22px);
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 1px 0 rgba(13, 19, 16, 0.04), 0 12px 34px -22px rgba(13, 19, 16, 0.35),
+              inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  backdrop-filter: blur(18px) saturate(1.5);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
 }
 .smnav-logo {
-  display: flex; align-items: center; gap: 9px;
+  display: flex; align-items: center; gap: 8px;
   background: none; border: none; cursor: pointer; padding: 0;
-  font-family: var(--font-display); font-weight: 600; font-size: 1.22rem;
-  letter-spacing: -0.03em; color: var(--text-primary);
+  font-family: var(--font-display); font-weight: 700; font-size: 1.35rem;
+  letter-spacing: -0.045em; color: var(--text-primary);
 }
-.smnav-logo sup { font-size: 0.5em; color: var(--text-tertiary); }
 .smnav-links { display: flex; align-items: center; gap: 4px; margin: 0 auto; }
 .smnav-links button {
   background: none; border: none; cursor: pointer;
@@ -2315,7 +2320,7 @@ body { font-family: var(--font-sans); background: var(--bg-color); }
 }
 
 /* --- Hero --- */
-.smhero { padding: calc(var(--header-height) + 40px) 20px 0; text-align: center; background: var(--bg-color); }
+.smhero { padding: calc(var(--header-height) + 64px) 20px 0; text-align: center; background: var(--bg-color); }
 .smhero-pill {
   display: inline-flex; align-items: stretch;
   border: 1px solid var(--border); background: var(--surface);
@@ -2348,7 +2353,7 @@ body { font-family: var(--font-sans); background: var(--bg-color); }
   max-width: 62ch; margin: 26px auto 0;
   color: var(--text-secondary); font-size: 1.05rem; line-height: 1.6;
 }
-.smhero-ctas { display: flex; gap: 12px; justify-content: center; margin-top: 34px; flex-wrap: wrap; }
+.smhero-ctas { display: flex; gap: 12px; justify-content: center; margin-top: 40px; flex-wrap: wrap; }
 .smhero-cmd {
   display: inline-flex; align-items: center; gap: 12px;
   margin-top: 16px;
@@ -2369,7 +2374,7 @@ body { font-family: var(--font-sans); background: var(--bg-color); }
 .smhero-link:hover { color: var(--text-primary); }
 
 /* --- Logo/school marquee --- */
-.smmarq { margin-top: 60px; padding-bottom: 64px; overflow: hidden; }
+.smmarq { margin-top: 84px; padding-bottom: 72px; overflow: hidden; }
 .smmarq-label {
   font-size: 0.9rem; color: var(--text-secondary); text-align: center; margin-bottom: 26px;
 }
@@ -2384,7 +2389,7 @@ body { font-family: var(--font-sans); background: var(--bg-color); }
   padding-right: 64px;
   flex-shrink: 0; min-width: 100%;
   justify-content: space-around;
-  animation: smmarq 30s linear infinite;
+  animation: smmarq 55s linear infinite;
 }
 .smmarq-viewport:hover .smmarq-track { animation-play-state: paused; }
 @keyframes smmarq { from { transform: translateX(0); } to { transform: translateX(-100%); } }
@@ -2410,6 +2415,7 @@ body { font-family: var(--font-sans); background: var(--bg-color); }
 .smband-mark {
   position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
   color: #fff; z-index: 2;
+  filter: drop-shadow(0 0 14px rgba(4, 20, 10, 0.9));
 }
 
 /* --- Catalog (numbered tabs + illustration panel) --- */
@@ -2857,13 +2863,13 @@ body { font-family: var(--font-sans); background: var(--bg-color); }
 .smcat-art, .smstep-art { will-change: transform; }
 
 /* --- Nav: condensed + shadowed once scrolled --- */
-.smnav { transition: box-shadow 0.25s ease, background 0.25s ease; }
-.smnav.scrolled {
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 10px 30px -18px rgba(13, 19, 16, 0.22);
+.smnav-inner { transition: background 0.25s ease, box-shadow 0.25s ease, padding 0.25s ease; }
+.smnav.scrolled .smnav-inner {
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 1px 0 rgba(13, 19, 16, 0.05), 0 18px 44px -22px rgba(13, 19, 16, 0.4),
+              inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  padding-top: 8px; padding-bottom: 8px;
 }
-.smnav-inner { transition: padding 0.25s ease; }
-.smnav.scrolled .smnav-inner { padding-top: 9px; padding-bottom: 9px; }
 
 /* --- Anchored sections clear the fixed nav --- */
 section[id], div[id="top"] { scroll-margin-top: 76px; }
@@ -2881,7 +2887,7 @@ section[id], div[id="top"] { scroll-margin-top: 76px; }
 .smtable tbody tr:hover .hl { background: #ddefe3; }
 
 /* --- Marquee logos: quiet by default, full color on hover --- */
-.smmarq-item { filter: grayscale(0.35); opacity: 0.75; transition: filter 0.25s ease, opacity 0.25s ease; }
+.smmarq-item { filter: grayscale(0.2); opacity: 0.85; transition: filter 0.25s ease, opacity 0.25s ease; }
 .smmarq-item:hover { filter: grayscale(0); opacity: 1; }
 
 /* --- Blur-fade utility driven by framer-motion (filter set inline) --- */

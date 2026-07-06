@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Section, ArrowButton, GhostButton } from "./chrome";
+import { ArrowButton, GhostButton } from "./chrome";
 import { CHAPTERS, DEPLOYMENT_STATS } from "@/data/chapters";
 
 const SLOT_WORDS = ["school", "club", "team", "class", "city", "crew"];
@@ -70,31 +70,30 @@ function CountUp({ to }: { to: number }) {
   return <span ref={ref}>{n.toLocaleString()}</span>;
 }
 
+/** Join headline + build-hours band. Renders inside the shared Join section. */
 export function FinalCta({ onNavigate }: { onNavigate: (id: string) => void }) {
   // Rough but honest: total build-hours logged across active events (12h days).
   const buildHours = DEPLOYMENT_STATS.total_users * 12;
   const pending = CHAPTERS.filter((c) => c.status === "pending").length;
 
   return (
-    <Section label="Join" index={8} id="apply-cta">
-      <div className="smfinal">
-        <h2>
-          Your <SlotWord /> needs its{" "}
-          <span className="g">Vira chapter.</span>
-        </h2>
-        <div className="smfinal-row">
-          <div className="smcount">
-            <div className="lbl">Total build-hours logged</div>
-            <div className="num"><CountUp to={buildHours} /></div>
-          </div>
-          <div className="smfinal-ctas">
-            <ArrowButton onClick={() => onNavigate("apply")}>Start a Chapter</ArrowButton>
-            <GhostButton onClick={() => onNavigate("network")}>
-              {pending} schools already in queue
-            </GhostButton>
-          </div>
+    <div className="smfinal">
+      <h2>
+        Your <SlotWord /> needs its{" "}
+        <span className="g">Vira chapter.</span>
+      </h2>
+      <div className="smfinal-row">
+        <div className="smcount">
+          <div className="lbl">Total build-hours logged</div>
+          <div className="num"><CountUp to={buildHours} /></div>
+        </div>
+        <div className="smfinal-ctas">
+          <ArrowButton onClick={() => onNavigate("apply")}>Start a Chapter</ArrowButton>
+          <GhostButton onClick={() => onNavigate("network")}>
+            {pending} schools already in queue
+          </GhostButton>
         </div>
       </div>
-    </Section>
+    </div>
   );
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { CHAPTERS, DEPLOYMENT_STATS } from "@/data/chapters";
+import { CHAPTERS } from "@/data/chapters";
 import { ArrowButton, GhostButton, ViraMark } from "./chrome";
 
 const rise = {
@@ -71,7 +71,7 @@ function SchoolIcon({ id, name, hue }: { id: string; name: string; hue: string }
 }
 
 function SchoolMarquee() {
-  const schools = CHAPTERS.map((c) => ({
+  const schools = CHAPTERS.filter((c) => c.id !== "zch").map((c) => ({
     id: c.id,
     label: c.name.replace(/ High School$/i, ""),
   }));
@@ -97,19 +97,7 @@ function SchoolMarquee() {
 }
 
 export function Hero({ onNavigate }: { onNavigate: (id: string) => void }) {
-  const [copied, setCopied] = useState(false);
-  const CMD = "apply.virahacks.com — 3 minutes, any school";
   const newest = [...CHAPTERS].filter((c) => c.status === "active").pop();
-
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText("https://virahacks.com/#apply");
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1600);
-    } catch {
-      /* clipboard unavailable — no-op */
-    }
-  };
 
   return (
     <div className="smhero" id="top">
@@ -125,7 +113,7 @@ export function Hero({ onNavigate }: { onNavigate: (id: string) => void }) {
 
       <motion.h1 variants={rise} custom={1} initial="hidden" animate="show">
         The hackathon network for{" "}
-        <span className="h1-icon"><ViraMark size={44} tile radius={10} /></span>{" "}
+        <span className="h1-icon"><ViraMark size={40} /></span>{" "}
         student builders<span className="enddot">.</span>
       </motion.h1>
 
@@ -143,20 +131,6 @@ export function Hero({ onNavigate }: { onNavigate: (id: string) => void }) {
       </motion.div>
 
       <motion.div variants={rise} custom={4} initial="hidden" animate="show">
-        <button className="smhero-cmd" onClick={copy} aria-label="Copy apply link">
-          <span className="dollar">$</span>
-          <span>{CMD}</span>
-          <span className="copy" aria-hidden="true">{copied ? "✓ copied" : "⧉"}</span>
-        </button>
-      </motion.div>
-
-      <motion.div variants={rise} custom={5} initial="hidden" animate="show">
-        <button className="smhero-link" onClick={() => onNavigate("people")}>
-          Meet the {DEPLOYMENT_STATS.total_users}+ students already building ↗
-        </button>
-      </motion.div>
-
-      <motion.div variants={rise} custom={6} initial="hidden" animate="show">
         <SchoolMarquee />
       </motion.div>
     </div>

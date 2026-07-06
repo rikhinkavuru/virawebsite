@@ -1,33 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-  <rect width="16" height="16" rx="3.4" fill="#06180d"/>
-  <g>
-    <rect x="3" y="3" width="1.02" height="1.02" fill="#17843f"/><rect x="4" y="3" width="1.02" height="1.02" fill="#17843f"/><rect x="11" y="3" width="1.02" height="1.02" fill="#17843f"/><rect x="12" y="3" width="1.02" height="1.02" fill="#17843f"/>
-    <rect x="3" y="4" width="1.02" height="1.02" fill="#17843f"/><rect x="4" y="4" width="1.02" height="1.02" fill="#17843f"/><rect x="5" y="4" width="1.02" height="1.02" fill="#17843f"/><rect x="10" y="4" width="1.02" height="1.02" fill="#17843f"/><rect x="11" y="4" width="1.02" height="1.02" fill="#17843f"/><rect x="12" y="4" width="1.02" height="1.02" fill="#17843f"/>
-    <rect x="4" y="5" width="1.02" height="1.02" fill="#17843f"/><rect x="5" y="5" width="1.02" height="1.02" fill="#17843f"/><rect x="6" y="5" width="1.02" height="1.02" fill="#17843f"/><rect x="9" y="5" width="1.02" height="1.02" fill="#17843f"/><rect x="10" y="5" width="1.02" height="1.02" fill="#17843f"/><rect x="11" y="5" width="1.02" height="1.02" fill="#17843f"/>
-    <rect x="5" y="6" width="1.02" height="1.02" fill="#17843f"/><rect x="6" y="6" width="1.02" height="1.02" fill="#17843f"/><rect x="9" y="6" width="1.02" height="1.02" fill="#17843f"/><rect x="10" y="6" width="1.02" height="1.02" fill="#17843f"/>
-    <rect x="5" y="7" width="1.02" height="1.02" fill="#17843f"/><rect x="6" y="7" width="1.02" height="1.02" fill="#17843f"/><rect x="7" y="7" width="1.02" height="1.02" fill="#17843f"/><rect x="8" y="7" width="1.02" height="1.02" fill="#17843f"/><rect x="9" y="7" width="1.02" height="1.02" fill="#17843f"/><rect x="10" y="7" width="1.02" height="1.02" fill="#17843f"/>
-    <rect x="6" y="8" width="1.02" height="1.02" fill="#17843f"/><rect x="7" y="8" width="1.02" height="1.02" fill="#17843f"/><rect x="8" y="8" width="1.02" height="1.02" fill="#17843f"/><rect x="9" y="8" width="1.02" height="1.02" fill="#17843f"/>
-    <rect x="7" y="9" width="1.02" height="1.02" fill="#17843f"/><rect x="8" y="9" width="1.02" height="1.02" fill="#17843f"/>
-    <rect x="7" y="10" width="1.02" height="1.02" fill="#17843f"/><rect x="8" y="10" width="1.02" height="1.02" fill="#17843f"/>
-  </g>
-  <g fill="#ffffff">
-    <rect x="2" y="2" width="1.02" height="1.02"/><rect x="3" y="2" width="1.02" height="1.02"/><rect x="12" y="2" width="1.02" height="1.02"/><rect x="13" y="2" width="1.02" height="1.02"/>
-    <rect x="2" y="3" width="1.02" height="1.02"/><rect x="13" y="3" width="1.02" height="1.02"/><rect x="5" y="3" width="1.02" height="1.02"/><rect x="10" y="3" width="1.02" height="1.02"/>
-    <rect x="2" y="4" width="1.02" height="1.02"/><rect x="13" y="4" width="1.02" height="1.02"/><rect x="6" y="4" width="1.02" height="1.02"/><rect x="9" y="4" width="1.02" height="1.02"/>
-    <rect x="3" y="5" width="1.02" height="1.02"/><rect x="12" y="5" width="1.02" height="1.02"/><rect x="7" y="5" width="1.02" height="1.02"/><rect x="8" y="5" width="1.02" height="1.02"/>
-    <rect x="4" y="6" width="1.02" height="1.02"/><rect x="11" y="6" width="1.02" height="1.02"/><rect x="7" y="6" width="1.02" height="1.02"/><rect x="8" y="6" width="1.02" height="1.02"/>
-    <rect x="4" y="7" width="1.02" height="1.02"/><rect x="11" y="7" width="1.02" height="1.02"/>
-    <rect x="5" y="8" width="1.02" height="1.02"/><rect x="10" y="8" width="1.02" height="1.02"/>
-    <rect x="6" y="9" width="1.02" height="1.02"/><rect x="9" y="9" width="1.02" height="1.02"/>
-    <rect x="6" y="10" width="1.02" height="1.02"/><rect x="9" y="10" width="1.02" height="1.02"/>
-    <rect x="7" y="11" width="1.02" height="1.02"/><rect x="8" y="11" width="1.02" height="1.02"/>
-  </g>
-  <g opacity="0.9">
-    <rect x="5.25" y="12.25" width="0.55" height="0.55" fill="#17843f"/>
-    <rect x="10.25" y="12.25" width="0.55" height="0.55" fill="#17843f"/>
-    <rect x="7.25" y="13.25" width="0.55" height="0.55" fill="#17843f"/>
-    <rect x="8.25" y="12.25" width="0.55" height="0.55" fill="#ffffff"/>
-    <rect x="6.25" y="14.25" width="0.55" height="0.55" fill="#ffffff"/>
-    <rect x="9.25" y="14.25" width="0.55" height="0.55" fill="#17843f"/>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#ffffff"/>
+  <defs>
+    <pattern id="hatch" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="5" stroke="#17843f" stroke-width="1.6"/>
+    </pattern>
+    <clipPath id="lens">
+      <circle cx="24" cy="32" r="16"/>
+    </clipPath>
+  </defs>
+  <circle cx="24" cy="32" r="16" fill="none" stroke="#17843f" stroke-width="2.6"/>
+  <circle cx="41" cy="32" r="16" fill="none" stroke="#17843f" stroke-width="2.6"/>
+  <circle cx="41" cy="32" r="16" fill="url(#hatch)" clip-path="url(#lens)"/>
 </svg>

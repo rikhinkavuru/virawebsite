@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import type { ReactNode, ButtonHTMLAttributes, AnchorHTMLAttributes } from "react";
 import { motion } from "framer-motion";
 
@@ -64,66 +64,45 @@ export function Ticker({ to, suffix = "" }: { to: number; suffix?: string }) {
   return <span ref={ref}>{n.toLocaleString()}{suffix}</span>;
 }
 
-/* Pixel-art V mark: green V with a white pixel outline, dissolving into
-   scattered squares below — drawn on a 16×16 grid. Coordinate lists, not
-   paths, so it stays crisp at any size. */
-const PX_GREEN: Array<[number, number]> = [
-  [3, 3], [4, 3], [11, 3], [12, 3],
-  [3, 4], [4, 4], [5, 4], [10, 4], [11, 4], [12, 4],
-  [4, 5], [5, 5], [6, 5], [9, 5], [10, 5], [11, 5],
-  [5, 6], [6, 6], [9, 6], [10, 6],
-  [5, 7], [6, 7], [7, 7], [8, 7], [9, 7], [10, 7],
-  [6, 8], [7, 8], [8, 8], [9, 8],
-  [7, 9], [8, 9],
-  [7, 10], [8, 10],
-];
-const PX_WHITE: Array<[number, number]> = [
-  [2, 2], [3, 2], [12, 2], [13, 2],
-  [2, 3], [13, 3], [5, 3], [10, 3],
-  [2, 4], [13, 4], [6, 4], [9, 4],
-  [3, 5], [12, 5], [7, 5], [8, 5],
-  [4, 6], [11, 6], [7, 6], [8, 6],
-  [4, 7], [11, 7],
-  [5, 8], [10, 8],
-  [6, 9], [9, 9],
-  [6, 10], [9, 10],
-  [7, 11], [8, 11],
-];
-/** dissolving debris: [x, y, green?] */
-const PX_DUST: Array<[number, number, number]> = [
-  [1, 1, 1], [14, 1, 1], [0, 4, 1], [15, 4, 1], [1, 6, 0], [14, 6, 0],
-  [3, 9, 1], [12, 9, 1], [4, 11, 0], [11, 11, 0],
-  [5, 12, 1], [10, 12, 1], [7, 13, 1], [8, 12, 0],
-  [6, 14, 0], [9, 14, 1],
-];
-
+/**
+ * Vira venn mark: two overlapping circle outlines with the intersection
+ * lens filled by diagonal hatching — the original Vira brand, in forest
+ * green. `color` overrides for dark surfaces (pass "#fff").
+ */
 export function ViraMark({
   size = 26,
-  tile = false,
-  radius = 7,
+  color = "var(--green, #17843f)",
 }: {
   size?: number;
-  /** draw a rounded dark tile behind the mark */
-  tile?: boolean;
-  radius?: number;
+  color?: string;
 }) {
+  const uid = useId().replace(/[^a-zA-Z0-9]/g, "");
+  // Geometry: circles r=11 centered at (13,14) and (25,14) in a 38×28 box.
   return (
-    <svg width={size} height={size} viewBox="0 0 16 16" aria-hidden="true">
-      {tile && <rect width="16" height="16" rx={(radius / 26) * 16} fill="#06180d" />}
-      {PX_GREEN.map(([x, y]) => (
-        <rect key={`g${x}-${y}`} x={x} y={y} width="1.02" height="1.02" fill="var(--green, #17843f)" />
-      ))}
-      {PX_WHITE.map(([x, y]) => (
-        <rect key={`w${x}-${y}`} x={x} y={y} width="1.02" height="1.02" fill="#fff" />
-      ))}
-      {PX_DUST.map(([x, y, g]) => (
-        <rect
-          key={`d${x}-${y}`}
-          x={x + 0.25} y={y + 0.25} width="0.55" height="0.55"
-          fill={g ? "var(--green, #17843f)" : "#fff"}
-          opacity="0.9"
-        />
-      ))}
+    <svg
+      width={(size / 28) * 38}
+      height={size}
+      viewBox="0 0 38 28"
+      fill="none"
+      aria-hidden="true"
+    >
+      <defs>
+        <pattern
+          id={`hatch-${uid}`}
+          patternUnits="userSpaceOnUse"
+          width="3.4"
+          height="3.4"
+          patternTransform="rotate(45)"
+        >
+          <line x1="0" y1="0" x2="0" y2="3.4" stroke={color} strokeWidth="1.1" />
+        </pattern>
+        <clipPath id={`lens-${uid}`}>
+          <circle cx="13" cy="14" r="11" />
+        </clipPath>
+      </defs>
+      <circle cx="13" cy="14" r="11" stroke={color} strokeWidth="1.7" />
+      <circle cx="25" cy="14" r="11" stroke={color} strokeWidth="1.7" />
+      <circle cx="25" cy="14" r="11" fill={`url(#hatch-${uid})`} clipPath={`url(#lens-${uid})`} />
     </svg>
   );
 }

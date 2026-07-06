@@ -35,7 +35,7 @@ export function Footer({ onNavigate }: { onNavigate: (id: string) => void }) {
       <div className="smfooter-bar">© 2026 · Vira Hacks · All rights reserved</div>
       <div className="smfooter-ghost" aria-hidden="true">virahacks.</div>
       <div className="smfooter-tile" aria-hidden="true">
-        <ViraMark size={64} radius={16} />
+        <ViraMark size={58} />
       </div>
     </footer>
   );
