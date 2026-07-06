@@ -4,11 +4,12 @@ import { CHAPTERS, DEPLOYMENT_STATS } from "@/data/chapters";
 import { ArrowButton, GhostButton, ViraMark } from "./chrome";
 
 const rise = {
-  hidden: { opacity: 0, y: 18 },
+  hidden: { opacity: 0, y: 18, filter: "blur(8px)" },
   show: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, delay: 0.08 * i, ease: [0.22, 1, 0.36, 1] as const },
+    filter: "blur(0px)",
+    transition: { duration: 0.65, delay: 0.08 * i, ease: [0.22, 1, 0.36, 1] as const },
   }),
 };
 
@@ -135,7 +136,9 @@ export function Hero({ onNavigate }: { onNavigate: (id: string) => void }) {
       </motion.p>
 
       <motion.div className="smhero-ctas" variants={rise} custom={3} initial="hidden" animate="show">
-        <ArrowButton onClick={() => onNavigate("apply")}>Start a Chapter</ArrowButton>
+        <span className="beam-wrap">
+          <ArrowButton onClick={() => onNavigate("apply")}>Start a Chapter</ArrowButton>
+        </span>
         <GhostButton onClick={() => onNavigate("network")}>Explore the network</GhostButton>
       </motion.div>
 

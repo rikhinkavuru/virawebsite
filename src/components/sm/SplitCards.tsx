@@ -1,4 +1,4 @@
-import { Section, ArrowButton, ViraMark } from "./chrome";
+import { Section, ArrowButton, ViraMark, Reveal, Ticker } from "./chrome";
 import { CHAPTERS, DEPLOYMENT_STATS } from "@/data/chapters";
 
 export function SplitCards({ onNavigate }: { onNavigate: (id: string) => void }) {
@@ -14,11 +14,13 @@ export function SplitCards({ onNavigate }: { onNavigate: (id: string) => void })
   return (
     <Section label="What we do" index={2}>
       <div className="smsplit-head">
-        <h2>
-          Bring your school <span className="h1-icon"><ViraMark size={38} tile radius={9} /></span>{" "}
-          <span className="g">We bring the hackathon.</span> Your students just build.
-        </h2>
-        <p className="sub">Event infrastructure for student builders. One playbook, every school.</p>
+        <Reveal>
+          <h2>
+            Bring your school <span className="h1-icon"><ViraMark size={38} tile radius={9} /></span>{" "}
+            <span className="g">We bring the hackathon.</span> Your students just build.
+          </h2>
+          <p className="sub">Event infrastructure for student builders. One playbook, every school.</p>
+        </Reveal>
       </div>
       <div className="smsplit">
         <div className="smcard green">
@@ -30,15 +32,15 @@ export function SplitCards({ onNavigate }: { onNavigate: (id: string) => void })
           </p>
           <div className="smstats">
             <div>
-              <div className="v">{DEPLOYMENT_STATS.total_users}+</div>
+              <div className="v"><Ticker to={DEPLOYMENT_STATS.total_users} suffix="+" /></div>
               <div className="l">participants</div>
             </div>
             <div>
-              <div className="v">{DEPLOYMENT_STATS.total_deployments}</div>
+              <div className="v"><Ticker to={DEPLOYMENT_STATS.total_deployments} /></div>
               <div className="l">live chapters</div>
             </div>
             <div>
-              <div className="v">{states}</div>
+              <div className="v"><Ticker to={states} /></div>
               <div className="l">states</div>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Section } from "./chrome";
+import { Section, Reveal } from "./chrome";
 
 function TermMock() {
   return (
@@ -80,11 +80,15 @@ export function HowItWorks() {
   return (
     <Section label="How it works" index={3}>
       <div className="smhow-head">
-        <h2>How it <span className="g">works.</span></h2>
-        <p className="note">
-          Four steps, one network. Apply, provision, build, demo — then the
-          fifth step that makes the other four compound.
-        </p>
+        <Reveal>
+          <h2>How it <span className="g">works.</span></h2>
+        </Reveal>
+        <Reveal delay={0.12}>
+          <p className="note">
+            Four steps, one network. Apply, provision, build, demo — then the
+            fifth step that makes the other four compound.
+          </p>
+        </Reveal>
       </div>
       <div className="smhow">
         {STEPS.map((s, i) => (

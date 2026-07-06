@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { ViraMark, ArrowButton } from "./chrome";
 
 const LINKS: Array<{ label: string; id: string }> = [
@@ -8,8 +9,15 @@ const LINKS: Array<{ label: string; id: string }> = [
 ];
 
 export function Nav({ onNavigate }: { onNavigate: (id: string) => void }) {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   return (
-    <header className="smnav">
+    <header className={`smnav ${scrolled ? "scrolled" : ""}`}>
       <div className="smnav-inner">
         <button className="smnav-logo" onClick={() => onNavigate("top")}>
           <ViraMark size={30} tile />

@@ -2797,3 +2797,95 @@ body { font-family: var(--font-sans); background: var(--bg-color); }
   background: var(--green-soft); color: var(--green);
   font-size: 0.7rem;
 }
+
+/* ===================================================================
+   PREMIUM PASS — magic-ui-style micro-interactions, hand-rolled to fit
+   the GREENHOUSE system. Blur-fade reveals, shiny pill, border-beam
+   CTA, dot-grid hero texture, unified hover physics.
+   =================================================================== */
+
+/* --- Hero dot-grid texture with radial falloff --- */
+.smhero {
+  position: relative;
+  background-image: radial-gradient(var(--border-strong) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+.smhero::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 90% 70% at 50% 38%, transparent 0%, var(--bg-color) 78%);
+}
+.smhero > * { position: relative; z-index: 1; }
+
+/* --- Shiny sweep on the announce pill message --- */
+.smhero-pill .msg span:first-child {
+  background: linear-gradient(100deg,
+    var(--text-primary) 42%, #7cc79a 50%, var(--text-primary) 58%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  animation: pill-shine 3.4s ease-in-out infinite;
+}
+@keyframes pill-shine { 0% { background-position: 120% 0; } 55%, 100% { background-position: -130% 0; } }
+
+/* --- Border-beam on the hero primary CTA: a light dot orbiting the
+       button's border ring (conic gradient masked to the edge) --- */
+.beam-wrap { position: relative; display: inline-flex; isolation: isolate; }
+.beam-wrap::before {
+  content: ''; position: absolute; inset: -2px; z-index: -1;
+  border-radius: 4px;
+  background: conic-gradient(from var(--beam-angle, 0deg),
+    transparent 0deg, transparent 300deg,
+    rgba(140, 235, 175, 0.95) 330deg, #eafff2 344deg,
+    rgba(140, 235, 175, 0.95) 352deg, transparent 360deg);
+  animation: beam-spin 4.5s linear infinite;
+}
+@property --beam-angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+@keyframes beam-spin { to { --beam-angle: 360deg; } }
+@supports not (background: conic-gradient(from var(--beam-angle, 0deg), #000, #fff)) {
+  .beam-wrap::before { display: none; }
+}
+
+/* --- Unified hover physics: cards & steps lift on a shared curve --- */
+.smstep, .smcard, .smquote, .card24 {
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.smstep:hover, .smquote:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px -22px rgba(13, 19, 16, 0.28);
+}
+.smcat-art, .smstep-art { will-change: transform; }
+
+/* --- Nav: condensed + shadowed once scrolled --- */
+.smnav { transition: box-shadow 0.25s ease, background 0.25s ease; }
+.smnav.scrolled {
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 10px 30px -18px rgba(13, 19, 16, 0.22);
+}
+.smnav-inner { transition: padding 0.25s ease; }
+.smnav.scrolled .smnav-inner { padding-top: 9px; padding-bottom: 9px; }
+
+/* --- Anchored sections clear the fixed nav --- */
+section[id], div[id="top"] { scroll-margin-top: 76px; }
+
+/* --- Focus rings: visible, on-brand --- */
+.smbtn:focus-visible, .smnav-links button:focus-visible,
+.smcat-item:focus-visible, .smfaq-q:focus-visible, .smhero-cmd:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+/* --- Table & row hovers --- */
+.smtable tbody tr { transition: background 0.15s ease; }
+.smtable tbody tr:hover { background: var(--surface-2); }
+.smtable tbody tr:hover .hl { background: #ddefe3; }
+
+/* --- Marquee logos: quiet by default, full color on hover --- */
+.smmarq-item { filter: grayscale(0.35); opacity: 0.75; transition: filter 0.25s ease, opacity 0.25s ease; }
+.smmarq-item:hover { filter: grayscale(0); opacity: 1; }
+
+/* --- Blur-fade utility driven by framer-motion (filter set inline) --- */
+@media (prefers-reduced-motion: reduce) {
+  .smhero-pill .msg span:first-child { animation: none; -webkit-text-fill-color: currentColor; }
+  .beam-wrap::before { animation: none; display: none; }
+}

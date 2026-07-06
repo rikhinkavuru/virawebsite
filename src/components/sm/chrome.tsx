@@ -1,4 +1,68 @@
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode, ButtonHTMLAttributes, AnchorHTMLAttributes } from "react";
+import { motion } from "framer-motion";
+
+/** Blur-fade reveal: children rise out of a blur when scrolled into view. */
+export function Reveal({
+  children,
+  delay = 0,
+  y = 22,
+  className,
+}: {
+  children: ReactNode;
+  delay?: number;
+  y?: number;
+  className?: string;
+}) {
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y, filter: "blur(9px)" }}
+      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      viewport={{ once: true, amount: 0.35 }}
+      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/** Count-up number ticker; fires once in view, static under reduced motion. */
+export function Ticker({ to, suffix = "" }: { to: number; suffix?: string }) {
+  const [n, setN] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setN(to);
+      return;
+    }
+    let raf = 0;
+    let started = false;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting || started) return;
+        started = true;
+        const start = performance.now();
+        const dur = 1200;
+        const tick = (t: number) => {
+          const p = Math.min(1, (t - start) / dur);
+          setN(Math.round(to * (1 - Math.pow(1 - p, 3))));
+          if (p < 1) raf = requestAnimationFrame(tick);
+        };
+        raf = requestAnimationFrame(tick);
+      },
+      { threshold: 0.5 },
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      cancelAnimationFrame(raf);
+    };
+  }, [to]);
+  return <span ref={ref}>{n.toLocaleString()}{suffix}</span>;
+}
 
 /* Pixel-art V mark: green V with a white pixel outline, dissolving into
    scattered squares below — drawn on a 16×16 grid. Coordinate lists, not

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Section } from "./chrome";
+import { Section, Reveal } from "./chrome";
 
 type Item = {
   key: string;
@@ -137,10 +137,14 @@ export function Catalog() {
         onMouseLeave={() => { hovering.current = false; }}
       >
         <div className="smcat-head">
-          <h2>
-            Everything a school needs to run <span className="g">a real hackathon.</span>
-          </h2>
-          <p>Focused building blocks for launching, running, and scaling student-led events.</p>
+          <Reveal>
+            <h2>
+              Everything a school needs to run <span className="g">a real hackathon.</span>
+            </h2>
+            <p style={{ marginTop: 18 }}>
+              Focused building blocks for launching, running, and scaling student-led events.
+            </p>
+          </Reveal>
           <div className="smcat-list" role="tablist" aria-label="Program catalog">
             {ITEMS.map((it, i) => (
               <button

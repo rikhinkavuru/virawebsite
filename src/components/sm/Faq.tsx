@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Section } from "./chrome";
+import { Section, Reveal } from "./chrome";
 
 const FAQS: Array<{ q: string; a: string }> = [
   {
@@ -34,7 +34,9 @@ export function Faq() {
   return (
     <Section label="FAQ" index={7} id="faq">
       <div className="smfaq-head">
-        <h2>The fine print, <span className="g">in plain English.</span></h2>
+        <Reveal>
+          <h2>The fine print, <span className="g">in plain English.</span></h2>
+        </Reveal>
       </div>
       {FAQS.map((f, i) => (
         <div className={`smfaq-item ${open === i ? "open" : ""}`} key={f.q}>
