@@ -1,13 +1,13 @@
 import type { ReactNode } from "react";
 
 /**
- * Isometric scene renderer for the catalog panel — supermemory-style
- * "beautiful objects": white machined structures with green accents,
- * floating on the green panel. Pure SVG, no deps. Each scene is built
- * from boxes projected at 30°, hand-ordered back-to-front.
+ * Isometric scene renderer for the catalog panel — intricate machined
+ * structures in the supermemory style: chunky tiered bases with accent
+ * inlays, pillars with branded caps, screens, vents, LED rows and sagging
+ * cables. Pure SVG, no deps. Painter's order is hand-managed back→front.
  */
 
-const S = 26; // world unit → px
+const S = 30; // world unit → px
 const COS = Math.cos(Math.PI / 6);
 const SIN = Math.sin(Math.PI / 6);
 
@@ -18,15 +18,17 @@ const px = (x: number, y: number, z: number): [number, number] => [
 
 const poly = (pts: Array<[number, number]>) => pts.map((p) => p.join(",")).join(" ");
 
-// face palette: white top, tinted sides, deep-green accents
+// palette: white tops, tinted sides, deep-green accents, mint highlights
 const TOP = "#ffffff";
 const RIGHT = "#d3e8da";
 const LEFT = "#aed2bb";
 const EDGE = { stroke: "#0f6330", strokeWidth: 0.5, strokeOpacity: 0.28, strokeLinejoin: "round" as const };
 const ACCENT = "#0c5a2c";
 const MINT = "#bff0cf";
+const DARK = "#083d1e";
 
-/** Solid box at (x,y,z) with size (w,d,h). Optional per-face overrides. */
+/* ---------- primitives ---------- */
+
 function Box({
   x, y, z, w, d, h,
   top = TOP, right = RIGHT, left = LEFT,
@@ -46,39 +48,119 @@ function Box({
   );
 }
 
-/** Flat diamond tile on the ground plane (top face only). */
-function Tile({ x, y, w, d, fill = "rgba(255,255,255,0.28)" }: {
-  x: number; y: number; w: number; d: number; fill?: string;
+/** Detail rectangle on a +x face (constant X plane). */
+function RightRect({ X, y0, z0, y1, z1, fill, rx = 0 }: {
+  X: number; y0: number; z0: number; y1: number; z1: number; fill: string; rx?: number;
 }) {
-  const t = [px(x, y, 0), px(x + w, y, 0), px(x + w, y + d, 0), px(x, y + d, 0)];
-  return <polygon points={poly(t)} fill={fill} />;
+  const pts = [px(X, y0, z0), px(X, y1, z0), px(X, y1, z1), px(X, y0, z1)];
+  void rx;
+  return <polygon points={poly(pts)} fill={fill} />;
 }
 
-/** Small glowing status light. */
-function Lamp({ x, y, z, delay = 0 }: { x: number; y: number; z: number; delay?: number }) {
+/** Detail rectangle on a +y face (constant Y plane). */
+function LeftRect({ Y, x0, z0, x1, z1, fill }: {
+  Y: number; x0: number; z0: number; x1: number; z1: number; fill: string;
+}) {
+  const pts = [px(x0, Y, z0), px(x1, Y, z0), px(x1, Y, z1), px(x0, Y, z1)];
+  return <polygon points={poly(pts)} fill={fill} />;
+}
+
+/** Detail rectangle on a top plane (constant Z). */
+function TopRect({ Z, x0, y0, x1, y1, fill }: {
+  Z: number; x0: number; y0: number; x1: number; y1: number; fill: string;
+}) {
+  const pts = [px(x0, y0, Z), px(x1, y0, Z), px(x1, y1, Z), px(x0, y1, Z)];
+  return <polygon points={poly(pts)} fill={fill} />;
+}
+
+/** Circle lying on a top plane → iso ellipse. */
+function TopCircle({ x, y, z, r, fill, stroke, strokeWidth = 1.4 }: {
+  x: number; y: number; z: number; r: number; fill?: string; stroke?: string; strokeWidth?: number;
+}) {
   const [cx, cy] = px(x, y, z);
   return (
-    <circle
-      className="iso-blink"
-      style={{ animationDelay: `${delay}s` }}
-      cx={cx} cy={cy} r={2.6} fill={MINT}
+    <ellipse
+      cx={cx} cy={cy} rx={r * 1.22 * S / 26} ry={r * 0.7 * S / 26}
+      fill={fill ?? "none"} stroke={stroke} strokeWidth={stroke ? strokeWidth : 0}
     />
   );
 }
 
-/** Soft ground shadow under a structure. */
-function Shadow({ x, y, rx, ry }: { x: number; y: number; rx: number; ry: number }) {
-  const [cx, cy] = px(x, y, 0);
-  return <ellipse cx={cx} cy={cy + 6} rx={rx} ry={ry} fill="rgba(6,40,20,0.28)" />;
+/** The venn brand printed on a top face. */
+function VennTop({ x, y, z, r = 0.55, color = ACCENT }: {
+  x: number; y: number; z: number; r?: number; color?: string;
+}) {
+  const off = r * 0.42;
+  return (
+    <g>
+      <TopCircle x={x - off} y={y + off} z={z} r={r} stroke={color} />
+      <TopCircle x={x + off} y={y - off} z={z} r={r} stroke={color} />
+    </g>
+  );
 }
 
-function Scene({ children, w = 380, h = 320, shift = 0 }: {
+/** Row of LED dots along a +x face. */
+function LedRow({ X, y, z, n, gap = 0.34, r = 2.2, fill = ACCENT }: {
+  X: number; y: number; z: number; n: number; gap?: number; r?: number; fill?: string;
+}) {
+  return (
+    <g fill={fill}>
+      {Array.from({ length: n }, (_, i) => {
+        const [cx, cy] = px(X, y + i * gap, z);
+        return <circle key={i} cx={cx} cy={cy} r={r} />;
+      })}
+    </g>
+  );
+}
+
+/** Thin vent slits on a +y face. */
+function Vents({ Y, x0, x1, z, n, dz = 0.16, fill = "rgba(15,99,48,0.5)" }: {
+  Y: number; x0: number; x1: number; z: number; n: number; dz?: number; fill?: string;
+}) {
+  return (
+    <g>
+      {Array.from({ length: n }, (_, i) => (
+        <LeftRect key={i} Y={Y} x0={x0} z0={z + i * dz} x1={x1} z1={z + i * dz + dz * 0.45} fill={fill} />
+      ))}
+    </g>
+  );
+}
+
+/** Sagging cable between two world points. */
+function Cable({ a, b, sag = 26, color = MINT, width = 2 }: {
+  a: [number, number, number]; b: [number, number, number]; sag?: number; color?: string; width?: number;
+}) {
+  const [x1, y1] = px(...a);
+  const [x2, y2] = px(...b);
+  const mx = (x1 + x2) / 2;
+  const my = (y1 + y2) / 2 + sag;
+  return (
+    <path
+      d={`M ${x1} ${y1} Q ${mx} ${my} ${x2} ${y2}`}
+      fill="none" stroke={color} strokeWidth={width} strokeLinecap="round"
+    />
+  );
+}
+
+function Lamp({ x, y, z, delay = 0, r = 2.4 }: { x: number; y: number; z: number; delay?: number; r?: number }) {
+  const [cx, cy] = px(x, y, z);
+  return (
+    <circle className="iso-blink" style={{ animationDelay: `${delay}s` }} cx={cx} cy={cy} r={r} fill={MINT} />
+  );
+}
+
+function Shadow({ x = 0, y = 0, rx, ry }: { x?: number; y?: number; rx: number; ry: number }) {
+  const [cx, cy] = px(x, y, 0);
+  return <ellipse cx={cx} cy={cy + 8} rx={rx} ry={ry} fill="rgba(6,40,20,0.30)" />;
+}
+
+function Scene({ children, w = 400, h = 330, shift = 0 }: {
   children: ReactNode; w?: number; h?: number; shift?: number;
 }) {
   return (
     <svg
       viewBox={`${-w / 2} ${-h / 2 - shift} ${w} ${h}`}
-      style={{ width: "100%", maxWidth: w, height: "auto", display: "block" }}
+      style={{ width: "100%", maxWidth: w * 1.5, height: "auto", display: "block" }}
       aria-hidden="true"
     >
       <g className="iso-float">{children}</g>
@@ -86,152 +168,245 @@ function Scene({ children, w = 380, h = 320, shift = 0 }: {
   );
 }
 
-/* ---------------- scenes ---------------- */
+/* ================= scenes ================= */
 
-/** 01 · Hackathons — launch rig: platform, control tower, flag mast. */
+/** 01 · Hackathons — mission gantry: four capped pillars bridged over a
+ *  floating core, on a two-tier machined base. */
 function Launch() {
+  const P = 1.5; // pillar center offset
+  const PH = 2.5; // pillar height
+  const pillar = (cx: number, cy: number, k: number) => (
+    <g key={k}>
+      <Box x={cx - 0.42} y={cy - 0.42} z={1.02} w={0.84} d={0.84} h={PH} />
+      <Box x={cx - 0.55} y={cy - 0.55} z={1.02 + PH} w={1.1} d={1.1} h={0.34} />
+      <VennTop x={cx} y={cy} z={1.36 + PH} r={0.34} />
+    </g>
+  );
   return (
-    <Scene shift={30}>
-      <Shadow x={0} y={0} rx={120} ry={30} />
-      <Tile x={-3.4} y={-0.2} w={1.4} d={1.4} />
-      <Tile x={1.6} y={-2.8} w={1.1} d={1.1} fill="rgba(255,255,255,0.18)" />
-      {/* platform slabs */}
-      <Box x={-2.6} y={-2.6} z={0} w={5.2} d={5.2} h={0.5} />
-      <Box x={-1.9} y={-1.9} z={0.5} w={3.8} d={3.8} h={0.42} right={MINT} />
-      {/* accent inlay */}
-      <Box x={-0.55} y={-0.55} z={0.92} w={1.1} d={1.1} h={0.1} top={ACCENT} />
-      {/* control tower */}
-      <Box x={-1.6} y={0.15} z={0.92} w={1.15} d={1.15} h={1.7} />
-      <Box x={-1.45} y={0.3} z={2.62} w={0.85} d={0.85} h={0.5} top={ACCENT} />
-      {/* stack of crates */}
-      <Box x={0.8} y={0.7} z={0.92} w={0.9} d={0.9} h={0.9} />
-      <Box x={0.95} y={0.85} z={1.82} w={0.6} d={0.6} h={0.6} right={MINT} />
+    <Scene shift={36}>
+      <Shadow rx={150} ry={36} />
+      {/* two-tier base with accent trim */}
+      <Box x={-3.3} y={-3.3} z={0} w={6.6} d={6.6} h={0.55} />
+      <RightRect X={3.3} y0={-2.9} z0={0.14} y1={2.9} z1={0.3} fill={ACCENT} />
+      <LeftRect Y={3.3} x0={-2.9} z0={0.14} x1={2.9} z1={0.3} fill="rgba(12,90,44,0.55)" />
+      <Box x={-2.55} y={-2.55} z={0.55} w={5.1} d={5.1} h={0.47} />
+      <TopRect Z={1.021} x0={-2.3} y0={-2.3} x1={2.3} y1={-2.05} fill={MINT} />
+      <TopRect Z={1.021} x0={-2.3} y0={2.05} x1={2.3} y1={2.3} fill={MINT} />
+      <LedRow X={2.55} y={-1.6} z={0.8} n={5} />
+      {/* back pillars first */}
+      {pillar(-P, -P, 1)}
+      {pillar(P, -P, 2)}
+      {/* crossbeams */}
+      <Box x={-P - 0.28} y={-P - 0.28} z={3.1} w={2 * P + 0.56} d={0.4} h={0.26} right={MINT} />
+      <Box x={-P - 0.28} y={-P - 0.28} z={3.1} w={0.4} d={2 * P + 0.56} h={0.26} left={LEFT} />
+      <Box x={P - 0.12} y={-P - 0.28} z={3.1} w={0.4} d={2 * P + 0.56} h={0.26} />
+      {/* floating core on pedestal */}
+      <Box x={-0.62} y={-0.62} z={1.02} w={1.24} d={1.24} h={0.28} top={ACCENT} />
+      <Box x={-0.55} y={-0.55} z={1.85} w={1.1} d={1.1} h={1.1} right={MINT} />
+      <VennTop x={0} y={0} z={2.95} r={0.4} />
+      {/* front pillars + front beam */}
+      {pillar(-P, P, 3)}
+      {pillar(P, P, 4)}
+      <Box x={-P - 0.28} y={P - 0.12} z={3.1} w={2 * P + 0.56} d={0.4} h={0.26} right={MINT} />
       {/* flag mast */}
-      <Box x={0.45} y={-1.35} z={0.92} w={0.18} d={0.18} h={2.6} left={ACCENT} right={ACCENT} top={ACCENT} />
+      <Box x={2.75} y={-2.75} z={1.02} w={0.14} d={0.14} h={2.2} left={ACCENT} right={ACCENT} top={ACCENT} />
       <polygon
-        points={poly([px(0.63, -1.26, 3.42), px(1.75, -1.26, 3.16), px(0.63, -1.26, 2.9)])}
+        points={poly([px(2.89, -2.68, 3.2), px(3.85, -2.68, 2.98), px(2.89, -2.68, 2.74)])}
         fill={MINT}
       />
-      <Lamp x={-1.05} y={0.72} z={3.2} />
-      <Lamp x={1.25} y={1.15} z={2.5} delay={0.8} />
+      <Lamp x={-P} y={-P} z={1.42 + PH} />
+      <Lamp x={P} y={P} z={1.42 + PH} delay={0.7} />
+      <Lamp x={0} y={0} z={3.05} delay={1.3} r={2.8} />
     </Scene>
   );
 }
 
-/** 02 · Chapter network — three pillars bridged together. */
+/** 02 · Chapter network — two data towers on risers, joined by sagging
+ *  cables, with a relay dish node. */
 function Network() {
   return (
-    <Scene shift={26}>
-      <Shadow x={0} y={0} rx={130} ry={30} />
-      <Tile x={-3.6} y={0.6} w={1.2} d={1.2} />
-      <Tile x={2.4} y={-3} w={1.2} d={1.2} fill="rgba(255,255,255,0.18)" />
-      <Box x={-3} y={-3} z={0} w={6} d={6} h={0.4} />
-      {/* pillars */}
-      <Box x={-2.3} y={-1.9} z={0.4} w={1.1} d={1.1} h={2.4} />
-      <Box x={1.2} y={-2.2} z={0.4} w={1.1} d={1.1} h={1.6} />
-      <Box x={-0.4} y={1.1} z={0.4} w={1.1} d={1.1} h={3.1} />
-      {/* caps */}
-      <Box x={-2.15} y={-1.75} z={2.8} w={0.8} d={0.8} h={0.18} top={ACCENT} />
-      <Box x={1.35} y={-2.05} z={2.0} w={0.8} d={0.8} h={0.18} top={ACCENT} />
-      <Box x={-0.25} y={1.25} z={3.5} w={0.8} d={0.8} h={0.18} top={ACCENT} />
-      {/* bridges */}
-      <Box x={-1.2} y={-1.55} z={2.05} w={2.4} d={0.34} h={0.16} right={MINT} />
-      <Box x={0.28} y={-1.4} z={2.2} w={0.34} d={2.6} h={0.16} left={MINT} />
-      <Lamp x={-1.75} y={-1.35} z={3.15} />
-      <Lamp x={0.15} y={1.65} z={3.85} delay={0.6} />
-      <Lamp x={1.75} y={-1.65} z={2.35} delay={1.2} />
+    <Scene shift={34}>
+      <Shadow rx={155} ry={36} />
+      {/* joined base plates */}
+      <Box x={-3.6} y={-2.4} z={0} w={4} d={4.8} h={0.5} />
+      <Box x={0.4} y={-1.9} z={0} w={3.2} d={3.8} h={0.5} />
+      <RightRect X={3.6} y0={-1.5} z0={0.12} y1={1.5} z1={0.28} fill={ACCENT} />
+      <TopRect Z={0.501} x0={-3.3} y0={-2.1} x1={-3.05} y1={2.1} fill={MINT} />
+      {/* tall tower on riser */}
+      <Box x={-2.9} y={-1.5} z={0.5} w={2.2} d={2.6} h={0.4} />
+      <Box x={-2.45} y={-1.05} z={0.9} w={1.35} d={1.7} h={3.2} />
+      {/* tower face details: line rows + screen + dots */}
+      {Array.from({ length: 5 }, (_, i) => (
+        <RightRect key={i} X={-1.1} y0={-0.8} z0={1.4 + i * 0.5} y1={0.4} z1={1.58 + i * 0.5} fill={i === 1 ? MINT : "rgba(15,99,48,0.35)"} />
+      ))}
+      <LedRow X={-1.1} y={-0.85} z={4.0} n={3} gap={0.3} r={2} />
+      <Vents Y={0.65} x0={-2.25} x1={-1.4} z={1.3} n={4} />
+      <TopRect Z={4.101} x0={-2.25} y0={-0.85} x1={-1.3} y1={0.45} fill={ACCENT} />
+      <VennTop x={-1.78} y={-0.2} z={4.102} r={0.34} color={MINT} />
+      {/* short tower on riser */}
+      <Box x={0.9} y={-1.2} z={0.5} w={2.1} d={2.4} h={0.36} />
+      <Box x={1.3} y={-0.8} z={0.86} w={1.3} d={1.6} h={2.3} />
+      {Array.from({ length: 4 }, (_, i) => (
+        <RightRect key={i} X={2.6} y0={-0.55} z0={1.2 + i * 0.42} y1={0.55} z1={1.36 + i * 0.42} fill={i === 2 ? MINT : "rgba(15,99,48,0.35)"} />
+      ))}
+      <Vents Y={0.8} x0={1.45} x1={2.3} z={1.1} n={4} />
+      <TopRect Z={3.161} x0={1.45} y0={-0.65} x1={2.45} y1={0.65} fill={ACCENT} />
+      <Lamp x={1.95} y={0} z={3.2} delay={0.5} />
+      {/* cables between tower tops */}
+      <Cable a={[-1.45, -0.5, 4.05]} b={[1.5, -0.35, 3.12]} sag={30} />
+      <Cable a={[-1.45, -0.1, 4.0]} b={[1.5, 0.05, 3.08]} sag={40} color="rgba(255,255,255,0.85)" />
+      <Cable a={[-1.45, 0.3, 3.95]} b={[1.5, 0.4, 3.05]} sag={52} width={1.6} />
+      {/* relay dish node */}
+      <Box x={-0.5} y={1.3} z={0.5} w={0.7} d={0.7} h={0.9} />
+      <TopCircle x={-0.15} y={1.65} z={1.42} r={0.5} fill={MINT} stroke={ACCENT} strokeWidth={1} />
+      <Lamp x={-0.15} y={1.65} z={1.5} delay={1.1} r={2} />
+      <Lamp x={-1.78} y={-0.5} z={4.15} />
     </Scene>
   );
 }
 
-/** 03 · Clinical mentorship — med console with cross + monitor. */
+/** 03 · Clinical mentorship — med mainframe with monitor face, open file
+ *  drawer with record cards, cross emblem and a vitals pillar. */
 function Clinic() {
-  const [c1x, c1y] = px(1.62, 0.4, 1.55);
+  const [crossX, crossY] = px(2.05, 0.15, 1.75);
   return (
-    <Scene shift={26}>
-      <Shadow x={0} y={0} rx={120} ry={28} />
-      <Tile x={-3.2} y={-0.4} w={1.2} d={1.2} />
-      <Box x={-2.6} y={-2.6} z={0} w={5.2} d={5.2} h={0.4} />
-      {/* main console */}
-      <Box x={-1.9} y={-1.5} z={0.4} w={2.4} d={2.2} h={1.5} />
-      <Box x={-1.75} y={-1.35} z={1.9} w={2.1} d={1.9} h={0.16} top={MINT} />
-      {/* cross emblem on the right face */}
-      <g fill={ACCENT}>
-        <rect x={c1x - 2.2} y={c1y - 7} width={4.4} height={14} rx={1} />
-        <rect x={c1x - 7} y={c1y - 2.2} width={14} height={4.4} rx={1} />
-      </g>
-      {/* monitor pillar */}
-      <Box x={1.0} y={-1.7} z={0.4} w={0.22} d={0.22} h={2.5} left={ACCENT} right={ACCENT} top={ACCENT} />
-      <Box x={0.55} y={-1.95} z={2.6} w={1.5} d={0.14} h={1.0} right={ACCENT} />
-      {/* pulse line on the monitor */}
+    <Scene shift={32}>
+      <Shadow rx={150} ry={36} />
+      {/* base */}
+      <Box x={-3.2} y={-2.7} z={0} w={6.4} d={5.4} h={0.5} />
+      <RightRect X={3.2} y0={-2.3} z0={0.12} y1={2.3} z1={0.28} fill={ACCENT} />
+      <TopRect Z={0.501} x0={-2.9} y0={2.05} x1={2.9} y1={2.3} fill={MINT} />
+      <LedRow X={3.2} y={-2.0} z={0.38} n={4} gap={0.3} r={1.8} fill={DARK} />
+      {/* main cabinet */}
+      <Box x={-2.3} y={-1.7} z={0.5} w={3.3} d={2.6} h={2.6} />
+      {/* right face: screen inset with pulse + status rows */}
+      <RightRect X={1.0} y0={-1.45} z0={1.7} y1={0.65} z1={2.85} fill={DARK} />
       <polyline
         points={poly([
-          px(0.68, -1.95, 3.05), px(0.95, -1.95, 3.05), px(1.08, -1.95, 3.38),
-          px(1.28, -1.95, 2.82), px(1.42, -1.95, 3.05), px(1.9, -1.95, 3.05),
+          px(1.0, -1.3, 2.2), px(1.0, -0.95, 2.2), px(1.0, -0.78, 2.62),
+          px(1.0, -0.55, 1.9), px(1.0, -0.38, 2.2), px(1.0, 0.5, 2.2),
+        ])}
+        fill="none" stroke={MINT} strokeWidth={1.8} strokeLinejoin="round" strokeLinecap="round"
+      />
+      <RightRect X={1.0} y0={-1.45} z0={1.28} y1={-0.2} z1={1.44} fill="rgba(15,99,48,0.4)" />
+      <RightRect X={1.0} y0={-0.05} z0={1.28} y1={0.65} z1={1.44} fill={MINT} />
+      <LedRow X={1.0} y={-1.4} z={0.95} n={5} gap={0.32} r={2} />
+      {/* left face: cross emblem plate + vents */}
+      <LeftRect Y={0.9} x0={-2.05} z0={1.5} x1={-0.85} z1={2.75} fill="#f4faf6" />
+      <g fill={ACCENT}>
+        <rect x={crossX - 3} y={crossY - 12} width={6} height={24} rx={1.4} transform={`translate(${px(-1.45, 0.9, 2.1)[0] - crossX}, ${px(-1.45, 0.9, 2.1)[1] - crossY})`} />
+        <rect x={crossX - 12} y={crossY - 3} width={24} height={6} rx={1.4} transform={`translate(${px(-1.45, 0.9, 2.1)[0] - crossX}, ${px(-1.45, 0.9, 2.1)[1] - crossY})`} />
+      </g>
+      <Vents Y={0.9} x0={-2.1} x1={-1.5} z={0.75} n={3} />
+      {/* top: inset + venn */}
+      <TopRect Z={3.101} x0={-2.05} y0={-1.45} x1={0.75} y1={0.65} fill={MINT} />
+      <VennTop x={-0.65} y={-0.4} z={3.102} r={0.42} />
+      {/* open drawer with record cards */}
+      <Box x={-1.9} y={1.0} z={0.62} w={1.9} d={1.6} h={0.75} right={MINT} />
+      <LeftRect Y={2.6} x0={-1.75} z0={0.78} x1={-0.15} z1={1.0} fill={ACCENT} />
+      <Box x={-1.65} y={1.15} z={1.37} w={0.34} d={1.2} h={0.62} top={"#f4faf6"} />
+      <Box x={-1.15} y={1.15} z={1.37} w={0.34} d={1.2} h={0.78} top={MINT} />
+      <Box x={-0.65} y={1.15} z={1.37} w={0.34} d={1.2} h={0.5} top={"#f4faf6"} />
+      {/* vitals pillar */}
+      <Box x={1.6} y={-1.9} z={0.5} w={0.2} d={0.2} h={2.9} left={ACCENT} right={ACCENT} top={ACCENT} />
+      <Box x={1.1} y={-2.14} z={3.4} w={1.5} d={0.14} h={0.95} right={DARK} />
+      <polyline
+        points={poly([
+          px(1.22, -2.14, 3.85), px(1.5, -2.14, 3.85), px(1.63, -2.14, 4.12),
+          px(1.83, -2.14, 3.62), px(1.97, -2.14, 3.85), px(2.45, -2.14, 3.85),
         ])}
         fill="none" stroke={MINT} strokeWidth={1.6} strokeLinejoin="round" strokeLinecap="round"
       />
-      {/* supply crates */}
-      <Box x={-2.2} y={1.2} z={0.4} w={0.8} d={0.8} h={0.8} />
-      <Box x={-1.3} y={1.45} z={0.4} w={0.55} d={0.55} h={0.55} right={MINT} />
-      <Lamp x={-0.7} y={-0.4} z={2.2} />
+      <Lamp x={-0.65} y={-0.4} z={3.2} />
+      <Lamp x={2.6} y={-2.14} z={4.2} delay={0.8} r={2} />
     </Scene>
   );
 }
 
-/** 04 · Demo days — podium with beacon and confetti chips. */
+/** 04 · Demo days — awards stage: tiered podium with number plates,
+ *  beacon spotlight and floating confetti. */
 function Podium() {
   return (
-    <Scene shift={28}>
-      <Shadow x={0} y={0} rx={125} ry={28} />
-      <Box x={-2.8} y={-2.8} z={0} w={5.6} d={5.6} h={0.4} />
-      {/* podium tiers */}
-      <Box x={-2.1} y={-0.9} z={0.4} w={1.3} d={1.8} h={1.1} />
-      <Box x={-0.7} y={-0.9} z={0.4} w={1.4} d={1.8} h={1.9} right={MINT} />
-      <Box x={0.8} y={-0.9} z={0.4} w={1.3} d={1.8} h={0.7} />
-      {/* number plates */}
-      <Box x={-0.55} y={-0.75} z={2.3} w={1.1} d={1.5} h={0.14} top={ACCENT} />
+    <Scene shift={34}>
+      <Shadow rx={150} ry={36} />
+      {/* stage base */}
+      <Box x={-3.3} y={-2.6} z={0} w={6.6} d={5.2} h={0.5} />
+      <RightRect X={3.3} y0={-2.2} z0={0.12} y1={2.2} z1={0.28} fill={ACCENT} />
+      <Box x={-2.7} y={-2.0} z={0.5} w={5.4} d={4} h={0.4} />
+      <TopRect Z={0.901} x0={-2.45} y0={-1.75} x1={2.45} y1={-1.5} fill={MINT} />
+      <LedRow X={2.7} y={-1.4} z={0.72} n={6} gap={0.42} />
+      {/* podium tiers: 2nd, 1st, 3rd */}
+      <Box x={-2.2} y={-0.9} z={0.9} w={1.35} d={1.9} h={1.25} />
+      <RightRect X={-0.85} y0={-0.55} z0={1.35} y1={0.65} z1={1.95} fill="rgba(15,99,48,0.2)" />
+      <TopRect Z={2.151} x0={-2.0} y0={-0.7} x1={-1.05} y1={0.8} fill={MINT} />
+      <Box x={-0.7} y={-0.9} z={0.9} w={1.4} d={1.9} h={2.05} right={MINT} />
+      <RightRect X={0.7} y0={-0.5} z0={1.7} y1={0.6} z1={2.6} fill="#ffffff" />
+      <TopRect Z={2.951} x0={-0.5} y0={-0.7} x1={0.5} y1={0.8} fill={ACCENT} />
+      <Box x={0.85} y={-0.9} z={0.9} w={1.35} d={1.9} h={0.85} />
+      <TopRect Z={1.751} x0={1.05} y0={-0.7} x1={2.0} y1={0.8} fill={MINT} />
       {/* beacon on the winner tier */}
-      <Box x={-0.28} y={-0.28} z={2.44} w={0.5} d={0.5} h={0.9} left={ACCENT} right={ACCENT} top={MINT} />
+      <Box x={-0.26} y={-0.26} z={2.95} w={0.52} d={0.52} h={1.15} top={MINT} />
+      <TopCircle x={0} y={0} z={4.35} r={0.5} stroke={MINT} strokeWidth={1.4} />
+      <TopCircle x={0} y={0} z={4.6} r={0.8} stroke="rgba(255,255,255,0.5)" strokeWidth={1} />
+      {/* place dots: 2 / 1 / 3 */}
+      <LedRow X={-0.85} y={-0.25} z={1.62} n={2} gap={0.4} />
+      <LedRow X={0.7} y={-0.05} z={2.15} n={1} />
+      <LedRow X={2.2} y={-0.45} z={1.32} n={3} gap={0.4} />
       {/* floating confetti chips */}
-      <g>
-        <Tile x={-1.7} y={-2.4} w={0.5} d={0.5} fill={MINT} />
-        <Tile x={1.5} y={-2.2} w={0.4} d={0.4} fill="rgba(255,255,255,0.5)" />
-        <Tile x={2.1} y={0.9} w={0.5} d={0.5} fill={MINT} />
-        <Tile x={-2.5} y={1.6} w={0.4} d={0.4} fill="rgba(255,255,255,0.4)" />
-      </g>
-      <Lamp x={-0.03} y={-0.03} z={3.6} />
-      <Lamp x={-1.45} y={0} z={1.85} delay={0.7} />
-      <Lamp x={1.45} y={0} z={1.45} delay={1.3} />
+      <TopRect Z={2.9} x0={-2.6} y0={-2.3} x1={-2.2} y1={-1.9} fill={MINT} />
+      <TopRect Z={3.6} x0={1.9} y0={-2.0} x1={2.25} y1={-1.65} fill="rgba(255,255,255,0.6)" />
+      <TopRect Z={2.4} x0={2.5} y0={0.9} x1={2.85} y1={1.25} fill={MINT} />
+      <TopRect Z={3.2} x0={-3.0} y0={0.8} x1={-2.7} y1={1.1} fill="rgba(255,255,255,0.5)" />
+      <Lamp x={0} y={0} z={4.35} r={3} />
+      <Lamp x={-1.55} y={0} z={2.35} delay={0.7} />
+      <Lamp x={1.5} y={0} z={1.95} delay={1.3} />
     </Scene>
   );
 }
 
-/** 05 · Operator handoff — relay line: two stations, a moving carrier. */
+/** 05 · Operator handoff — relay line: two gantry stations, a detailed
+ *  carrier sliding the rail, control kiosk and an arcing link. */
 function Relay() {
+  const station = (cx: number, k: number) => (
+    <g key={k}>
+      <Box x={cx - 0.55} y={-1.25} z={0.5} w={1.1} d={2.5} h={0.3} />
+      <Box x={cx - 0.38} y={-1.05} z={0.8} w={0.76} d={0.5} h={1.7} />
+      <Box x={cx - 0.38} y={0.55} z={0.8} w={0.76} d={0.5} h={1.7} />
+      <Box x={cx - 0.5} y={-1.15} z={2.5} w={1.0} d={2.3} h={0.3} right={MINT} />
+      <VennTop x={cx} y={0} z={2.801} r={0.36} />
+      <Vents Y={-0.55} x0={cx - 0.3} x1={cx + 0.3} z={1.1} n={3} />
+    </g>
+  );
   return (
-    <Scene shift={24}>
-      <Shadow x={0} y={0} rx={135} ry={28} />
-      <Box x={-3.2} y={-1.4} z={0} w={6.4} d={2.8} h={0.4} />
-      {/* rail */}
-      <Box x={-2.7} y={-0.35} z={0.4} w={5.4} d={0.7} h={0.22} top={MINT} />
-      {/* stations */}
-      <Box x={-2.9} y={-1.05} z={0.4} w={1.2} d={2.1} h={1.5} />
-      <Box x={1.7} y={-1.05} z={0.4} w={1.2} d={2.1} h={1.5} />
-      <Box x={-2.75} y={-0.9} z={1.9} w={0.9} d={1.8} h={0.16} top={ACCENT} />
-      <Box x={1.85} y={-0.9} z={1.9} w={0.9} d={1.8} h={0.16} top={ACCENT} />
-      {/* carrier sliding along the rail */}
+    <Scene shift={30}>
+      <Shadow rx={165} ry={34} />
+      {/* long deck */}
+      <Box x={-3.9} y={-1.55} z={0} w={7.8} d={3.1} h={0.5} />
+      <RightRect X={3.9} y0={-1.2} z0={0.12} y1={1.2} z1={0.28} fill={ACCENT} />
+      {/* rail with sleepers */}
+      <Box x={-3.4} y={-0.42} z={0.5} w={6.8} d={0.84} h={0.18} top={MINT} />
+      {Array.from({ length: 9 }, (_, i) => (
+        <TopRect key={i} Z={0.682} x0={-3.2 + i * 0.75} y0={-0.34} x1={-3.05 + i * 0.75} y1={0.34} fill="rgba(12,90,44,0.5)" />
+      ))}
+      {/* far station */}
+      {station(-3.0, 1)}
+      {/* carrier sliding the rail */}
       <g className="iso-slide">
-        <Box x={-0.5} y={-0.3} z={0.62} w={0.9} d={0.6} h={0.55} right={MINT} />
-        <Box x={-0.32} y={-0.18} z={1.17} w={0.5} d={0.36} h={0.22} top={ACCENT} />
+        <Box x={-0.75} y={-0.36} z={0.68} w={1.5} d={0.72} h={0.5} right={MINT} />
+        <Box x={-0.55} y={-0.26} z={1.18} w={0.6} d={0.52} h={0.5} />
+        <Box x={0.15} y={-0.22} z={1.18} w={0.5} d={0.44} h={0.34} top={ACCENT} />
+        <LedRow X={0.75} y={-0.28} z={0.95} n={2} gap={0.3} r={1.8} />
       </g>
-      {/* arc arrow between stations */}
-      <path
-        d={`M ${px(-1.9, -1.3, 2.1).join(" ")} C ${px(-0.8, -1.3, 3.3).join(" ")}, ${px(0.8, -1.3, 3.3).join(" ")}, ${px(1.9, -1.3, 2.1).join(" ")}`}
-        fill="none" stroke="rgba(255,255,255,0.85)" strokeWidth={1.6} strokeDasharray="5 6" strokeLinecap="round"
-      />
-      <Lamp x={-2.3} y={0} z={2.25} />
-      <Lamp x={2.3} y={0} z={2.25} delay={0.9} />
+      {/* near station */}
+      {station(3.0, 2)}
+      {/* arcing link between station tops */}
+      <Cable a={[-3.0, -0.9, 2.8]} b={[3.0, -0.9, 2.8]} sag={-46} color="rgba(255,255,255,0.85)" width={1.6} />
+      <Cable a={[-3.0, 0.9, 2.8]} b={[3.0, 0.9, 2.8]} sag={-30} width={1.4} />
+      {/* control kiosk */}
+      <Box x={-1.2} y={1.05} z={0.5} w={0.85} d={0.6} h={1.0} />
+      <RightRect X={-0.35} y0={1.15} z0={1.05} y1={1.55} z1={1.38} fill={DARK} />
+      <Lamp x={-3.0} y={0} z={2.95} />
+      <Lamp x={3.0} y={0} z={2.95} delay={0.9} />
     </Scene>
   );
 }

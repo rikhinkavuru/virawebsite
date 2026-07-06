@@ -40,16 +40,33 @@ export function GlitchBand() {
       }
     };
 
-    /** 0..1 "ink": how strongly this point belongs to a hand. */
-    const sample = (nx: number, ny: number) => {
+    const rawInk = (mx: number, my: number) => {
       if (!lum) return 0;
-      const x = Math.max(0, Math.min(MW - 1, Math.floor(nx * MW)));
-      const y = Math.max(0, Math.min(MH - 1, Math.floor(ny * MH)));
+      const x = Math.max(0, Math.min(MW - 1, mx));
+      const y = Math.max(0, Math.min(MH - 1, my));
       const v = lum[y * MW + x];
       // plaster ≈ 0.72–0.85, skin ≈ 0.25–0.6 → invert around 0.68 with a
       // gentle gamma so interior shading (knuckles, tendons) survives
       const ink = Math.max(0, Math.min(1, (0.68 - v) * 2.2));
       return Math.pow(ink, 0.8);
+    };
+
+    /** 0..1 "ink" with soft erosion: thin plaster cracks (a few px wide)
+     *  have little neighborhood support and fade out; the broad hand
+     *  masses keep their full density and soft edges. */
+    const sample = (nx: number, ny: number) => {
+      const mx = Math.floor(nx * MW);
+      const my = Math.floor(ny * MH);
+      const base = rawInk(mx, my);
+      if (base <= 0) return 0;
+      const R = 4;
+      const support = (
+        rawInk(mx - R, my) + rawInk(mx + R, my) +
+        rawInk(mx, my - R) + rawInk(mx, my + R) +
+        rawInk(mx - R, my - R) + rawInk(mx + R, my + R)
+      ) / 6;
+      const keep = Math.max(0, Math.min(1, support * 3.2));
+      return base * keep;
     };
 
     const resize = () => {
@@ -63,12 +80,13 @@ export function GlitchBand() {
     const noise = (x: number, y: number) =>
       Math.abs(Math.sin(x * 12.9898 + y * 78.233) * 43758.5453 % 1);
 
-    /** Feathered clear zone around the centered mark: 1 outside, 0 inside. */
+    /** Feathered elliptical clear zone around the centered mark: wide
+     *  horizontally so both hands hold a clear padded distance. */
     const clearance = (nx: number, ny: number, aspect: number) => {
       const dx = (nx - 0.5) * aspect;
-      const dy = ny - 0.5;
+      const dy = (ny - 0.5) / 0.55; // ellipse: shorter vertically
       const d = Math.hypot(dx, dy);
-      const R0 = 0.085, R1 = 0.16; // padded hole, feather band (in height units)
+      const R0 = 0.46, R1 = 0.66; // padded hole, feather band (height units)
       if (d <= R0) return 0;
       if (d >= R1) return 1;
       const t = (d - R0) / (R1 - R0);
@@ -107,7 +125,7 @@ export function GlitchBand() {
         while (x <= w) {
           const nx = x / w;
           const ink = sample(nx, ny) * clearance(nx, ny, aspect);
-          if (ink > 0.05) {
+          if (ink > 0.06) {
             const a = Math.min(0.92, 0.10 + ink * 1.0) * flicker;
             ctx.fillStyle = `rgba(88, 214, 138, ${a})`;
             const dash = step * (1.5 + ink * 2.5);

@@ -2458,7 +2458,7 @@ body { font-family: var(--font-sans); background: var(--bg-color); }
 .smcat-item:hover { color: var(--text-primary); }
 .smcat-panel { display: flex; flex-direction: column; }
 .smcat-art {
-  position: relative; flex: 1; min-height: 380px;
+  position: relative; flex: 1; min-height: 420px;
   background:
     radial-gradient(rgba(255, 255, 255, 0.22) 1px, transparent 1px),
     linear-gradient(135deg, var(--green) 0%, var(--green-deep) 100%);
