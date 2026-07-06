@@ -13,9 +13,6 @@ import { Eyebrow, BracketButton } from "@/components/landing/atoms";
 
 // Code-split the heavy/below-the-fold pieces out of the initial bundle.
 const NetworkSection = lazy(() => import("@/components/network/NetworkSection"));
-const MentorPanel = lazy(() =>
-  import("@/components/network/MentorPanel").then((m) => ({ default: m.MentorPanel })),
-);
 const ApplyForm = lazy(() =>
   import("@/components/network/ApplyForm").then((m) => ({ default: m.ApplyForm })),
 );
@@ -91,16 +88,6 @@ export default function Index() {
             <PeopleTab />
           </div>
         </section>
-
-        {FLAGS.mentor && (
-          <section id="mentor" className="section24">
-            <div className="section24-inner">
-              <Suspense fallback={<SectionFallback label="// loading mentor uplink" />}>
-                <MentorPanel />
-              </Suspense>
-            </div>
-          </section>
-        )}
 
         {FLAGS.apply && (
           <section id="apply" className="section24">

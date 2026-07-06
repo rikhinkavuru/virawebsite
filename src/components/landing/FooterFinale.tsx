@@ -7,7 +7,6 @@ const NAV: Array<{ label: string; id: string }> = [
   { label: "Network", id: "network" },
   { label: "Chapters", id: "chapters" },
   { label: "People", id: "people" },
-  { label: "Mentor", id: "mentor" },
   { label: "Apply", id: "apply" },
 ];
 

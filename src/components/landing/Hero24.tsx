@@ -31,8 +31,24 @@ function ChartChip() {
             <stop offset="100%" stopColor="rgba(184,205,240,0)" />
           </linearGradient>
         </defs>
-        <polygon points={`0,44 ${pts} 100,44`} fill="url(#chipfill)" />
-        <polyline points={pts} fill="none" stroke="rgba(214,228,250,0.9)" strokeWidth="1.4" />
+        <motion.polygon
+          points={`0,44 ${pts} 100,44`}
+          fill="url(#chipfill)"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 2.1 }}
+        />
+        <motion.polyline
+          points={pts}
+          fill="none"
+          stroke="rgba(214,228,250,0.9)"
+          strokeWidth="1.4"
+          pathLength={1}
+          strokeDasharray={1}
+          initial={{ strokeDashoffset: 1 }}
+          animate={{ strokeDashoffset: 0 }}
+          transition={{ duration: 1.6, delay: 0.9, ease: "easeInOut" }}
+        />
       </svg>
     </span>
   );

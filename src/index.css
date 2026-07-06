@@ -2298,10 +2298,13 @@ body { font-family: var(--font-sans); background: var(--bg-color); }
 }
 .nav24-logo {
   pointer-events: auto; cursor: pointer;
-  font-family: var(--font-sans); font-weight: 600; font-size: 1.35rem;
-  letter-spacing: -0.04em; color: var(--text-primary);
+  font-family: var(--font-sans); font-weight: 600; font-size: 1.05rem;
+  letter-spacing: -0.03em; color: var(--text-primary);
   display: flex; align-items: baseline; gap: 1px;
-  background: none; border: none; padding: 0;
+  background: none; border: none;
+  padding: 4px 14px 4px 12px;
+  margin-right: 4px;
+  border-right: 1px solid var(--border);
 }
 .nav24-logo .serif { font-family: var(--font-serif); font-style: italic; font-weight: 500; }
 .nav24-pill {
@@ -2687,12 +2690,9 @@ body { font-family: var(--font-sans); background: var(--bg-color); }
 /* Retained inner sections get the new width discipline */
 .main-content { max-width: 1240px; }
 
-.nav24-mobilecta { display: none; }
-
 @media (max-width: 760px) {
-  .nav24-pill { display: none; }
-  .nav24 { justify-content: space-between; padding: 0 18px; }
-  .nav24-mobilecta { display: inline-flex; pointer-events: auto; }
+  .nav24-link, .nav24-sep { display: none; }
+  .nav24-logo { border-right: none; }
   .band24 { flex-direction: column; align-items: flex-start; gap: 1.2rem; }
   .band24-right { align-items: flex-start; }
   .hero24-inner { padding-top: 16vh; }
