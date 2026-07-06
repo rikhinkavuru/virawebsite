@@ -59,13 +59,14 @@ export function GlitchBand() {
       const my = Math.floor(ny * MH);
       const base = rawInk(mx, my);
       if (base <= 0) return 0;
-      const R = 4;
-      const support = (
-        rawInk(mx - R, my) + rawInk(mx + R, my) +
-        rawInk(mx, my - R) + rawInk(mx, my + R) +
-        rawInk(mx - R, my - R) + rawInk(mx + R, my + R)
-      ) / 6;
-      const keep = Math.max(0, Math.min(1, support * 3.2));
+      const R = 3;
+      // directional support: a thin horizontal finger keeps strong
+      // left/right backing even where up/down is empty — cracks (mostly
+      // steep hairlines) fail both directions at once
+      const sH = (rawInk(mx - R, my) + rawInk(mx + R, my)) / 2;
+      const sV = (rawInk(mx, my - R) + rawInk(mx, my + R)) / 2;
+      const support = Math.max(sH, sV * 0.7);
+      const keep = Math.max(0, Math.min(1, support * 4.2));
       return base * keep;
     };
 
@@ -86,7 +87,7 @@ export function GlitchBand() {
       const dx = (nx - 0.5) * aspect;
       const dy = (ny - 0.5) / 0.55; // ellipse: shorter vertically
       const d = Math.hypot(dx, dy);
-      const R0 = 0.46, R1 = 0.66; // padded hole, feather band (height units)
+      const R0 = 0.34, R1 = 0.46; // padded hole, feather band (height units)
       if (d <= R0) return 0;
       if (d >= R1) return 1;
       const t = (d - R0) / (R1 - R0);
