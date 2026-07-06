@@ -5,6 +5,7 @@ export function SplitCards({ onNavigate }: { onNavigate: (id: string) => void })
   const states = new Set(
     CHAPTERS.map((c) => c.loc.split(",").pop()?.trim()).filter(Boolean),
   ).size;
+  const pending = CHAPTERS.filter((c) => c.status === "pending").length;
   const active = CHAPTERS.filter((c) => c.status === "active");
   const biggest = active.reduce(
     (max, c) => ((c.attendees ?? 0) > (max.attendees ?? 0) ? c : max),
@@ -30,7 +31,7 @@ export function SplitCards({ onNavigate }: { onNavigate: (id: string) => void })
             Venue checklists, sponsor templates, judging rubrics and a mentor bench.
             Run your first hackathon in weeks, not semesters.
           </p>
-          <div className="smstats">
+          <div className="smstats four">
             <div>
               <div className="v"><Ticker to={DEPLOYMENT_STATS.total_users} suffix="+" /></div>
               <div className="l">participants</div>
@@ -38,6 +39,10 @@ export function SplitCards({ onNavigate }: { onNavigate: (id: string) => void })
             <div>
               <div className="v"><Ticker to={DEPLOYMENT_STATS.total_deployments} /></div>
               <div className="l">live chapters</div>
+            </div>
+            <div>
+              <div className="v"><Ticker to={pending} /></div>
+              <div className="l">pending</div>
             </div>
             <div>
               <div className="v"><Ticker to={states} /></div>

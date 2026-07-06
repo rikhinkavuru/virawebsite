@@ -2444,8 +2444,16 @@ body { font-family: var(--font-sans); background: var(--bg-color); }
   content: '▪'; position: absolute; right: 4px; color: var(--green); font-size: 0.7rem;
 }
 .smcat-item.active::before {
-  content: ''; position: absolute; left: 0; bottom: -1px; height: 2px; width: 72px;
-  background: var(--text-primary);
+  content: ''; position: absolute; left: 0; bottom: -1px; height: 2px; width: 100%;
+  background: var(--green);
+  transform-origin: left;
+  animation: catfill 4.2s linear forwards;
+}
+@keyframes catfill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+/* hovering the catalog pauses auto-advance — pause the fill with it */
+.smcat:hover .smcat-item.active::before { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .smcat-item.active::before { animation: none; transform: scaleX(1); width: 72px; background: var(--text-primary); }
 }
 .smcat-item:hover { color: var(--text-primary); }
 .smcat-panel { display: flex; flex-direction: column; }
@@ -2521,6 +2529,9 @@ body { font-family: var(--font-sans); background: var(--bg-color); }
 .smcard p { line-height: 1.6; font-size: 0.98rem; }
 .smstats {
   display: grid; grid-template-columns: repeat(3, 1fr);
+}
+.smstats.four { grid-template-columns: repeat(4, 1fr); }
+.smstats, .smstats.four {
   border: 1px dashed rgba(255, 255, 255, 0.4);
   margin-top: 6px;
 }
@@ -2894,4 +2905,21 @@ section[id], div[id="top"] { scroll-margin-top: 76px; }
 @media (prefers-reduced-motion: reduce) {
   .smhero-pill .msg span:first-child { animation: none; -webkit-text-fill-color: currentColor; }
   .beam-wrap::before { animation: none; display: none; }
+}
+
+/* --- Isometric panel scenes --- */
+.iso-float {
+  transform-box: fill-box; transform-origin: center;
+  animation: isofloat 6.5s ease-in-out infinite alternate;
+}
+@keyframes isofloat { from { transform: translateY(-4px); } to { transform: translateY(5px); } }
+.iso-blink { animation: isoblink 2.4s ease-in-out infinite; }
+@keyframes isoblink { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+.iso-slide {
+  transform-box: fill-box; transform-origin: center;
+  animation: isoslide 4.6s ease-in-out infinite alternate;
+}
+@keyframes isoslide { from { transform: translate(-34px, -20px); } to { transform: translate(34px, 20px); } }
+@media (prefers-reduced-motion: reduce) {
+  .iso-float, .iso-blink, .iso-slide { animation: none; }
 }

@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Section, Reveal } from "./chrome";
+import { IsoScene, type IsoKind } from "./IsoArt";
 
 type Item = {
   key: string;
   title: string;
   desc: string;
-  /** simple line-art glyph drawn in the panel */
-  art: "flag" | "map" | "mentor" | "trophy" | "relay";
+  /** isometric scene shown in the panel */
+  art: IsoKind;
 };
 
 const ITEMS: Item[] = [
@@ -15,25 +16,25 @@ const ITEMS: Item[] = [
     key: "hackathons",
     title: "Localized Hackathons",
     desc: "One-day builds hosted inside your school — venue, food, judges and problem statements handled by the chapter playbook, not by you.",
-    art: "flag",
+    art: "launch",
   },
   {
     key: "chapters",
     title: "Chapter Network",
     desc: "Every school is a node. Chapters share sponsors, mentor benches and event templates, so the tenth event is easier than the first.",
-    art: "map",
+    art: "network",
   },
   {
     key: "mentors",
     title: "Clinical Mentorship",
     desc: "Nurses, med students and clinicians review projects mid-build, so student teams ship things that survive contact with a real hospital.",
-    art: "mentor",
+    art: "clinic",
   },
   {
     key: "demo",
     title: "Demo Days & Judging",
     desc: "Structured judging rubrics and community demo days give every team a real audience — and winners a path to the state showcase.",
-    art: "trophy",
+    art: "podium",
   },
   {
     key: "handoff",
@@ -42,51 +43,6 @@ const ITEMS: Item[] = [
     art: "relay",
   },
 ];
-
-function Art({ kind }: { kind: Item["art"] }) {
-  const stroke = { stroke: "#fff", strokeWidth: 2.4, fill: "none", strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
-  switch (kind) {
-    case "flag":
-      return (
-        <svg width="180" height="180" viewBox="0 0 100 100">
-          <path {...stroke} d="M30 88 V14 M30 16 h34 l-8 11 8 11 H30" />
-          <circle {...stroke} cx="30" cy="88" r="5" />
-        </svg>
-      );
-    case "map":
-      return (
-        <svg width="200" height="180" viewBox="0 0 110 100">
-          <circle {...stroke} cx="26" cy="30" r="7" />
-          <circle {...stroke} cx="82" cy="24" r="7" />
-          <circle {...stroke} cx="58" cy="66" r="7" />
-          <circle {...stroke} cx="24" cy="78" r="7" />
-          <path {...stroke} strokeDasharray="4 6" d="M32 34 L52 60 M64 61 L77 30 M33 30 L75 25 M31 74 L51 68" />
-        </svg>
-      );
-    case "mentor":
-      return (
-        <svg width="190" height="180" viewBox="0 0 100 100">
-          <circle {...stroke} cx="38" cy="30" r="10" />
-          <path {...stroke} d="M20 82 c0-14 8-22 18-22 s18 8 18 22" />
-          <path {...stroke} d="M66 34 h18 M75 25 v18" />
-        </svg>
-      );
-    case "trophy":
-      return (
-        <svg width="180" height="180" viewBox="0 0 100 100">
-          <path {...stroke} d="M34 18 h32 v14 a16 16 0 0 1-32 0 Z M34 24 h-12 a10 10 0 0 0 12 12 M66 24 h12 a10 10 0 0 1-12 12 M50 48 v14 M38 74 h24 M42 62 h16 l4 12 H38 Z" />
-        </svg>
-      );
-    case "relay":
-      return (
-        <svg width="200" height="180" viewBox="0 0 110 100">
-          <circle {...stroke} cx="28" cy="50" r="12" />
-          <circle {...stroke} cx="82" cy="50" r="12" />
-          <path {...stroke} d="M40 50 h26 m-8 -7 8 7 -8 7" />
-        </svg>
-      );
-  }
-}
 
 const AUTO_MS = 4200;
 const RESUME_MS = 12000;
@@ -172,7 +128,7 @@ export function Catalog() {
                   exit={{ opacity: 0, scale: 1.03 }}
                   transition={{ duration: 0.28, ease: "easeOut" }}
                 >
-                  <Art kind={item.art} />
+                  <IsoScene kind={item.art} />
                 </motion.div>
               </AnimatePresence>
             </div>

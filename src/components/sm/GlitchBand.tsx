@@ -24,7 +24,7 @@ export function GlitchBand() {
 
     // Luminance mask from the fresco. Source is 960×718; the hands live in
     // roughly the middle horizontal strip — crop it for a wide band.
-    const MW = 480, MH = 150;
+    const MW = 960, MH = 300;
     const CROP = { sx: 0, sy: 120, sw: 960, sh: 300 };
     let lum: Float32Array | null = null;
 
@@ -46,8 +46,10 @@ export function GlitchBand() {
       const x = Math.max(0, Math.min(MW - 1, Math.floor(nx * MW)));
       const y = Math.max(0, Math.min(MH - 1, Math.floor(ny * MH)));
       const v = lum[y * MW + x];
-      // plaster ≈ 0.72–0.85, skin ≈ 0.25–0.6 → invert around 0.66
-      return Math.max(0, Math.min(1, (0.66 - v) * 2.6));
+      // plaster ≈ 0.72–0.85, skin ≈ 0.25–0.6 → invert around 0.68 with a
+      // gentle gamma so interior shading (knuckles, tendons) survives
+      const ink = Math.max(0, Math.min(1, (0.68 - v) * 2.2));
+      return Math.pow(ink, 0.8);
     };
 
     const resize = () => {
@@ -60,6 +62,18 @@ export function GlitchBand() {
 
     const noise = (x: number, y: number) =>
       Math.abs(Math.sin(x * 12.9898 + y * 78.233) * 43758.5453 % 1);
+
+    /** Feathered clear zone around the centered mark: 1 outside, 0 inside. */
+    const clearance = (nx: number, ny: number, aspect: number) => {
+      const dx = (nx - 0.5) * aspect;
+      const dy = ny - 0.5;
+      const d = Math.hypot(dx, dy);
+      const R0 = 0.085, R1 = 0.16; // padded hole, feather band (in height units)
+      if (d <= R0) return 0;
+      if (d >= R1) return 1;
+      const t = (d - R0) / (R1 - R0);
+      return t * t * (3 - 2 * t);
+    };
 
     const frame = (g: number, seed: number) => {
       ctx.clearRect(0, 0, w, h);
@@ -76,33 +90,31 @@ export function GlitchBand() {
         ctx.fillRect(side === 0 ? 0 : w - edgeW, 0, edgeW, h);
       }
 
-      const pitch = 3;
+      const pitch = 2.5;
       const rows = Math.ceil(h / pitch);
-      const step = 4;
+      const step = 3;
+      const aspect = w / h;
       for (let i = 0; i < rows; i++) {
         const y = i * pitch;
         const ny = y / h;
         const tearRoll = noise(i, seed);
-        const tear = g > 0 && tearRoll > 0.86 ? (tearRoll - 0.5) * 130 * g : 0;
-        const flicker = g > 0 ? 1 - g * 0.45 * noise(i * 2.1, seed + 7) : 1;
+        const tear = g > 0 && tearRoll > 0.88 ? (tearRoll - 0.5) * 110 * g : 0;
+        const flicker = g > 0 ? 1 - g * 0.4 * noise(i * 2.1, seed + 7) : 1;
 
-        let runStart = -1;
-        let acc = 0, cnt = 0;
-        for (let x = 0; x <= w; x += step) {
-          const ink = sample(x / w, ny);
-          const on = ink > 0.06;
-          if (on) {
-            if (runStart < 0) { runStart = x; acc = 0; cnt = 0; }
-            acc += ink; cnt++;
-          }
-          if ((!on || x + step > w) && runStart >= 0) {
-            const mean = acc / Math.max(1, cnt);
-            const a = Math.min(0.95, 0.15 + mean * 1.05) * flicker;
-            ctx.fillStyle = mean > 0.72
-              ? `rgba(190, 245, 210, ${a})`
-              : `rgba(74, 205, 125, ${a})`;
-            ctx.fillRect(runStart + tear, y, x - runStart, 1.7);
-            runStart = -1;
+        // draw short constant-length dashes whose alpha follows local ink —
+        // one clean green ramp, no hue jumps
+        let x = 0;
+        while (x <= w) {
+          const nx = x / w;
+          const ink = sample(nx, ny) * clearance(nx, ny, aspect);
+          if (ink > 0.05) {
+            const a = Math.min(0.92, 0.10 + ink * 1.0) * flicker;
+            ctx.fillStyle = `rgba(88, 214, 138, ${a})`;
+            const dash = step * (1.5 + ink * 2.5);
+            ctx.fillRect(x + tear, y, dash, 1.5);
+            x += dash;
+          } else {
+            x += step;
           }
         }
       }

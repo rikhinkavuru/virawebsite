@@ -1,49 +1,463 @@
 {
   "chapters": [
-    { "id": "hhs", "name": "Homestead High School", "loc": "Fort Wayne, IN", "status": "active", "coordinates": [-85.25, 41.05], "event": "Homestead Hackathon", "date": "09.14.25", "attendees": 58, "website": "https://hhs.sacs.k12.in.us/", "info": "Vira foundation node. Focused on rural clinical access." },
-    { "id": "phs", "name": "Plainfield High School", "loc": "Plainfield, IN", "status": "active", "coordinates": [-86.38, 39.70], "event": "Plainfield Hackathon", "date": "10.05.25", "attendees": 42, "website": "https://phs.plainfield.k12.in.us", "info": "Primary expansion hub for Indiana network." },
-    { "id": "chs", "name": "Columbus High School", "loc": "Columbus, IN", "status": "active", "coordinates": [-85.92, 39.22], "event": "Columbus Hackathon", "date": "11.15.25", "attendees": 73, "website": "https://east.bcscschools.org", "info": "Testing high-density participant load protocols." },
-    { "id": "lhs", "name": "Lowell High School", "loc": "Lowell, IN", "status": "active", "coordinates": [-87.42, 41.29], "event": "Lowell Hackathon", "date": "01.17.26", "attendees": 88, "website": "https://lhs.tricreek.k12.in.us", "info": "Record-setting attendance for Q1 deployments." },
-    { "id": "lex", "name": "Lexington High School", "loc": "Lexington, MA", "status": "active", "coordinates": [-71.22, 42.44], "event": "Lexington Hackathon", "date": "02.08.26", "attendees": 65, "website": "https://lhs.lexingtonma.org/", "info": "East Coast flagship node. Research-integrated events." },
-    { "id": "rhs", "name": "Rouse High School", "loc": "Leander, TX", "status": "pending", "coordinates": [-97.85, 30.56], "website": "https://rouse.leanderisd.org", "info": "Finalizing hardware logistics for Texas rollout." },
-    { "id": "ohs", "name": "Oakton High School", "loc": "Vienna, VA", "status": "pending", "coordinates": [-77.29, 38.88], "website": "https://oaktonhs.fcps.edu", "info": "Awaiting chapter president orientation." },
-    { "id": "whs", "name": "Weddington High School", "loc": "Matthews, NC", "status": "pending", "coordinates": [-80.68, 35.02], "website": "https://whs.ucpsnc.org", "info": "Uplink handshake pending local board approval." },
-    { "id": "fhs", "name": "Franklin High School", "loc": "Franklin, TN", "status": "pending", "coordinates": [-86.86, 35.92], "website": "https://wcs.edu/fhs", "info": "Scheduled for Q3 deployment window." },
-    { "id": "aai", "name": "Alliance Academy for Innovation", "loc": "Cumming, GA", "status": "pending", "coordinates": [-84.15, 34.19], "website": "https://www.forsyth.k12.ga.us/alliance", "info": "Infrastructure audit in progress." },
-    { "id": "hse", "name": "Hamilton Southeastern High School", "loc": "Fishers, IN", "status": "pending", "coordinates": [-85.96, 39.96], "website": "https://hseh.hseschools.org", "info": "Evaluating local facility bandwidth." },
-    { "id": "bhs", "name": "Brownsburg High School", "loc": "Brownsburg, IN", "status": "pending", "coordinates": [-86.39, 39.84], "website": "https://www.brownsburg.k12.in.us/bhs", "info": "Node allocation approved; awaiting site visit." },
-    { "id": "chr", "name": "Cherokee High School", "loc": "Canton, GA", "status": "pending", "coordinates": [-84.49, 34.24], "website": "https://cherokee.ccsdrift.org", "info": "North Georgia expansion node." },
-    { "id": "mun", "name": "Munster High School", "loc": "Munster, IN", "status": "pending", "coordinates": [-87.50, 41.56], "website": "https://munsterhs.munster.us", "info": "Northwest Indiana chapter initialization." },
-    { "id": "lam", "name": "Lambert High School", "loc": "Suwanee, GA", "status": "pending", "coordinates": [-84.07, 34.05], "website": "https://lambert.forsyth.k12.ga.us", "info": "Metro Atlanta node pending activation." },
-    { "id": "cmh", "name": "Cox Mill High School", "loc": "Concord, NC", "status": "pending", "coordinates": [-80.58, 35.41], "website": "https://coxmill.cabarrus.k12.nc.us", "info": "Carolinas network expansion pending." },
-    { "id": "map", "name": "Maple High School", "loc": "Dallas, TX", "status": "pending", "coordinates": [-96.79, 32.78], "website": "https://maple.dallasisd.org", "info": "Texas metro node scheduled for activation." },
-    { "id": "ach", "name": "Atlantic Coast High School", "loc": "Jacksonville, FL", "status": "pending", "coordinates": [-81.53, 30.28], "website": "https://atlanticcoast.duval.k12.fl.us", "info": "Florida coast deployment pending infrastructure." },
-    { "id": "ahs", "name": "American High School", "loc": "Fremont, CA", "status": "pending", "coordinates": [-121.99, 37.55], "website": "https://ahs.fremont.k12.ca.us", "info": "West Coast node pending integration." },
-    { "id": "wak", "name": "Wakeland High School", "loc": "Frisco, TX", "status": "pending", "coordinates": [-96.82, 33.15], "website": "https://wakeland.friscoisd.org", "info": "North Texas expansion awaiting final approval." },
-    { "id": "zch", "name": "Zionsville Community High School", "loc": "Zionsville, IN", "status": "pending", "coordinates": [-86.28, 39.95], "website": "https://zcs.k12.in.us/zchs", "info": "Indianapolis metro node evaluation ongoing." }
+    {
+      "id": "hhs",
+      "name": "Homestead High School",
+      "loc": "Fort Wayne, IN",
+      "status": "active",
+      "coordinates": [
+        -85.25,
+        41.05
+      ],
+      "event": "Homestead Hackathon",
+      "date": "09.14.25",
+      "attendees": 58,
+      "website": "https://hhs.sacs.k12.in.us/",
+      "info": "Vira foundation node. Focused on rural clinical access."
+    },
+    {
+      "id": "phs",
+      "name": "Plainfield High School",
+      "loc": "Plainfield, IN",
+      "status": "active",
+      "coordinates": [
+        -86.38,
+        39.7
+      ],
+      "event": "Plainfield Hackathon",
+      "date": "10.05.25",
+      "attendees": 42,
+      "website": "https://phs.plainfield.k12.in.us",
+      "info": "Primary expansion hub for Indiana network."
+    },
+    {
+      "id": "chs",
+      "name": "Columbus High School",
+      "loc": "Columbus, IN",
+      "status": "active",
+      "coordinates": [
+        -85.92,
+        39.22
+      ],
+      "event": "Columbus Hackathon",
+      "date": "11.15.25",
+      "attendees": 73,
+      "website": "https://east.bcscschools.org",
+      "info": "Testing high-density participant load protocols."
+    },
+    {
+      "id": "lhs",
+      "name": "Lowell High School",
+      "loc": "Lowell, IN",
+      "status": "active",
+      "coordinates": [
+        -87.42,
+        41.29
+      ],
+      "event": "Lowell Hackathon",
+      "date": "01.17.26",
+      "attendees": 88,
+      "website": "https://lhs.tricreek.k12.in.us",
+      "info": "Record-setting attendance for Q1 deployments."
+    },
+    {
+      "id": "lex",
+      "name": "Lexington High School",
+      "loc": "Lexington, MA",
+      "status": "active",
+      "coordinates": [
+        -71.22,
+        42.44
+      ],
+      "event": "Lexington Hackathon",
+      "date": "02.08.26",
+      "attendees": 65,
+      "website": "https://lhs.lexingtonma.org/",
+      "info": "East Coast flagship node. Research-integrated events."
+    },
+    {
+      "id": "rhs",
+      "name": "Rouse High School",
+      "loc": "Leander, TX",
+      "status": "active",
+      "coordinates": [
+        -97.85,
+        30.56
+      ],
+      "website": "https://rouse.leanderisd.org",
+      "info": "Texas flagship node. Largest first event in network history.",
+      "event": "Rouse Hackathon",
+      "date": "03.14.26",
+      "attendees": 71
+    },
+    {
+      "id": "ohs",
+      "name": "Oakton High School",
+      "loc": "Vienna, VA",
+      "status": "active",
+      "coordinates": [
+        -77.29,
+        38.88
+      ],
+      "website": "https://oaktonhs.fcps.edu",
+      "info": "DC-metro node running clinician-judged builds.",
+      "event": "Oakton Hackathon",
+      "date": "02.21.26",
+      "attendees": 64
+    },
+    {
+      "id": "whs",
+      "name": "Weddington High School",
+      "loc": "Matthews, NC",
+      "status": "active",
+      "coordinates": [
+        -80.68,
+        35.02
+      ],
+      "website": "https://whs.ucpsnc.org",
+      "info": "Carolinas anchor node with a standing mentor bench.",
+      "event": "Weddington Hackathon",
+      "date": "03.07.26",
+      "attendees": 59
+    },
+    {
+      "id": "fhs",
+      "name": "Franklin High School",
+      "loc": "Franklin, TN",
+      "status": "active",
+      "coordinates": [
+        -86.86,
+        35.92
+      ],
+      "website": "https://wcs.edu/fhs",
+      "info": "Tennessee node piloting the compressed one-day format.",
+      "event": "Franklin Hackathon",
+      "date": "02.28.26",
+      "attendees": 47
+    },
+    {
+      "id": "aai",
+      "name": "Alliance Academy for Innovation",
+      "loc": "Cumming, GA",
+      "status": "active",
+      "coordinates": [
+        -84.15,
+        34.19
+      ],
+      "website": "https://www.forsyth.k12.ga.us/alliance",
+      "info": "Innovation-academy node with integrated health-science track.",
+      "event": "Alliance Hackathon",
+      "date": "03.21.26",
+      "attendees": 52
+    },
+    {
+      "id": "hse",
+      "name": "Hamilton Southeastern High School",
+      "loc": "Fishers, IN",
+      "status": "active",
+      "coordinates": [
+        -85.96,
+        39.96
+      ],
+      "website": "https://hseh.hseschools.org",
+      "info": "Indy-metro node; second-largest Q2 deployment.",
+      "event": "Fishers Hackathon",
+      "date": "04.04.26",
+      "attendees": 66
+    },
+    {
+      "id": "bhs",
+      "name": "Brownsburg High School",
+      "loc": "Brownsburg, IN",
+      "status": "active",
+      "coordinates": [
+        -86.39,
+        39.84
+      ],
+      "website": "https://www.brownsburg.k12.in.us/bhs",
+      "info": "West Indy node launched off the standard playbook.",
+      "event": "Brownsburg Hackathon",
+      "date": "04.11.26",
+      "attendees": 44
+    },
+    {
+      "id": "chr",
+      "name": "Cherokee High School",
+      "loc": "Canton, GA",
+      "status": "active",
+      "coordinates": [
+        -84.49,
+        34.24
+      ],
+      "website": "https://cherokee.ccsdrift.org",
+      "info": "North Georgia node with county-wide recruitment.",
+      "event": "Cherokee Hackathon",
+      "date": "04.18.26",
+      "attendees": 58
+    },
+    {
+      "id": "mun",
+      "name": "Munster High School",
+      "loc": "Munster, IN",
+      "status": "active",
+      "coordinates": [
+        -87.5,
+        41.56
+      ],
+      "website": "https://munsterhs.munster.us",
+      "info": "Northwest Indiana node bridging the Chicago metro.",
+      "event": "Munster Hackathon",
+      "date": "04.25.26",
+      "attendees": 49
+    },
+    {
+      "id": "lam",
+      "name": "Lambert High School",
+      "loc": "Suwanee, GA",
+      "status": "active",
+      "coordinates": [
+        -84.07,
+        34.05
+      ],
+      "website": "https://lambert.forsyth.k12.ga.us",
+      "info": "Metro Atlanta node; strongest sponsor pipeline in the region.",
+      "event": "Lambert Hackathon",
+      "date": "05.02.26",
+      "attendees": 61
+    },
+    {
+      "id": "cmh",
+      "name": "Cox Mill High School",
+      "loc": "Concord, NC",
+      "status": "active",
+      "coordinates": [
+        -80.58,
+        35.41
+      ],
+      "website": "https://coxmill.cabarrus.k12.nc.us",
+      "info": "Concord node running joint events with Weddington.",
+      "event": "Cox Mill Hackathon",
+      "date": "05.16.26",
+      "attendees": 43
+    },
+    {
+      "id": "map",
+      "name": "Maple High School",
+      "loc": "Dallas, TX",
+      "status": "active",
+      "coordinates": [
+        -96.79,
+        32.78
+      ],
+      "website": "https://maple.dallasisd.org",
+      "info": "Dallas-metro node closing out the spring deployment wave.",
+      "event": "Maple Hackathon",
+      "date": "05.30.26",
+      "attendees": 43
+    },
+    {
+      "id": "ach",
+      "name": "Atlantic Coast High School",
+      "loc": "Jacksonville, FL",
+      "status": "pending",
+      "coordinates": [
+        -81.53,
+        30.28
+      ],
+      "website": "https://atlanticcoast.duval.k12.fl.us",
+      "info": "Florida coast deployment pending infrastructure."
+    },
+    {
+      "id": "ahs",
+      "name": "American High School",
+      "loc": "Fremont, CA",
+      "status": "pending",
+      "coordinates": [
+        -121.99,
+        37.55
+      ],
+      "website": "https://ahs.fremont.k12.ca.us",
+      "info": "West Coast node pending integration."
+    },
+    {
+      "id": "wak",
+      "name": "Wakeland High School",
+      "loc": "Frisco, TX",
+      "status": "pending",
+      "coordinates": [
+        -96.82,
+        33.15
+      ],
+      "website": "https://wakeland.friscoisd.org",
+      "info": "North Texas expansion awaiting final approval."
+    },
+    {
+      "id": "zch",
+      "name": "Zionsville Community High School",
+      "loc": "Zionsville, IN",
+      "status": "pending",
+      "coordinates": [
+        -86.28,
+        39.95
+      ],
+      "website": "https://zcs.k12.in.us/zchs",
+      "info": "Indianapolis metro node evaluation ongoing."
+    }
   ],
   "operators": [
-    { "name": "rikhin", "school": "homestead high school", "role": "chapter president", "uptime": "7 months active", "status": "active" },
-    { "name": "kanav", "school": "rouse high school", "role": "chapter president (pending)", "uptime": "pending init", "status": "pending" },
-    { "name": "marcus", "school": "plainfield high school", "role": "chapter president", "uptime": "6 months active", "status": "active" },
-    { "name": "ayush", "school": "oakton high school", "role": "chapter president (pending)", "uptime": "pending init", "status": "pending" },
-    { "name": "bala", "school": "weddington high school", "role": "chapter president (pending)", "uptime": "pending init", "status": "pending" },
-    { "name": "julian", "school": "columbus high school", "role": "chapter president", "uptime": "5 months active", "status": "active" },
-    { "name": "aadith", "school": "franklin high school", "role": "chapter president (pending)", "uptime": "pending init", "status": "pending" },
-    { "name": "sofia", "school": "lowell high school", "role": "chapter president", "uptime": "3 months active", "status": "active" },
-    { "name": "kaushal", "school": "alliance academy", "role": "chapter president (pending)", "uptime": "pending init", "status": "pending" },
-    { "name": "aiden", "school": "lexington high school", "role": "chapter president", "uptime": "2 months active", "status": "active" },
-    { "name": "cameron", "school": "hamilton southeastern", "role": "chapter president (pending)", "uptime": "pending init", "status": "pending" },
-    { "name": "zara", "school": "brownsburg high school", "role": "chapter president (pending)", "uptime": "pending init", "status": "pending" },
-    { "name": "darsh", "school": "cherokee high school", "role": "chapter president (pending)", "uptime": "pending init", "status": "pending" },
-    { "name": "raanya", "school": "munster high school", "role": "chapter president (pending)", "uptime": "pending init", "status": "pending" },
-    { "name": "amrutha", "school": "lambert high school", "role": "chapter president (pending)", "uptime": "pending init", "status": "pending" },
-    { "name": "brijesh", "school": "cox mill high school", "role": "chapter president (pending)", "uptime": "pending init", "status": "pending" },
-    { "name": "maneesh", "school": "maple high school", "role": "chapter president (pending)", "uptime": "pending init", "status": "pending" },
-    { "name": "arnav", "school": "alliance academy", "role": "chapter president (pending)", "uptime": "pending init", "status": "pending" },
-    { "name": "harsha", "school": "atlantic coast high school", "role": "chapter president (pending)", "uptime": "pending init", "status": "pending" },
-    { "name": "arjyoman", "school": "american high school", "role": "chapter president (pending)", "uptime": "pending init", "status": "pending" },
-    { "name": "kalvik", "school": "wakeland high school", "role": "chapter president (pending)", "uptime": "pending init", "status": "pending" },
-    { "name": "pradyumn", "school": "zionsville community high school", "role": "chapter president (pending)", "uptime": "pending init", "status": "pending" }
+    {
+      "name": "rikhin",
+      "school": "homestead high school",
+      "role": "chapter president",
+      "uptime": "7 months active",
+      "status": "active"
+    },
+    {
+      "name": "kanav",
+      "school": "rouse high school",
+      "role": "chapter president",
+      "uptime": "4 months active",
+      "status": "active"
+    },
+    {
+      "name": "marcus",
+      "school": "plainfield high school",
+      "role": "chapter president",
+      "uptime": "6 months active",
+      "status": "active"
+    },
+    {
+      "name": "ayush",
+      "school": "oakton high school",
+      "role": "chapter president",
+      "uptime": "4 months active",
+      "status": "active"
+    },
+    {
+      "name": "bala",
+      "school": "weddington high school",
+      "role": "chapter president",
+      "uptime": "4 months active",
+      "status": "active"
+    },
+    {
+      "name": "julian",
+      "school": "columbus high school",
+      "role": "chapter president",
+      "uptime": "5 months active",
+      "status": "active"
+    },
+    {
+      "name": "aadith",
+      "school": "franklin high school",
+      "role": "chapter president",
+      "uptime": "4 months active",
+      "status": "active"
+    },
+    {
+      "name": "sofia",
+      "school": "lowell high school",
+      "role": "chapter president",
+      "uptime": "3 months active",
+      "status": "active"
+    },
+    {
+      "name": "kaushal",
+      "school": "alliance academy",
+      "role": "chapter president",
+      "uptime": "3 months active",
+      "status": "active"
+    },
+    {
+      "name": "aiden",
+      "school": "lexington high school",
+      "role": "chapter president",
+      "uptime": "2 months active",
+      "status": "active"
+    },
+    {
+      "name": "cameron",
+      "school": "hamilton southeastern",
+      "role": "chapter president",
+      "uptime": "3 months active",
+      "status": "active"
+    },
+    {
+      "name": "zara",
+      "school": "brownsburg high school",
+      "role": "chapter president",
+      "uptime": "3 months active",
+      "status": "active"
+    },
+    {
+      "name": "darsh",
+      "school": "cherokee high school",
+      "role": "chapter president",
+      "uptime": "3 months active",
+      "status": "active"
+    },
+    {
+      "name": "raanya",
+      "school": "munster high school",
+      "role": "chapter president",
+      "uptime": "2 months active",
+      "status": "active"
+    },
+    {
+      "name": "amrutha",
+      "school": "lambert high school",
+      "role": "chapter president",
+      "uptime": "2 months active",
+      "status": "active"
+    },
+    {
+      "name": "brijesh",
+      "school": "cox mill high school",
+      "role": "chapter president",
+      "uptime": "2 months active",
+      "status": "active"
+    },
+    {
+      "name": "maneesh",
+      "school": "maple high school",
+      "role": "chapter president",
+      "uptime": "1 month active",
+      "status": "active"
+    },
+    {
+      "name": "arnav",
+      "school": "alliance academy",
+      "role": "chapter president",
+      "uptime": "1 month active",
+      "status": "active"
+    },
+    {
+      "name": "harsha",
+      "school": "atlantic coast high school",
+      "role": "chapter president (pending)",
+      "uptime": "pending init",
+      "status": "pending"
+    },
+    {
+      "name": "arjyoman",
+      "school": "american high school",
+      "role": "chapter president (pending)",
+      "uptime": "pending init",
+      "status": "pending"
+    },
+    {
+      "name": "kalvik",
+      "school": "wakeland high school",
+      "role": "chapter president (pending)",
+      "uptime": "pending init",
+      "status": "pending"
+    },
+    {
+      "name": "pradyumn",
+      "school": "zionsville community high school",
+      "role": "chapter president (pending)",
+      "uptime": "pending init",
+      "status": "pending"
+    }
   ]
 }
