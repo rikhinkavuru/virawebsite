@@ -1,11 +1,37 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#050506"/>
-  <!-- registration crosshair, top-right -->
-  <g stroke="#5c5c63" stroke-width="2" stroke-linecap="round">
-    <path d="M50 11v8M46 15h8"/>
-  </g>
-  <!-- v mark -->
-  <path d="M14 20 L30 50 L34 50 L50 20 L42 20 L32 41 L22 20 Z" fill="#f2f2f0"/>
-  <!-- pastel period -->
-  <circle cx="51" cy="48" r="4.5" fill="#f0c8a8"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11 11" shape-rendering="crispEdges">
+  <!-- Purple outline blocks -->
+  <rect x="0" y="0" width="1" height="3" fill="#6C3BAA" />
+  <rect x="10" y="0" width="1" height="3" fill="#6C3BAA" />
+  
+  <rect x="1" y="3" width="1" height="3" fill="#6C3BAA" />
+  <rect x="9" y="3" width="1" height="3" fill="#6C3BAA" />
+  
+  <rect x="2" y="6" width="1" height="2" fill="#6C3BAA" />
+  <rect x="8" y="6" width="1" height="2" fill="#6C3BAA" />
+  
+  <rect x="3" y="8" width="1" height="1" fill="#6C3BAA" />
+  <rect x="7" y="8" width="1" height="1" fill="#6C3BAA" />
+  
+  <rect x="4" y="9" width="3" height="1" fill="#6C3BAA" />
+
+  <!-- Inner outline for top -->
+  <rect x="2" y="0" width="1" height="2" fill="#6C3BAA" />
+  <rect x="8" y="0" width="1" height="2" fill="#6C3BAA" />
+  
+  <rect x="3" y="2" width="1" height="2" fill="#6C3BAA" />
+  <rect x="7" y="2" width="1" height="2" fill="#6C3BAA" />
+  
+  <rect x="4" y="4" width="3" height="1" fill="#6C3BAA" />
+  
+  <!-- White fill blocks -->
+  <rect x="1" y="0" width="1" height="3" fill="#FFFFFF" />
+  <rect x="9" y="0" width="1" height="3" fill="#FFFFFF" />
+  
+  <rect x="2" y="2" width="1" height="4" fill="#FFFFFF" />
+  <rect x="8" y="2" width="1" height="4" fill="#FFFFFF" />
+  
+  <rect x="3" y="4" width="1" height="4" fill="#FFFFFF" />
+  <rect x="7" y="4" width="1" height="4" fill="#FFFFFF" />
+  
+  <rect x="4" y="5" width="3" height="4" fill="#FFFFFF" />
 </svg>
