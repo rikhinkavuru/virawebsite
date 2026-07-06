@@ -1,6 +1,37 @@
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Section, ArrowButton, GhostButton } from "./chrome";
 import { CHAPTERS, DEPLOYMENT_STATS } from "@/data/chapters";
+
+const SLOT_WORDS = ["school", "club", "team", "class", "city", "crew"];
+
+/** Slot-machine word: fixed-width box, words roll through vertically. */
+function SlotWord() {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const t = window.setInterval(() => setI((n) => (n + 1) % SLOT_WORDS.length), 2200);
+    return () => window.clearInterval(t);
+  }, []);
+  return (
+    <span className="boxed slot">
+      <span className="slot-window">
+        <AnimatePresence mode="popLayout" initial={false}>
+          <motion.span
+            key={SLOT_WORDS[i]}
+            className="slot-word"
+            initial={{ y: "105%" }}
+            animate={{ y: "0%" }}
+            exit={{ y: "-105%" }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {SLOT_WORDS[i]}
+          </motion.span>
+        </AnimatePresence>
+      </span>
+    </span>
+  );
+}
 
 /** rAF count-up that fires once in view; static under reduced motion. */
 function CountUp({ to }: { to: number }) {
@@ -48,7 +79,7 @@ export function FinalCta({ onNavigate }: { onNavigate: (id: string) => void }) {
     <Section label="Join" index={8} id="apply-cta">
       <div className="smfinal">
         <h2>
-          Your <span className="boxed">school</span> needs its{" "}
+          Your <SlotWord /> needs its{" "}
           <span className="g">Vira chapter.</span>
         </h2>
         <div className="smfinal-row">

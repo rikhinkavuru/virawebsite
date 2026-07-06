@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Section } from "./chrome";
 
@@ -88,13 +88,54 @@ function Art({ kind }: { kind: Item["art"] }) {
   }
 }
 
+const AUTO_MS = 4200;
+const RESUME_MS = 12000;
+
 export function Catalog() {
   const [active, setActive] = useState(0);
   const item = ITEMS[active];
+  const rootRef = useRef<HTMLDivElement>(null);
+  const pausedUntil = useRef(0);
+  const [inView, setInView] = useState(false);
+
+  // Auto-flow through the catalog while it's on screen; a manual click
+  // pauses the rotation for a while, hovering the list pauses it live.
+  const hovering = useRef(false);
+
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.25 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!inView) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const t = window.setInterval(() => {
+      if (hovering.current || Date.now() < pausedUntil.current) return;
+      setActive((a) => (a + 1) % ITEMS.length);
+    }, AUTO_MS);
+    return () => window.clearInterval(t);
+  }, [inView]);
+
+  const select = (i: number) => {
+    pausedUntil.current = Date.now() + RESUME_MS;
+    setActive(i);
+  };
 
   return (
     <Section label="What we run" index={1} id="chapters">
-      <div className="smcat">
+      <div
+        className="smcat"
+        ref={rootRef}
+        onMouseEnter={() => { hovering.current = true; }}
+        onMouseLeave={() => { hovering.current = false; }}
+      >
         <div className="smcat-head">
           <h2>
             Everything a school needs to run <span className="g">a real hackathon.</span>
@@ -107,7 +148,7 @@ export function Catalog() {
                 role="tab"
                 aria-selected={i === active}
                 className={`smcat-item ${i === active ? "active" : ""}`}
-                onClick={() => setActive(i)}
+                onClick={() => select(i)}
               >
                 <span className="idx">0{i + 1}</span>
                 {it.title}

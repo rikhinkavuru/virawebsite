@@ -15,7 +15,7 @@ export function SplitCards({ onNavigate }: { onNavigate: (id: string) => void })
     <Section label="What we do" index={2}>
       <div className="smsplit-head">
         <h2>
-          Bring your school <span className="h1-icon"><ViraMark size={34} radius={8} /></span>{" "}
+          Bring your school <span className="h1-icon"><ViraMark size={38} tile radius={9} /></span>{" "}
           <span className="g">We bring the hackathon.</span> Your students just build.
         </h2>
         <p className="sub">Event infrastructure for student builders. One playbook, every school.</p>
@@ -55,7 +55,7 @@ export function SplitCards({ onNavigate }: { onNavigate: (id: string) => void })
           </p>
           <div className="smrows">
             <div className="row">
-              <span className="who"><ViraMark size={20} radius={5} /> Chapter operators</span>
+              <span className="who"><ViraMark size={22} tile radius={5} /> Chapter operators</span>
               <span className="what">student-run</span>
             </div>
             <div className="row">
