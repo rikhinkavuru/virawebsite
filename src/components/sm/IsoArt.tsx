@@ -76,7 +76,11 @@ function Scene({ children, w = 380, h = 320, shift = 0 }: {
   children: ReactNode; w?: number; h?: number; shift?: number;
 }) {
   return (
-    <svg width={w} height={h} viewBox={`${-w / 2} ${-h / 2 - shift} ${w} ${h}`} aria-hidden="true">
+    <svg
+      viewBox={`${-w / 2} ${-h / 2 - shift} ${w} ${h}`}
+      style={{ width: "100%", maxWidth: w, height: "auto", display: "block" }}
+      aria-hidden="true"
+    >
       <g className="iso-float">{children}</g>
     </svg>
   );

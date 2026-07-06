@@ -2795,6 +2795,11 @@ body { font-family: var(--font-sans); background: var(--bg-color); }
 /* --- Reveal helper --- */
 @media (max-width: 900px) {
   .smcat { grid-template-columns: 1fr; }
+  .smstats.four { grid-template-columns: repeat(2, 1fr); }
+  .smstats.four > div { border-left: none; border-top: 1px dashed rgba(255, 255, 255, 0.4); }
+  .smstats.four > div:nth-child(-n+2) { border-top: none; }
+  .smstats.four > div:nth-child(even) { border-left: 1px dashed rgba(255, 255, 255, 0.4); }
+  .smsel { max-width: 100%; }
   .smsplit { grid-template-columns: 1fr; }
   .smcard.white { border-left: none; border-top: 1px solid var(--border); }
   .smhow { grid-template-columns: 1fr; }
