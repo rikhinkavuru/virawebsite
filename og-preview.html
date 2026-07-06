@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Kode+Mono:wght@500&family=Noto+Serif:ital@1&display=swap" rel="stylesheet" />
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body {
+    width: 1200px; height: 630px; overflow: hidden; position: relative;
+    background: #050506; color: #f2f2f0;
+    font-family: 'Geist', sans-serif;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 0 90px;
+  }
+  /* stars */
+  .star { position: absolute; border-radius: 50%; background: #e2e8f4; }
+  /* planet limb glow top-right */
+  .planet {
+    position: absolute; width: 1600px; height: 1600px; border-radius: 50%;
+    right: -900px; top: -1320px;
+    background: radial-gradient(circle at 40% 78%, rgba(210,225,245,.18), transparent 42%), #08090c;
+    box-shadow: 0 40px 130px -20px rgba(150,185,230,.45), inset 0 -70px 180px -50px rgba(160,195,240,.4);
+  }
+  .eyebrow {
+    font-family: 'Kode Mono', monospace; font-size: 20px; letter-spacing: .16em;
+    color: #9b9ba1; text-transform: uppercase; margin-bottom: 34px;
+  }
+  .eyebrow b { color: #f2f2f0; font-weight: 500; }
+  h1 { font-size: 92px; font-weight: 500; letter-spacing: -0.035em; line-height: 1.04; }
+  h1 .serif { font-family: 'Noto Serif', serif; font-style: italic; font-weight: 400; }
+  h1 .blue { color: #b8cdf0; }
+  h1 .peach { color: #f0c8a8; }
+  .sub { margin-top: 40px; font-size: 26px; color: #9b9ba1; max-width: 46ch; line-height: 1.5; }
+  .brand {
+    position: absolute; bottom: 48px; right: 90px;
+    font-size: 30px; font-weight: 600; letter-spacing: -0.04em;
+  }
+  .brand .serif { font-family: 'Noto Serif', serif; font-style: italic; font-weight: 400; }
+  .cross { position: absolute; font-family: 'Kode Mono', monospace; color: #5c5c63; font-size: 22px; }
+</style>
+</head>
+<body>
+  <div class="planet"></div>
+  <div class="cross" style="top: 34px; left: 40px;">×</div>
+  <div class="cross" style="bottom: 34px; left: 40px;">+</div>
+  <div class="cross" style="top: 34px; right: 44px;">+</div>
+  <div class="eyebrow"><b>///</b> BUILT BY STUDENT FOUNDERS <b>&gt;&gt;&gt;</b></div>
+  <h1>We launch, run<br />&amp; scale <span class="serif blue">student</span><br /><span class="serif peach">hackathons.</span></h1>
+  <div class="sub">The infrastructure layer for high-school healthcare innovation.</div>
+  <div class="brand">vira<span class="serif">hacks</span>.com</div>
+  <script>
+    for (let i = 0; i < 170; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const r = Math.random() < .85 ? Math.random() * 1.6 + .4 : Math.random() * 2.6 + 1.2;
+      s.style.width = s.style.height = r + 'px';
+      s.style.left = Math.random() * 1200 + 'px';
+      s.style.top = Math.random() * 630 + 'px';
+      s.style.opacity = (Math.random() * .6 + .15).toFixed(2);
+      document.body.appendChild(s);
+    }
+  </script>
+</body>
+</html>

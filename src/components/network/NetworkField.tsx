@@ -94,7 +94,10 @@ export function NetworkField() {
     const onLeave = () => { mouse.x = -9999; mouse.y = -9999; };
     const onResize = () => resize();
     const io = new IntersectionObserver(
-      ([entry]) => { if (reduce) return; entry.isIntersecting ? start() : stop(); },
+      ([entry]) => {
+        if (reduce) return;
+        if (entry.isIntersecting) start(); else stop();
+      },
       { threshold: 0 },
     );
     io.observe(canvas);
