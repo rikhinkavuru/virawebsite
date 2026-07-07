@@ -51,9 +51,9 @@ function StepArt({ kind }: { kind: "ingest" | "mentor" | "demo" }) {
         </g>
         {/* flows */}
         <path {...ST_DASH} d="M58 29 C 96 29 100 62 128 68 M58 72 C 88 72 96 70 128 71 M58 115 C 96 115 100 80 128 74" />
-        <circle cx="92" cy="34" r="2.4" fill="var(--green)" />
-        <circle cx="96" cy="71.5" r="2.4" fill="var(--green)" />
-        <circle cx="90" cy="108" r="2.4" fill="var(--green)" />
+        <circle cx="96.8" cy="46.3" r="2.4" fill="var(--green)" />
+        <circle cx="92.3" cy="71.1" r="2.4" fill="var(--green)" />
+        <circle cx="96.8" cy="96.8" r="2.4" fill="var(--green)" />
         {/* hub */}
         <rect {...ST} x="128" y="46" width="58" height="52" rx="9" fill="#fff" />
         <VennMini cx={157} cy={66} r={8} />
@@ -217,18 +217,13 @@ export function HowItWorks() {
               />
               {/* arrowhead */}
               <path d="M192 28 l9 1.4 -5.4 7.4" fill="none" stroke="rgba(255,255,255,0.95)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              {/* milestone nodes: each event, venn-ringed */}
+              {/* milestone nodes — the last one emphasized */}
               <g stroke="#bff0cf" strokeWidth="1.5" fill="none">
                 <circle cx="56" cy="112" r="4.5" fill="rgba(6,40,20,0.55)" />
                 <circle cx="112" cy="88" r="4.5" fill="rgba(6,40,20,0.55)" />
-                <circle cx="168" cy="52" r="4.5" fill="rgba(6,40,20,0.55)" />
               </g>
-              {/* venn ring pair at the last milestone — dark so it reads
-                  against the white curve and grid */}
-              <g stroke="#06280f" strokeWidth="1.8" fill="none">
-                <circle cx="165" cy="52" r="7.5" />
-                <circle cx="171" cy="52" r="7.5" />
-              </g>
+              <circle cx="168" cy="52" r="5" fill="#ffffff" />
+              <circle cx="168" cy="52" r="9" fill="none" stroke="rgba(255,255,255,0.55)" strokeWidth="1.4" />
               {/* dashed baseline of chapter-one effort, for contrast */}
               <path d="M20 118 L 200 106" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="1.4" strokeDasharray="3 7" strokeLinecap="round" />
               {/* axis ticks */}
