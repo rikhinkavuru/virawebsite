@@ -86,12 +86,9 @@ function StepArt({ kind }: { kind: "ingest" | "mentor" | "demo" }) {
           <circle {...ST} cx="70" cy="102" r="5" fill="#fff" />
           <path {...ST_FAINT} d="M82 102 h48" />
         </g>
-        {/* stethoscope arc listening to the card */}
-        <path {...ST} d="M26 40 c0 22 10 34 26 36" />
-        <path {...ST} d="M26 40 v-8 m0 8 c-6 0 -6 -10 0 -10 s6 10 0 10" />
-        <circle {...ST} cx="56" cy="78" r="6" fill={MINT_FILL} />
-        {/* small pulse dot */}
-        <circle cx="160" cy="120" r="3" fill="var(--green)" opacity="0.5" />
+        {/* clinical badge anchored to the card's corner */}
+        <circle {...ST} cx="148" cy="112" r="11" fill="#fff" />
+        <path stroke="var(--green)" strokeWidth="2.4" strokeLinecap="round" d="M148 106.5 v11 M142.5 112 h11" />
       </svg>
     );
   }
@@ -121,10 +118,7 @@ function StepArt({ kind }: { kind: "ingest" | "mentor" | "demo" }) {
         <circle {...ST} cx="112" cy="126" r="6" fill="#fff" />
         <circle {...ST} cx="144" cy="120" r="6" fill={MINT_FILL} />
       </g>
-      {/* confetti ticks */}
-      <g stroke="var(--green)" strokeWidth="1.6" strokeLinecap="round" opacity="0.65">
-        <path d="M30 26 l5 -3 M172 40 l5 3 M166 18 l4 -4 M24 58 l5 2" />
-      </g>
+
     </svg>
   );
 }
@@ -229,8 +223,9 @@ export function HowItWorks() {
                 <circle cx="112" cy="88" r="4.5" fill="rgba(6,40,20,0.55)" />
                 <circle cx="168" cy="52" r="4.5" fill="rgba(6,40,20,0.55)" />
               </g>
-              {/* venn ring pair at the last milestone */}
-              <g stroke="#ffffff" strokeWidth="1.4" fill="none" opacity="0.9">
+              {/* venn ring pair at the last milestone — dark so it reads
+                  against the white curve and grid */}
+              <g stroke="#06280f" strokeWidth="1.8" fill="none">
                 <circle cx="165" cy="52" r="7.5" />
                 <circle cx="171" cy="52" r="7.5" />
               </g>
