@@ -3,7 +3,6 @@ import { ComposableMap, Geographies, Geography, Marker, Line } from "react-simpl
 import geoUrl from "../../us-states.json";
 import type { Chapter } from "@/lib/schema";
 import { useChapters } from "@/hooks/useChapters";
-import { SectionHeader } from "@/components/SectionHeader";
 
 /**
  * The interactive US network map. Code-split (lazy-loaded) because
@@ -11,7 +10,17 @@ import { SectionHeader } from "@/components/SectionHeader";
  * of the initial bundle is the biggest single Lighthouse win. Reads from the
  * typed react-query layer, so the optimistic "apply" node appears here too.
  */
-export default function NetworkSection() {
+export default function NetworkSection({
+  title,
+  note = "Hover a node to see its event, attendance and status — or click to pin it.",
+  plain = false,
+}: {
+  /** Replaces the default headline. */
+  title?: React.ReactNode;
+  note?: string;
+  /** Hide the legend chips and the console status bar. */
+  plain?: boolean;
+} = {}) {
   const { chapters } = useChapters();
   // Track selection by id (not object reference) so it survives an array refetch
   // in live mode — the rendered node is resolved by id each render.
@@ -52,15 +61,29 @@ export default function NetworkSection() {
     if (!isPersistent) setSelectedId(null);
   };
 
-  return (
-    <div style={{ position: "relative" }}>
-      <SectionHeader
-        eyebrow="01 // network architecture"
-        title="A live map of every chapter node."
-        note="Hover a node to see its event, attendance, and status — or click to open it."
-      />
+  const live = chapters.filter((c) => c.status === "active");
+  const pendingCount = chapters.length - live.length;
+  const states = new Set(chapters.map((c) => c.loc.split(",").pop()?.trim()).filter(Boolean)).size;
+  const newest = live[live.length - 1];
 
-      <div className="map-wrapper-large">
+  return (
+    <div className="smnet">
+      <div className="smnet-head">
+        <div>
+          <h2>
+            {title ?? <>A live map of <span className="g">every chapter node.</span></>}
+          </h2>
+          <p>{note}</p>
+        </div>
+        {!plain && (
+          <div className="smnet-legend" aria-hidden="true">
+            <span><i className="live" /> {live.length} live</span>
+            <span><i className="pending" /> {pendingCount} pending</span>
+          </div>
+        )}
+      </div>
+
+      <div className="smnet-stage">
         <div className="map-container-enhanced">
           <ComposableMap
             projection="geoAlbersUsa"
@@ -103,7 +126,12 @@ export default function NetworkSection() {
                 onClick={(e) => handleNodeClick(node, e)}
               >
                 <circle
-                  r={12}
+                  r={20}
+                  className={`map-marker-pulse ${node.status === "active" ? "active" : "pending"}`}
+                  style={{ pointerEvents: "none" }}
+                />
+                <circle
+                  r={8}
                   className={`map-marker ${node.status === "active" ? "active" : "pending"}`}
                   style={{ cursor: "pointer", pointerEvents: "auto" }}
                   role="button"
@@ -114,11 +142,6 @@ export default function NetworkSection() {
                     if (e.key === "Enter" || e.key === " ") handleNodeClick(node, e);
                     if (e.key === "Escape") closeDialog();
                   }}
-                />
-                <circle
-                  r={20}
-                  className={`map-marker-pulse ${node.status === "active" ? "active" : "pending"}`}
-                  style={{ pointerEvents: "none" }}
                 />
               </Marker>
             ))}
@@ -176,6 +199,13 @@ export default function NetworkSection() {
             </div>
           )}
         </div>
+        {!plain && (
+          <div className="smnet-bar" aria-hidden="true">
+            <span><i /> Network online</span>
+            <span>{chapters.length} nodes · {states} states</span>
+            {newest && <span className="last">Latest · {newest.name}</span>}
+          </div>
+        )}
       </div>
     </div>
   );

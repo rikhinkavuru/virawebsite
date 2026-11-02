@@ -44,7 +44,7 @@ const SCHOOL_LOGOS: Record<string, string> = {
 };
 
 /** School logo from the verified map; letter tile fallback. */
-function SchoolIcon({ id, name, hue }: { id: string; name: string; hue: string }) {
+export function SchoolIcon({ id, name, hue }: { id: string; name: string; hue: string }) {
   const [failed, setFailed] = useState(false);
   const src = SCHOOL_LOGOS[id];
   if (src && !failed) {

@@ -3,15 +3,19 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { Loader2, Send, CheckCircle2 } from "lucide-react";
+import { Loader2, CheckCircle2 } from "lucide-react";
 import { ApplicationSchema, type Application } from "@/lib/schema";
 import { US_STATES } from "@/data/usGeo";
 import { useApplyToChapter } from "@/hooks/useApplyToChapter";
 import { ApiError } from "@/lib/apiClient";
-import { SectionHeader } from "@/components/SectionHeader";
 
-const FIELD =
-  "w-full rounded-md border border-solid border-vira-border bg-transparent px-3.5 py-2.5 font-mono text-sm text-vira-fg outline-none transition-colors focus:border-vira-accent";
+const FIELD = "sminput";
+
+const NEXT = [
+  { t: "Submit the form", d: "Your school appears on the map as a pending node right away." },
+  { t: "Operator review", d: "The application is emailed to the network operator. Your details stay private." },
+  { t: "Provisioning", d: "Playbook, sponsor kit, judging rubric and a mentor bench land in your inbox." },
+];
 
 export function ApplyForm() {
   const apply = useApplyToChapter();
@@ -28,7 +32,7 @@ export function ApplyForm() {
   const onSubmit = (values: Application) => {
     apply.mutate(values, {
       onSuccess: () => {
-        toast.success("Node provisioned — application pending review.");
+        toast.success("Application sent — your node is pending review.");
         reset();
       },
       onError: (err) => {
@@ -44,36 +48,41 @@ export function ApplyForm() {
   };
 
   return (
-    <div>
-      <SectionHeader eyebrow="04 // request node" title="Bring a chapter to your school." />
-      <p className="mb-10 max-w-2xl font-mono text-sm leading-loose text-vira-subtle">
-        Apply to deploy a Vira chapter at your school. Submitting drops a pending node on the map
-        instantly — it stays private and is emailed to the network operator for review.
-      </p>
+    <div className="smapply">
+      <div className="smapply-copy">
+        <div className="idx-label">Apply · one short form</div>
+        <h3>Bring a chapter to your school.</h3>
+        <p>
+          Any high school, any state. An existing club helps but isn&rsquo;t required.
+        </p>
+        <ol className="smapply-steps">
+          {NEXT.map((n, i) => (
+            <li key={n.t}>
+              <span className="n">0{i + 1}</span>
+              <div>
+                <b>{n.t}</b>
+                <span>{n.d}</span>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
 
       {apply.isSuccess ? (
         <motion.div
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mx-auto flex max-w-2xl items-start gap-4 rounded-lg border border-solid border-vira-accent bg-vira-hover p-6"
+          className="smform smform-done"
         >
-          <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-vira-accent" aria-hidden />
-          <div className="font-mono text-sm text-vira-fg">
-            <p className="font-medium">Application transmitted.</p>
-            <p className="mt-1 text-vira-muted">
-              Your node is pending review. Look at the map — your school is on the network.
-            </p>
-            <button onClick={() => apply.reset()} className="mt-3 bg-transparent text-xs text-vira-accent hover:underline">
-              submit another →
-            </button>
+          <CheckCircle2 className="ico" aria-hidden />
+          <div>
+            <b>Application sent.</b>
+            <p>Your node is pending review. Look at the map — your school is on the network.</p>
+            <button type="button" onClick={() => apply.reset()}>Submit another →</button>
           </div>
         </motion.div>
       ) : (
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="mx-auto grid max-w-2xl grid-cols-1 gap-x-5 gap-y-7 sm:grid-cols-2"
-          noValidate
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="smform" noValidate>
           {/* Honeypot: hidden from users, tempting to bots. Server rejects if filled. */}
           <input
             type="text"
@@ -84,19 +93,19 @@ export function ApplyForm() {
             {...register("company")}
           />
 
-          <Field label="Name" error={errors.name?.message}>
-            <input className={FIELD} placeholder="your name" autoComplete="name" {...register("name")} />
+          <Field id="apply-name" label="Name" error={errors.name?.message}>
+            <input id="apply-name" className={FIELD} placeholder="Your name" autoComplete="name" {...register("name")} />
           </Field>
-          <Field label="Email" error={errors.email?.message}>
-            <input className={FIELD} type="email" placeholder="you@email.com" autoComplete="email" {...register("email")} />
+          <Field id="apply-email" label="Email" error={errors.email?.message}>
+            <input id="apply-email" className={FIELD} type="email" placeholder="you@email.com" autoComplete="email" {...register("email")} />
           </Field>
-          <Field label="School" error={errors.school?.message} full>
-            <input className={FIELD} placeholder="your high school" {...register("school")} />
+          <Field id="apply-school" label="School" error={errors.school?.message} full>
+            <input id="apply-school" className={FIELD} placeholder="Your high school" {...register("school")} />
           </Field>
-          <Field label="State" error={errors.state?.message}>
-            <select className={FIELD} defaultValue="" {...register("state")}>
+          <Field id="apply-state" label="State" error={errors.state?.message}>
+            <select id="apply-state" className={FIELD} defaultValue="" {...register("state")}>
               <option value="" disabled>
-                select state
+                Select state
               </option>
               {US_STATES.map((s) => (
                 <option key={s.code} value={s.code}>
@@ -105,31 +114,30 @@ export function ApplyForm() {
               ))}
             </select>
           </Field>
-          <Field label="City" error={errors.city?.message}>
-            <input className={FIELD} placeholder="city" {...register("city")} />
+          <Field id="apply-city" label="City" error={errors.city?.message}>
+            <input id="apply-city" className={FIELD} placeholder="City" {...register("city")} />
           </Field>
-          <Field label="Why Vira? (optional)" error={errors.message?.message} full>
+          <Field id="apply-message" label="Why Vira? (optional)" error={errors.message?.message} full>
             <textarea
-              className={`${FIELD} min-h-[90px] resize-y`}
-              placeholder="tell us about your school..."
+              id="apply-message"
+              className={FIELD}
+              placeholder="Tell us about your school…"
               {...register("message")}
             />
           </Field>
 
-          <div className="mt-2 sm:col-span-2">
-            <motion.button
-              type="submit"
-              whileTap={{ scale: 0.98 }}
-              disabled={apply.isPending}
-              className="inline-flex items-center justify-center gap-2 rounded-md border border-solid border-vira-accent bg-vira-accent px-5 py-2.5 font-mono text-sm font-medium text-white transition-opacity disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {apply.isPending ? (
-                <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-              ) : (
-                <Send className="h-4 w-4" aria-hidden />
-              )}
-              {apply.isPending ? "transmitting" : "request node"}
-            </motion.button>
+          <div className="smform-foot">
+            <button type="submit" disabled={apply.isPending} className="smbtn primary">
+              {apply.isPending ? "Sending…" : "Request a chapter"}
+              <span className="arr-cell">
+                {apply.isPending ? (
+                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                ) : (
+                  <span className="arr" aria-hidden="true">→</span>
+                )}
+              </span>
+            </button>
+            <span className="fine">Private — never shown publicly.</span>
           </div>
         </form>
       )}
@@ -138,27 +146,23 @@ export function ApplyForm() {
 }
 
 function Field({
+  id,
   label,
   error,
   full,
   children,
 }: {
+  id: string;
   label: string;
   error?: string;
   full?: boolean;
   children: ReactNode;
 }) {
   return (
-    <div className={full ? "sm:col-span-2" : ""}>
-      <label className="mb-2 block font-mono text-[0.65rem] uppercase tracking-wide text-vira-subtle">
-        {label}
-      </label>
+    <div className={`smfield ${full ? "full" : ""}`}>
+      <label htmlFor={id}>{label}</label>
       {children}
-      {error && (
-        <p className="mt-1 font-mono text-xs text-vira-accent-pending" role="alert">
-          {error}
-        </p>
-      )}
+      {error && <p className="err" role="alert">{error}</p>}
     </div>
   );
 }

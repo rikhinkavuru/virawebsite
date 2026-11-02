@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&family=Archivo:wdth,wght@62..125,400..900&display=swap');
 
 /* Tailwind utilities only — NO @tailwind base. The 34KB hand-CSS below provides
    the reset/typography; injecting Tailwind's preflight would reset the legacy
@@ -66,7 +66,7 @@ body {
   /* supermemory-inspired light system, forest green in place of their blue.
      Both theme attributes resolve identically — the site is light-only now. */
   --font-sans: 'DM Sans', system-ui, sans-serif;
-  --font-display: var(--font-display);
+  --font-display: 'DM Sans', system-ui, sans-serif;
   --font-mono: 'DM Mono', ui-monospace, monospace;
 
   --bg-color: #f4f9f5;
@@ -2458,14 +2458,30 @@ body { font-family: var(--font-sans); background: var(--bg-color); }
 .smcat-item:hover { color: var(--text-primary); }
 .smcat-panel { display: flex; flex-direction: column; }
 .smcat-art {
-  position: relative; flex: 1; min-height: 420px;
+  position: relative; flex: 1; min-height: 460px;
   background:
-    radial-gradient(rgba(255, 255, 255, 0.22) 1px, transparent 1px),
-    linear-gradient(135deg, var(--green) 0%, var(--green-deep) 100%);
-  background-size: 14px 14px, 100% 100%;
-  display: flex; align-items: center; justify-content: center;
+    radial-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px),
+    radial-gradient(ellipse 70% 62% at 50% 46%, #25a557 0%, transparent 72%),
+    linear-gradient(140deg, var(--green) 0%, var(--green-deep) 100%);
+  background-size: 14px 14px, 100% 100%, 100% 100%;
   overflow: hidden;
 }
+.smcat-art .smcat-frame { position: absolute; inset: clamp(18px, 3vw, 34px); pointer-events: none; }
+/* WebGL diorama: fills the panel, sits over the selection frame */
+.smdio { position: absolute; inset: 0; cursor: grab; touch-action: pan-y; }
+.smdio.dragging { cursor: grabbing; }
+.smdio-canvas { width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 0.2s ease; }
+.smcat-flat { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 40px; }
+.smcat-plate, .smcat-hint {
+  position: absolute; bottom: clamp(26px, 3.6vw, 44px); z-index: 2; pointer-events: none;
+  font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+.smcat-plate { left: clamp(30px, 4vw, 50px); display: flex; gap: 10px; }
+.smcat-plate b { font-weight: 500; color: #fff; }
+.smcat-plate span::after { content: ' /'; opacity: 0.6; }
+.smcat-hint { right: clamp(30px, 4vw, 50px); }
+@media (hover: none) { .smcat-hint { display: none; } }
 .smcat-detail { padding-top: 26px; }
 .smcat-detail .idx-label {
   font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.16em;
@@ -2928,3 +2944,217 @@ section[id], div[id="top"] { scroll-margin-top: 76px; }
 @media (prefers-reduced-motion: reduce) {
   .iso-float, .iso-blink, .iso-slide { animation: none; }
 }
+
+/* ===================================================================
+   FINISH PASS — WebGL catalog dioramas, dark network console, native
+   apply form, and a round of contrast / rhythm / type fixes.
+   =================================================================== */
+
+/* --- Type: balanced headlines, no orphans in body copy --- */
+.smhero h1, .smsplit-head h2, .smhow-head h2, .smfaq-head h2,
+.smfinal h2, .smnet-head h2, .smstep-body h3, .smquote-body blockquote, .smfooter h4 { text-wrap: balance; }
+.smhero-sub, .smcat-detail p, .smstep-body p, .smcard p, .smquote-body .detail, .smfaq-a p { text-wrap: pretty; }
+::selection { background: var(--green); color: #fff; }
+
+/* --- Headlines on green were inheriting dark ink --- */
+.smcard.green h3, .smfooter h4 { color: #fff; }
+.smcard.white h3 { color: var(--text-primary); }
+.smcard.green {
+  background:
+    radial-gradient(rgba(255, 255, 255, 0.13) 1px, transparent 1px),
+    linear-gradient(155deg, #1c9247 0%, var(--green) 45%, var(--green-deep) 100%);
+  background-size: 14px 14px, 100% 100%;
+}
+.smstats, .smstats.four { background: rgba(6, 40, 20, 0.16); }
+.smstats .v { font-variant-numeric: tabular-nums; }
+
+/* --- Network: section head + dark console stage --- */
+.smmap { padding: clamp(22px, 3vw, 40px); }
+.smmap-frame { padding: clamp(14px, 2.2vw, 30px); }
+.smnet-head {
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+  margin-bottom: clamp(18px, 2.4vw, 28px);
+}
+.smnet-head h2 {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: clamp(1.9rem, 3.8vw, 2.9rem); letter-spacing: -0.045em; line-height: 1.1;
+  color: var(--text-primary);
+}
+.smnet-head h2 .g { color: var(--green); }
+.smnet-head p { margin-top: 12px; color: var(--text-secondary); font-size: 0.98rem; }
+.smnet-legend {
+  display: flex; gap: 8px;
+  font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.smnet-legend span {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 12px; border: 1px solid var(--border); background: var(--surface-2);
+}
+.smnet-legend i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.smnet-legend i.live { background: var(--green); box-shadow: 0 0 0 3px var(--accent-soft); }
+.smnet-legend i.pending { border: 1.5px solid #c59a2c; }
+.smnet-stage {
+  position: relative; overflow: hidden;
+  background:
+    radial-gradient(rgba(141, 255, 188, 0.09) 1px, transparent 1px),
+    radial-gradient(ellipse 75% 85% at 58% 42%, #0f3a22 0%, #082112 55%, var(--green-dark) 100%);
+  background-size: 18px 18px, 100% 100%;
+}
+.smnet-stage .map-container-enhanced {
+  max-width: none; height: auto; margin: 0; background: none; border: none;
+  padding: clamp(6px, 1.4vw, 18px) clamp(6px, 2vw, 28px) 0;
+}
+.smnet-stage .map-geo,
+[data-theme] .smnet-stage .map-geo {
+  fill: #0f3521; stroke: #216540; stroke-width: 0.8px;
+  transition: fill 0.2s ease;
+}
+.smnet-stage .map-geo:hover,
+[data-theme] .smnet-stage .map-geo:hover { fill: #154a2d; }
+.smnet-stage .map-arc {
+  stroke: #8dffbc; stroke-width: 1.1; opacity: 0.5; stroke-dasharray: 2 7;
+  filter: none;
+}
+.smnet-stage .map-marker,
+[data-theme] .smnet-stage .map-marker { stroke: #06180d; stroke-width: 2px; transition: r 0.2s ease; }
+.smnet-stage .map-marker.active { fill: #7dffb0; filter: drop-shadow(0 0 6px rgba(125, 255, 176, 0.75)); }
+.smnet-stage .map-marker.pending { fill: #082112; stroke: #ffc857; stroke-width: 1.8px; stroke-dasharray: 3 2.4; filter: none; }
+.smnet-stage .map-marker:hover, .smnet-stage .map-marker:focus-visible { r: 11; outline: none; }
+.smnet-stage .map-marker-pulse { stroke-width: 1.2; animation: smnet-pulse 2.6s ease-out infinite; }
+.smnet-stage .map-marker-pulse.active { stroke: #7dffb0; }
+.smnet-stage .map-marker-pulse.pending { display: none; }
+@keyframes smnet-pulse { 0% { r: 8; opacity: 0.7; } 100% { r: 26; opacity: 0; } }
+.smnet-bar {
+  display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
+  padding: 12px clamp(14px, 2vw, 22px);
+  border-top: 1px solid rgba(141, 255, 188, 0.14);
+  font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(214, 247, 226, 0.62);
+}
+.smnet-bar span:first-child { color: #8dffbc; display: inline-flex; align-items: center; gap: 9px; }
+.smnet-bar i { width: 7px; height: 7px; border-radius: 50%; background: #8dffbc; box-shadow: 0 0 8px #8dffbc; animation: isoblink 2.4s ease-in-out infinite; }
+.smnet-bar .last { margin-left: auto; }
+/* node card floats over the console */
+.smnet-stage .node-dialog {
+  left: clamp(12px, 2vw, 24px); bottom: 58px; width: min(320px, calc(100% - 24px));
+  border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 24px 60px -18px rgba(0, 0, 0, 0.65);
+  animation: dialogFadeIn 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.smnet-stage .dialog-title { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em; }
+.smnet-stage .dialog-header { background: var(--surface-2); }
+@media (max-width: 700px) {
+  .smnet-bar .last { display: none; }
+  .smnet-stage .node-dialog { position: relative; left: auto; bottom: auto; width: auto; margin: 0 10px 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .smnet-stage .map-marker-pulse, .smnet-bar i { animation: none; }
+}
+
+/* --- Operators: monogram tile instead of a bare letter --- */
+.smquote-art { flex-direction: column; gap: 16px; }
+.smquote-art .tile {
+  width: 92px; height: 92px; border-radius: 22px;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(180deg, #ffffff, #eef7f0);
+  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.55), 0 22px 40px -22px rgba(6, 40, 20, 0.55);
+  font-size: 2.6rem; letter-spacing: -0.04em; color: var(--green-deep);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.smquote:hover .smquote-art .tile { transform: translateY(-3px) rotate(-3deg); }
+.smquote-art .cap {
+  font-family: var(--font-mono); font-weight: 500; font-size: 0.66rem;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--green-deep);
+  background: rgba(255, 255, 255, 0.78); padding: 4px 9px;
+}
+
+/* --- Final CTA: band aligned to the grid, turnout bars fill the right --- */
+.smfinal { padding-bottom: clamp(32px, 4.4vw, 56px); }
+.smfinal-row { grid-template-columns: 1fr minmax(240px, 300px); margin-top: clamp(28px, 4vw, 44px); }
+.smfinal-row .smcount { margin: 0; display: grid; grid-template-columns: auto 1fr; column-gap: clamp(20px, 4vw, 56px); align-items: end; }
+.smfinal-row .smcount .lbl { grid-column: 1 / -1; margin-bottom: 6px; }
+.smcount-bars {
+  position: relative; align-self: stretch; min-height: 84px;
+  display: flex; align-items: flex-end; justify-content: flex-end; gap: 5px;
+  padding-bottom: 22px;
+}
+.smcount-bars i {
+  display: block; flex: 0 1 14px; min-width: 5px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.45));
+  transform-origin: bottom;
+}
+.smcount-bars .cap {
+  position: absolute; right: 0; bottom: 0;
+  font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase;
+  opacity: 0.8; white-space: nowrap;
+}
+@media (max-width: 620px) {
+  .smfinal-row .smcount { grid-template-columns: 1fr; }
+  .smcount-bars { justify-content: flex-start; margin-top: 14px; }
+  .smcount-bars .cap { right: auto; left: 0; }
+}
+
+/* --- Apply: copy + steps beside a native form --- */
+.smapply-wrap { border-top: 1px solid var(--border); }
+.smapply { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); }
+.smapply-copy { padding: clamp(28px, 4vw, 56px) clamp(24px, 3.4vw, 46px); border-right: 1px solid var(--border); }
+.smapply-copy .idx-label {
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.16em;
+  color: var(--green); text-transform: uppercase;
+}
+.smapply-copy h3 {
+  font-family: var(--font-display); font-weight: 500;
+  font-size: clamp(1.7rem, 3vw, 2.4rem); letter-spacing: -0.04em; line-height: 1.1;
+  margin-top: 12px; color: var(--text-primary); text-wrap: balance;
+}
+.smapply-copy > p { margin-top: 14px; color: var(--text-secondary); line-height: 1.6; max-width: 40ch; }
+.smapply-steps { list-style: none; margin: clamp(24px, 3vw, 36px) 0 0; padding: 0; border-top: 1px solid var(--border); }
+.smapply-steps li { display: flex; gap: 16px; padding: 15px 0; border-bottom: 1px solid var(--border); }
+.smapply-steps .n { font-family: var(--font-mono); font-size: 0.75rem; color: var(--green); padding-top: 3px; }
+.smapply-steps b { display: block; font-weight: 550; color: var(--text-primary); font-size: 0.98rem; }
+.smapply-steps span:not(.n) { display: block; margin-top: 3px; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; }
+.smform {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 18px 16px; align-content: start;
+  padding: clamp(28px, 4vw, 56px) clamp(24px, 3.4vw, 46px);
+  background:
+    radial-gradient(var(--border) 1px, transparent 1px), var(--surface-2);
+  background-size: 16px 16px;
+}
+.smfield { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+.smfield.full, .smform-foot { grid-column: 1 / -1; }
+.smfield label { font-size: 0.85rem; font-weight: 500; color: var(--text-primary); }
+.sminput {
+  width: 100%; font-family: var(--font-sans); font-size: 0.95rem; color: var(--text-primary);
+  background: var(--surface); border: 1px solid var(--border-strong);
+  padding: 0.7rem 0.85rem; outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.sminput::placeholder { color: var(--text-tertiary); }
+.sminput:hover { border-color: #aebbb1; }
+.sminput:focus { border-color: var(--green); box-shadow: 0 0 0 3px var(--accent-soft); }
+textarea.sminput { min-height: 104px; resize: vertical; line-height: 1.5; }
+select.sminput { appearance: none; -webkit-appearance: none; padding-right: 2.2rem;
+  background-image: linear-gradient(45deg, transparent 50%, var(--text-secondary) 50%), linear-gradient(135deg, var(--text-secondary) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 52%, calc(100% - 13px) 52%;
+  background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; }
+select.sminput:invalid, select.sminput option[value=""] { color: var(--text-tertiary); }
+.smfield .err { font-size: 0.8rem; color: #b4532a; }
+.smform-foot { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 6px; }
+.smform-foot .fine { font-size: 0.82rem; color: var(--text-tertiary); }
+.smform-foot .smbtn:disabled { opacity: 0.6; cursor: not-allowed; }
+.smform-done { grid-template-columns: auto 1fr; align-items: start; gap: 14px; }
+.smform-done .ico { width: 22px; height: 22px; color: var(--green); margin-top: 2px; }
+.smform-done b { font-size: 1.05rem; color: var(--text-primary); }
+.smform-done p { margin-top: 6px; color: var(--text-secondary); line-height: 1.55; }
+.smform-done button { margin-top: 12px; background: none; border: none; padding: 0; cursor: pointer; color: var(--green); font-size: 0.9rem; }
+.smform-done button:hover { text-decoration: underline; }
+@media (max-width: 900px) {
+  .smapply { grid-template-columns: 1fr; }
+  .smapply-copy { border-right: none; border-bottom: 1px solid var(--border); }
+}
+@media (max-width: 520px) { .smform { grid-template-columns: 1fr; } }
+
+/* --- Catalog panel on small screens --- */
+@media (max-width: 900px) { .smcat-art { min-height: 340px; } }
+@media (max-width: 700px) { .smnet-stage .map-marker { r: 13; } }

@@ -1,46 +1,68 @@
-import { useEffect, useRef, useState } from "react";
+import { Component, lazy, Suspense, useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Section, Reveal } from "./chrome";
 import { IsoScene, type IsoKind } from "./IsoArt";
+
+// The WebGL dioramas (three.js) load as their own chunk, off the critical path.
+const Diorama = lazy(() => import("./diorama/Diorama"));
+
+/** If the 3D chunk or WebGL fails, fall back to the flat SVG scenes. */
+class ArtBoundary extends Component<{ fallback: ReactNode; children: ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  render() {
+    return this.state.failed ? this.props.fallback : this.props.children;
+  }
+}
 
 type Item = {
   key: string;
   title: string;
   desc: string;
-  /** isometric scene shown in the panel */
+  /** diorama shown in the panel */
   art: IsoKind;
+  /** plate caption under the model */
+  fig: string;
 };
 
-const ITEMS: Item[] = [
+export const ITEMS: Item[] = [
   {
     key: "hackathons",
     title: "Localized Hackathons",
     desc: "One-day builds hosted inside your school — venue, food, judges and problem statements handled by the chapter playbook, not by you.",
     art: "launch",
+    fig: "Build room",
   },
   {
     key: "chapters",
     title: "Chapter Network",
     desc: "Every school is a node. Chapters share sponsors, mentor benches and event templates, so the tenth event is easier than the first.",
     art: "network",
+    fig: "Hub & chapters",
   },
   {
     key: "mentors",
     title: "Clinical Mentorship",
     desc: "Nurses, med students and clinicians review projects mid-build, so student teams ship things that survive contact with a real hospital.",
     art: "clinic",
+    fig: "Mentor review",
   },
   {
     key: "demo",
     title: "Demo Days & Judging",
     desc: "Structured judging rubrics and community demo days give every team a real audience — and winners a path to the state showcase.",
     art: "podium",
+    fig: "Finals stage",
   },
   {
     key: "handoff",
     title: "Operator Handoff",
     desc: "Seniors graduate; chapters don't. The operator playbook and provisioning queue keep every node running across school years.",
     art: "relay",
+    fig: "Playbook relay",
   },
 ];
 
@@ -53,6 +75,9 @@ export function Catalog() {
   const rootRef = useRef<HTMLDivElement>(null);
   const pausedUntil = useRef(0);
   const [inView, setInView] = useState(false);
+  const [flat, setFlat] = useState(false);
+  // Hold the 3D chunk until the section is a screen or so away.
+  const [near, setNear] = useState(false);
 
   // Auto-flow through the catalog while it's on screen; a manual click
   // pauses the rotation for a while, hovering the list pauses it live.
@@ -66,7 +91,19 @@ export function Catalog() {
       { threshold: 0.25 },
     );
     io.observe(el);
-    return () => io.disconnect();
+    const pre = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        setNear(true);
+        pre.disconnect();
+      },
+      { rootMargin: "900px 0px" },
+    );
+    pre.observe(el);
+    return () => {
+      io.disconnect();
+      pre.disconnect();
+    };
   }, []);
 
   useEffect(() => {
@@ -118,20 +155,23 @@ export function Catalog() {
         </div>
         <div className="smcat-panel">
           <div className="smcat-art">
-            <div className="smsel" style={{ padding: "clamp(24px, 4vw, 60px)" }}>
+            <div className="smsel smcat-frame" aria-hidden="true">
               <span className="hnd tl" /><span className="hnd tr" /><span className="hnd bl" /><span className="hnd br" />
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={item.key}
-                  initial={{ opacity: 0, scale: 0.94 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 1.03 }}
-                  transition={{ duration: 0.28, ease: "easeOut" }}
-                >
-                  <IsoScene kind={item.art} />
-                </motion.div>
-              </AnimatePresence>
             </div>
+            {flat ? (
+              <div className="smcat-flat"><IsoScene kind={item.art} /></div>
+            ) : (
+              <ArtBoundary fallback={<div className="smcat-flat"><IsoScene kind={item.art} /></div>}>
+                <Suspense fallback={null}>
+                  {near && <Diorama kind={item.art} onFail={() => setFlat(true)} />}
+                </Suspense>
+              </ArtBoundary>
+            )}
+            <div className="smcat-plate" aria-hidden="true">
+              <span>Fig. 0{active + 1}</span>
+              <b>{item.fig}</b>
+            </div>
+            {!flat && <div className="smcat-hint" aria-hidden="true">Drag to rotate</div>}
           </div>
           <AnimatePresence mode="wait">
             <motion.div

@@ -79,7 +79,7 @@ export default function Index() {
         <Section label="Join" index={8} id="apply">
           <FinalCta onNavigate={scrollToSection} />
           {FLAGS.apply && (
-            <div style={{ padding: "0 clamp(26px, 3.6vw, 50px) clamp(26px, 3.6vw, 50px)", borderTop: "1px solid var(--border)" }}>
+            <div className="smapply-wrap">
               <Suspense fallback={<SectionFallback label="// loading application" />}>
                 <ApplyForm />
               </Suspense>

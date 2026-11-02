@@ -38,7 +38,10 @@ export function Quotes() {
     <Section label="Operators" index={6} id="people">
       {QUOTES.map((t) => (
         <div className="smquote" key={t.org}>
-          <div className="smquote-art" aria-hidden="true">{t.initial}</div>
+          <div className="smquote-art" aria-hidden="true">
+            <span className="tile">{t.initial}</span>
+            <span className="cap">{t.org.replace(/ High School$/i, "")}</span>
+          </div>
           <div className="smquote-body">
             <blockquote>“{t.q}”</blockquote>
             <p className="detail">{t.detail}</p>

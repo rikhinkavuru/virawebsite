@@ -75,6 +75,9 @@ export function FinalCta({ onNavigate }: { onNavigate: (id: string) => void }) {
   // Rough but honest: total build-hours logged across active events (12h days).
   const buildHours = DEPLOYMENT_STATS.total_users * 12;
   const pending = CHAPTERS.filter((c) => c.status === "pending").length;
+  // Attendance per live chapter, drawn as a small bar series inside the band.
+  const turnout = CHAPTERS.filter((c) => c.status === "active" && (c.attendees ?? 0) > 0);
+  const peak = Math.max(1, ...turnout.map((c) => c.attendees ?? 0));
 
   return (
     <div className="smfinal">
@@ -86,6 +89,19 @@ export function FinalCta({ onNavigate }: { onNavigate: (id: string) => void }) {
         <div className="smcount">
           <div className="lbl">Total build-hours logged</div>
           <div className="num"><CountUp to={buildHours} /></div>
+          <div className="smcount-bars" aria-hidden="true">
+            {turnout.map((c, i) => (
+              <motion.i
+                key={c.id}
+                initial={{ scaleY: 0 }}
+                whileInView={{ scaleY: 1 }}
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{ duration: 0.7, delay: 0.03 * i, ease: [0.22, 1, 0.36, 1] }}
+                style={{ height: `${Math.max(12, ((c.attendees ?? 0) / peak) * 100)}%` }}
+              />
+            ))}
+            <span className="cap">Builders per chapter</span>
+          </div>
         </div>
         <div className="smfinal-ctas">
           <ArrowButton onClick={() => onNavigate("apply")}>Start a Chapter</ArrowButton>

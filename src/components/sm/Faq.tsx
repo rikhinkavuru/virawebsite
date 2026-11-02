@@ -2,7 +2,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Section, Reveal } from "./chrome";
 
-const FAQS: Array<{ q: string; a: string }> = [
+export const FAQS: Array<{ q: string; a: string }> = [
   {
     q: "Does my school need an existing CS club?",
     a: "No. A club helps with recruiting, but chapters have launched from robotics teams, HOSA chapters and completely from scratch. The playbook covers recruiting your first ten builders.",
