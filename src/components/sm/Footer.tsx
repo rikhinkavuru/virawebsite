@@ -3,7 +3,6 @@ import { ViraMark } from "./chrome";
 const PRODUCT: Array<{ label: string; id: string }> = [
   { label: "Network map", id: "network" },
   { label: "Chapters", id: "chapters" },
-  { label: "Operators", id: "people" },
   { label: "FAQ", id: "faq" },
   { label: "Apply", id: "apply" },
 ];

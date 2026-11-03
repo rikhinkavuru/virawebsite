@@ -32,7 +32,7 @@ export const FAQS: Array<{ q: string; a: string }> = [
 export function Faq() {
   const [open, setOpen] = useState<number | null>(0);
   return (
-    <Section label="FAQ" index={7} id="faq">
+    <Section label="FAQ" index={4} id="faq">
       <div className="smfaq-head">
         <Reveal>
           <h2>The fine print, <span className="g">in plain English.</span></h2>

@@ -152,7 +152,7 @@ const STEPS = [
 
 export function HowItWorks() {
   return (
-    <Section label="How it works" index={3}>
+    <Section label="How it works" index={2}>
       <div className="smhow-head">
         <Reveal>
           <h2>How it <span className="g">works.</span></h2>

@@ -22,18 +22,12 @@ const DDG = (domain: string) => `https://icons.duckduckgo.com/ip3/${domain}.ico`
  *  found by probing the schools' (district) sites. zch has none → letter tile. */
 const SCHOOL_LOGOS: Record<string, string> = {
   hhs: DDG("sacs.k12.in.us"),
-  phs: S2("plainfield.k12.in.us"),
-  chs: S2("bcscschools.org"),
-  lhs: S2("tricreek.k12.in.us"),
-  lex: S2("lexingtonma.org"),
   rhs: S2("leanderisd.org"),
   ohs: "https://oaktonhs.fcps.edu/sites/default/files/favicons/apple-touch-icon.png",
   whs: "https://resources.finalsite.net/images/v1737354498/unioncountyps/daosxfdn4nkxcmjfnzoe/LOGO-Weddington-High.png",
-  fhs: "https://resources.finalsite.net/images/v1709033400/wcsedu/urjzkovlxjm9jktinssh/FranklinHighPrimaryThumbnailImage.png",
   aai: "https://resources.finalsite.net/images/v1711375980/forsythk12gaus/qvgywcups44on8z3i3vg/favicon2.png",
   hse: S2("hseschools.org"),
   bhs: S2("brownsburg.k12.in.us"),
-  chr: S2("cherokeek12.net"),
   mun: S2("munster.us"),
   lam: S2("forsyth.k12.ga.us"),
   cmh: DDG("cabarrus.k12.nc.us"),

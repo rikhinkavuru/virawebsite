@@ -3038,6 +3038,7 @@ section[id], div[id="top"] { scroll-margin-top: 76px; }
 /* node card floats over the console */
 .smnet-stage .node-dialog {
   left: clamp(12px, 2vw, 24px); bottom: 58px; width: min(320px, calc(100% - 24px));
+  background: var(--surface); /* beats the legacy [data-theme="dark"] #2a2a2a: text tokens stay dark */
   border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.5);
   box-shadow: 0 24px 60px -18px rgba(0, 0, 0, 0.65);
   animation: dialogFadeIn 0.22s cubic-bezier(0.22, 1, 0.36, 1);
@@ -3096,7 +3097,6 @@ section[id], div[id="top"] { scroll-margin-top: 76px; }
 }
 
 /* --- Apply: copy + steps beside a native form --- */
-.smapply-wrap { border-top: 1px solid var(--border); }
 .smapply { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); }
 .smapply-copy { padding: clamp(28px, 4vw, 56px) clamp(24px, 3.4vw, 46px); border-right: 1px solid var(--border); }
 .smapply-copy .idx-label {

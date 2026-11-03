@@ -107,11 +107,11 @@ export function ViraMark({
   );
 }
 
-/** Section chrome: top rule + mono rail (❯ LABEL … [N/8]) over a white box. */
+/** Section chrome: top rule + mono rail (❯ LABEL … [N/5]) over a white box. */
 export function Section({
   label,
   index,
-  total = 8,
+  total = 5,
   id,
   children,
 }: {

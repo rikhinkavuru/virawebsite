@@ -161,10 +161,6 @@ function Story() {
           </p>
         </Fade>
       </div>
-      <blockquote className="v2-quote">
-        <p className="v2-h green">“The mentor bench is the unlock.”</p>
-        <cite>Marcus, Plainfield High School</cite>
-      </blockquote>
     </section>
   );
 }
@@ -231,7 +227,7 @@ function Chapters() {
           tabs={[
             { id: "all", label: "All", count: CHAPTERS.length },
             { id: "live", label: "Active", count: live.length },
-            { id: "pending", label: "Pending", count: pending.length },
+            ...(pending.length > 0 ? [{ id: "pending", label: "Pending", count: pending.length }] : []),
           ]}
           onChange={(id) => {
             setFilter(id);

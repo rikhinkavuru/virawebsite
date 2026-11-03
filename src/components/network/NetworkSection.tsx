@@ -12,7 +12,7 @@ import { useChapters } from "@/hooks/useChapters";
  */
 export default function NetworkSection({
   title,
-  note = "Hover a node to see its event, attendance and status — or click to pin it.",
+  note = "Hover a node to see the school — or click to pin it.",
   plain = false,
 }: {
   /** Replaces the default headline. */
@@ -78,7 +78,7 @@ export default function NetworkSection({
         {!plain && (
           <div className="smnet-legend" aria-hidden="true">
             <span><i className="live" /> {live.length} live</span>
-            <span><i className="pending" /> {pendingCount} pending</span>
+            {pendingCount > 0 && <span><i className="pending" /> {pendingCount} pending</span>}
           </div>
         )}
       </div>
@@ -166,27 +166,6 @@ export default function NetworkSection({
               <div className="dialog-body">
                 <h3 className="dialog-title">{selectedNode.name}</h3>
                 <p className="dialog-loc mono">{selectedNode.loc}</p>
-
-                <div className="dialog-status-tag mono">
-                  STATUS: <span className={selectedNode.status}>{selectedNode.status.toUpperCase()}</span>
-                </div>
-
-                {selectedNode.status === "active" && (
-                  <div className="dialog-metrics mono">
-                    <div className="metric-row">
-                      <span>EVENT:</span>
-                      <span className="val">{selectedNode.event}</span>
-                    </div>
-                    <div className="metric-row">
-                      <span>DATE:</span>
-                      <span className="val">{selectedNode.date}</span>
-                    </div>
-                    <div className="metric-row">
-                      <span>ATTENDEES:</span>
-                      <span className="val">{selectedNode.attendees}</span>
-                    </div>
-                  </div>
-                )}
 
                 <p className="dialog-info">{selectedNode.info}</p>
 

@@ -4,12 +4,8 @@ import { Nav } from "@/components/sm/Nav";
 import { Hero } from "@/components/sm/Hero";
 import { GlitchBand } from "@/components/sm/GlitchBand";
 import { Catalog } from "@/components/sm/Catalog";
-import { SplitCards } from "@/components/sm/SplitCards";
 import { HowItWorks } from "@/components/sm/HowItWorks";
-import { Compare } from "@/components/sm/Compare";
-import { Quotes } from "@/components/sm/Quotes";
 import { Faq } from "@/components/sm/Faq";
-import { FinalCta } from "@/components/sm/FinalCta";
 import { Footer } from "@/components/sm/Footer";
 import { Section } from "@/components/sm/chrome";
 
@@ -53,12 +49,10 @@ export default function Index() {
 
         <Catalog />
 
-        <SplitCards onNavigate={scrollToSection} />
-
         <HowItWorks />
 
         {/* The live network map, framed like a selected canvas layer */}
-        <Section label="The network" index={4} id="network">
+        <Section label="The network" index={3} id="network">
           <div className="smmap">
             <div className="smmap-frame">
               <span className="hnd tl" /><span className="hnd tr" />
@@ -70,22 +64,15 @@ export default function Index() {
           </div>
         </Section>
 
-        <Compare />
-
-        <Quotes />
-
         <Faq />
 
-        <Section label="Join" index={8} id="apply">
-          <FinalCta onNavigate={scrollToSection} />
-          {FLAGS.apply && (
-            <div className="smapply-wrap">
-              <Suspense fallback={<SectionFallback label="// loading application" />}>
-                <ApplyForm />
-              </Suspense>
-            </div>
-          )}
-        </Section>
+        {FLAGS.apply && (
+          <Section label="Join" index={5} id="apply">
+            <Suspense fallback={<SectionFallback label="// loading application" />}>
+              <ApplyForm />
+            </Suspense>
+          </Section>
+        )}
       </div>
 
       <Footer onNavigate={scrollToSection} />

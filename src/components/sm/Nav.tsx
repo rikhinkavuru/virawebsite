@@ -4,7 +4,6 @@ import { ViraMark, ArrowButton } from "./chrome";
 const LINKS: Array<{ label: string; id: string }> = [
   { label: "Network", id: "network" },
   { label: "Chapters", id: "chapters" },
-  { label: "People", id: "people" },
   { label: "FAQ", id: "faq" },
 ];
 
