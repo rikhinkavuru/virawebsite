@@ -27,7 +27,6 @@ const SCHOOL_LOGOS: Record<string, string> = {
   whs: "https://resources.finalsite.net/images/v1737354498/unioncountyps/daosxfdn4nkxcmjfnzoe/LOGO-Weddington-High.png",
   aai: "https://resources.finalsite.net/images/v1711375980/forsythk12gaus/qvgywcups44on8z3i3vg/favicon2.png",
   hse: S2("hseschools.org"),
-  bhs: S2("brownsburg.k12.in.us"),
   mun: S2("munster.us"),
   lam: S2("forsyth.k12.ga.us"),
   cmh: DDG("cabarrus.k12.nc.us"),

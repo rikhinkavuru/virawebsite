@@ -91,21 +91,6 @@
       "attendees": 66
     },
     {
-      "id": "bhs",
-      "name": "Brownsburg High School",
-      "loc": "Brownsburg, IN",
-      "status": "active",
-      "coordinates": [
-        -86.39,
-        39.84
-      ],
-      "website": "https://www.brownsburg.k12.in.us/bhs",
-      "info": "West Indy node launched off the standard playbook.",
-      "event": "Brownsburg Hackathon",
-      "date": "04.11.26",
-      "attendees": 44
-    },
-    {
       "id": "mun",
       "name": "Munster High School",
       "loc": "Munster, IN",
@@ -253,13 +238,6 @@
     {
       "name": "cameron",
       "school": "hamilton southeastern",
-      "role": "chapter president",
-      "uptime": "3 months active",
-      "status": "active"
-    },
-    {
-      "name": "zara",
-      "school": "brownsburg high school",
       "role": "chapter president",
       "uptime": "3 months active",
       "status": "active"
